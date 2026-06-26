@@ -1,13 +1,12 @@
 import React from "react";
 // CSS
 import "../components/Login.css";
-import { FaEnvelope, FaLock, FaEye } from "react-icons/fa";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 const login = () => {
   return (
     <div className="login-page">
       <section className="login-section">
-        <h1>Time-Management</h1>
-        <h2>login</h2>
+        <h1>login</h1>
         <form>
           <div className="input-group">
             <FaEnvelope className="input-icon" />
@@ -29,7 +28,6 @@ const login = () => {
               placeholder="Senha"
               required
             />
-            <FaEye className="input-icon-last" />
           </div>
             <a href="">Esqueceu a senha?</a>
           <button type="submit">Entrar</button>

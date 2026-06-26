@@ -2,12 +2,11 @@
 import "./App.css";
 
 // pages import
-import Login from "./pages/Login.jsx";
-
+import UserScreen from "../src/pages/UserScreen/UserScreen.jsx";
 function App() {
   return (
-    <div>
-    <Login />
+    <div className="App">
+      <UserScreen />
   </div>
   );
 }

@@ -1,0 +1,123 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    width: 70px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    transition: .3s;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(249, 0, 0, 0.1);
+}
+
+.sidebar.open {
+    width: 280px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 15px;
+}
+
+.logo-icon {
+    display: flex;
+    font-size: 25px;
+}
+
+
+.toggle-btn {
+    border: none;
+    background: #f2f2f2;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.toggle-btn:hover {
+    background: #e7e7e7;
+}
+
+.menu {
+    flex: 1;
+    list-style: none;
+    padding: 10px;
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.menu li:hover {
+    background: #eef2ff;
+}
+
+.menu svg {
+    font-size: 22px;
+}
+
+.profile {
+    border-top: 1px solid #ddd;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-icon {
+    font-size: 40px;
+}
+
+.profile-info h4 {
+    font-size: 15px;
+}
+
+.profile-info p {
+    font-size: 12px;
+    color: #777;
+}
+
+.leave {
+    margin-bottom: 25px;
+    padding: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 16px;
+}
+
+.leave span {
+    font-weight: bold;
+}
+
+.leave-icon {
+    font-size: 25px;
+}
+
+.leave:hover {
+    background: #eef2ff;
+}
