@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 //CSS
-import { FaCalendarAlt } from "react-icons/fa";
-import "./MainInformations.css"
+import { FaCalendarAlt, FaPlus } from "react-icons/fa";
+import "./MainInformations.css";
 const MainInformations = () => {
   return (
     <aside className="main-informations">
@@ -44,19 +44,18 @@ const MainInformations = () => {
         </li>
       </ul>
 
-
       <div className="main-register">
         <div className="main-register-title">
           <h2>Meus Registros de Horas Extras</h2>
-        <button>
-          <FaCalendarAlt />
-          Registrar Hora Extra
-        </button>
+          <button>
+            <FaPlus />
+            Registrar Hora Extra
+          </button>
         </div>
 
         <table className="main-register-stats">
           <thead className="main-register-stats-head">
-            <tr>
+            <tr className="main-register-stats-head-tr">
               <th>Funcionário</th>
               <th>Data</th>
               <th>Horas Extras</th>
@@ -91,6 +90,6 @@ const MainInformations = () => {
       </div>
     </aside>
   );
-}
+};
 
 export default MainInformations;

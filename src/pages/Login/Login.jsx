@@ -1,35 +1,56 @@
+// react
 import React from "react";
+import { useState } from "react";
+import { login } from "../../services/api.js";
+// DOM
+import { useNavigate } from "react-router-dom";
+
 // CSS
-import "../components/Login.css";
+import "../Login/Login.css";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-const login = () => {
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  // funções
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const user = await login(email, password);
+    if (user.length) {
+      localStorage.setItem("user", JSON.stringify(user[0]));
+
+      window.location.href = "/user";
+    }
+  };
+
+  const avance = (e) => {
+    e.preventDefault();
+    navigate("/userscreen");
+  };
+
   return (
     <div className="login-page">
       <section className="login-section">
-        <h1>login</h1>
-        <form>
+        <h1>Login</h1>
+
+        <form onSubmit={avance}>
           <div className="input-group">
             <FaEnvelope className="input-icon" />
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              required
-            />
+            <input type="email" placeholder="Email" required />
           </div>
 
           <div className="input-group">
             <FaLock className="input-icon" />
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Senha"
-              required
-            />
+            <input type="password" placeholder="Senha" required />
           </div>
-            <a href="">Esqueceu a senha?</a>
+
+          <a href="">Esqueceu a senha?</a>
+
           <button type="submit">Entrar</button>
         </form>
       </section>
@@ -37,4 +58,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
