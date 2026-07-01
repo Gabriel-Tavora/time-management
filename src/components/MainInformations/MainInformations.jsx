@@ -1,14 +1,40 @@
-import React from "react";
-
-//CSS
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+// CSS
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import "./MainInformations.css";
+
 const MainInformations = () => {
+
+  const [user, setUser] = useState(null);
+  const [registros, setRegistros] = useState([]);
+  const navigate = useNavigate();
+
+  const handleRegisterHours = () => {
+    navigate("/RegisterHours");
+  };
+
+  useEffect(() => {
+    async function carregarDados() {
+      const usuario = JSON.parse(localStorage.getItem("user"));
+
+      if (!usuario) return;
+
+      setUser(usuario);
+
+      const dados = await getUserHours(usuario.id);
+
+      setRegistros(dados);
+    }
+
+    carregarDados();
+  }, []);
+
   return (
     <aside className="main-informations">
       <div className="main-header">
         <div className="main-header-title">
-          <h1>Nome</h1>
+          <h1></h1>
           <p>Acompanhe suas Horas Extras.</p>
         </div>
 
@@ -21,33 +47,16 @@ const MainInformations = () => {
       <ul className="main-menu">
         <li>
           <p>Total de Horas Extras</p>
-          <h2>32h 45m</h2>
+          <h2></h2>
           <p>No Mês</p>
         </li>
 
-        <li>
-          <p>Horas Noturnas</p>
-          <h2>12h 35m</h2>
-          <p>No Mês</p>
-        </li>
-
-        <li>
-          <p>Média de Adicionaço</p>
-          <h2>50%</h2>
-          <p>No Mês</p>
-        </li>
-
-        <li>
-          <p>Status do Fechamento</p>
-          <h2>Pendente</h2>
-          <p>aguardando aprovação</p>
-        </li>
       </ul>
 
       <div className="main-register">
         <div className="main-register-title">
           <h2>Meus Registros de Horas Extras</h2>
-          <button>
+          <button onClick={handleRegisterHours}>
             <FaPlus />
             Registrar Hora Extra
           </button>
@@ -64,26 +73,14 @@ const MainInformations = () => {
           </thead>
 
           <tbody className="main-register-stats-body">
-            <tr>
-              <td>João Silva</td>
-              <td>26/06/2026</td>
-              <td>2h 30min</td>
-              <td>Aprovado</td>
-            </tr>
-
-            <tr>
-              <td>Maria Souza</td>
-              <td>25/06/2026</td>
-              <td>1h 45min</td>
-              <td>Pendente</td>
-            </tr>
-
-            <tr>
-              <td>Carlos Lima</td>
-              <td>24/06/2026</td>
-              <td>3h 00min</td>
-              <td>Recusado</td>
-            </tr>
+            {registros.map((registro) => (
+              <tr key={registro.id}>
+                <td>{user?.nome}</td>
+                <td>{registro.data}</td>
+                <td>{registro.horas}</td>
+                <td>{registro.status}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <a href="">Ver Todos os Meus Registros</a>

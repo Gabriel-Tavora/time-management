@@ -1,17 +1,20 @@
-const API_URL = "http://localhost:3001";
+const API_URL = "http://192.168.1.21:5000";
 
 export const login = async (email, senha) => {
-  const response = await fetch(
-    `${API_URL}/users?email=${email}&senha=${senha}`
-  );
+  const response = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      senha,
+    }),
+  });
 
-  return response.json();
-};
+  if (!response.ok) {
+    throw new Error("Email ou senha inválidos");
+  }
 
-export const getUserHours = async (id) => {
-  const response = await fetch(
-    `${API_URL}/registros?userId=${id}`
-  );
-
-  return response.json();
+  return await response.json();
 };

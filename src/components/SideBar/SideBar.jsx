@@ -14,7 +14,7 @@ import {
 
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);
-
+  
   return (
     <aside className={expanded ? "sidebar open" : "sidebar"}>
       <nav>
@@ -49,7 +49,7 @@ function Sidebar() {
 
           <li>
             <FaUserCircle />
-            {expanded && <span>Meus Registros</span>}
+            {expanded && <span>Histórico</span>}
           </li>
 
           <li>

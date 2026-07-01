@@ -52,7 +52,7 @@
   display: grid;
   padding: 20px;
   border-radius: 20px;
-  background: #ddd;
+  background: #d8dee5;
   gap: 30px;
   max-width: 65rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -67,7 +67,7 @@
   width: 200px;
   border: 2px solid #eef2ff;
   border-radius: 8px;
-  background-color: rgb(223, 201, 174);
+  background-color: rgb(143, 203, 216);
   color: black;
   font-weight: bold;
   display: flex;
@@ -82,15 +82,12 @@
   border-radius: 16px;
   overflow: hidden;
 }
-.main-register-stats thead {
-  background: #f8fafc;
-}
 .main-register-stats th {
   padding: 18px 24px;
   text-align: left;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #64748b;
+  color: #294162;
   border-bottom: 1px solid #e2e8f0;
 }
 .main-register-stats td {

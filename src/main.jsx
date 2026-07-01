@@ -7,6 +7,7 @@ import "./index.css";
 import App from "./App.jsx";
 import Login from "./pages/Login/Login.jsx";
 import UserScreen from "./pages/UserScreen/UserScreen.jsx";
+import RegisterHours from "./components/RegisterHours/RegisterHours.jsx"
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/userscreen",
     element: <UserScreen />,
+  },
+  {
+    path:"/registerhours",
+    element: <RegisterHours />,
   },
 ]);
 createRoot(document.getElementById("root")).render(

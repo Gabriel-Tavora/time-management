@@ -1,0 +1,108 @@
+.time-menu {
+  display: flex;
+  height: 100vh;
+  background-color: rgb(59, 59, 59);
+}
+
+.add-time-menu {
+  flex: 1;
+  padding: 20px;
+  list-style-type: none;
+  justify-items: center;
+  align-content: center;
+  color: white;
+}
+
+.time-menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+}
+
+.time-menu-form {
+  padding: 50px;
+  border: 3px solid white;
+  border-radius: 16px;
+}
+
+.time-menu-form-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.time-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  gap: 8px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.time-menu-group label {
+  align-self: center;
+  cursor: pointer;
+}
+
+.time-menu-group input {
+  height: 2.5rem;
+  width: 300px;
+  justify-items: center;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.time-menu-send {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.time-menu-send-obs {
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+}
+
+.time-menu-send-obs {
+  font-size: 1.2em;
+}
+
+.time-menu-send-obs textarea {
+  height: 100px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.time-menu-send-btn {
+  height: 40px;
+  width: 50%;
+  align-self: center;
+  justify-content: center;
+  border: 2px solid #eef2ff;
+  border-radius: 8px;
+  background-color: grey;
+  color: #eef2ff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+.src {
+  font-size: 20px;
+  border: solid 2px white;
+  border-radius: 20px;
+  padding: 2px;
+  background-color: rgb(43, 43, 43);
+}
