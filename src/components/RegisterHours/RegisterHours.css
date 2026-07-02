@@ -17,7 +17,6 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-
 }
 
 .time-menu-form {
@@ -98,7 +97,11 @@
   font-size: 0.8em;
   cursor: pointer;
 }
-
+.time-menu-send-btn:hover {
+  background-color: rgb(148, 148, 148);
+  border: 2px solid #e3eaff;
+  transition: all 0.4s;
+}
 .src {
   font-size: 20px;
   border: solid 2px white;

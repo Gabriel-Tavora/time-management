@@ -8,6 +8,7 @@ import App from "./App.jsx";
 import Login from "./pages/Login/Login.jsx";
 import UserScreen from "./pages/UserScreen/UserScreen.jsx";
 import RegisterHours from "./components/RegisterHours/RegisterHours.jsx"
+import MainInformations from "./components/MainInformations/MainInformations.jsx";
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 

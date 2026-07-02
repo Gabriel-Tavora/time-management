@@ -39,6 +39,7 @@ const RegisterHours = () => {
 
     setEndTime(value);
     setNightTime(value >= "22:00");
+    
   };
 
   return (
