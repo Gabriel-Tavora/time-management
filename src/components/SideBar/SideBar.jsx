@@ -1,6 +1,6 @@
 //react
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 //CSS
 import "./SideBar.css";
 
@@ -17,11 +17,7 @@ import {
 
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);
-  const navigate = useNavigate();
 
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
   return (
     <aside className={expanded ? "sidebar open" : "sidebar"}>
       <nav>
@@ -36,31 +32,31 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <button onClick={() => {handleNavigate("/userscreen")}}>
+            <NavLink to="/userscreen" className="menu-link-list">
               <FaHome />
               {expanded && <span>Meu Painel</span>}
-            </button>
+            </NavLink>
           </li>
 
           <li>
-            <button onClick={() => {handleNavigate("/registerhours")}}>
+            <NavLink to="/registerhours" className="menu-link-list">
               <FaClock />
               {expanded && <span>Registrar Horas Extras</span>}
-            </button>
+            </NavLink>
           </li>
 
           <li>
-            <button>
+            <NavLink className="menu-link-list">
               <FaUserCircle />
               {expanded && <span>Histórico</span>}
-            </button>
+            </NavLink>
           </li>
 
           <li>
-            <button>
+            <NavLink className="menu-link-list">
               <FaCalendarAlt />
               {expanded && <span>Calendário</span>}
-            </button>
+            </NavLink>
           </li>
         </ul>
         <div className="profile">
@@ -76,13 +72,13 @@ function Sidebar() {
           {expanded && <FaBars />}
         </div>
         <div className="leave">
-          <button onClick={() => {handleNavigate("/")}}>
+          <NavLink to="/" className="menu-link">
             {expanded && <span>Sair</span>}
             <FaChevronRight className="leave-icon" />
-          </button>
+          </NavLink>
         </div>
       </nav>
-    </aside>
+    </aside >
   );
 }
 

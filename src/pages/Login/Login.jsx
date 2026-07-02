@@ -13,10 +13,9 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/userscreen");
+
     try {
       const user = await login(email, password);
-
       localStorage.setItem("user", JSON.stringify(user));
 
       navigate("/userscreen");

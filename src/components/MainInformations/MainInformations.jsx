@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,NavLink } from "react-router-dom";
 // CSS
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import "./MainInformations.css";
@@ -83,7 +83,7 @@ const MainInformations = () => {
             ))}
           </tbody>
         </table>
-        <a href="">Ver Todos os Meus Registros</a>
+        <NavLink>Ver Todos os Meus Registros</NavLink>
       </div>
     </aside>
   );
