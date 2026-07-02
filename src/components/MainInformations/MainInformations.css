@@ -74,6 +74,12 @@
   align-items: center;
   gap: 15px;
   padding: 10px;
+  cursor: pointer;
+}
+.main-register-title button:hover{
+  background-color: rgb(129, 182, 194);
+  border: 2px solid #ecf0ff;
+  color: rgb(27, 27, 27);
 }
 .main-register-stats {
   width: 100%;
@@ -107,4 +113,12 @@
 
 .main-register-stats tbody tr:last-child td {
   border-bottom: none;
+}
+.main-register a{
+  text-decoration: none;
+  color: black;
+}
+.main-register a:hover{
+  text-decoration: none;
+  color: rgb(49, 49, 49);
 }

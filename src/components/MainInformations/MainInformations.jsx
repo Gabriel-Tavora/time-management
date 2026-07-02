@@ -10,8 +10,8 @@ const MainInformations = () => {
   const [registros, setRegistros] = useState([]);
   const navigate = useNavigate();
 
-  const handleRegisterHours = () => {
-    navigate("/RegisterHours");
+  const handleNavigate = (path) => {
+    navigate(path);
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const MainInformations = () => {
       <div className="main-register">
         <div className="main-register-title">
           <h2>Meus Registros de Horas Extras</h2>
-          <button onClick={handleRegisterHours}>
+          <button onClick={() => {handleNavigate("/RegisterHours")}}>
             <FaPlus />
             Registrar Hora Extra
           </button>

@@ -69,16 +69,12 @@
     display: flex;
     align-items: center;
     gap: 15px;
-
     padding: 16px 20px;
-
     border: none;
     background: transparent;
     cursor: pointer;
-
     font-size: 1rem;
     text-align: left;
-
     transition: background-color .2s;
 }
 
@@ -89,6 +85,7 @@
 .menu svg {
     font-size: 22px;
 }
+
 .profile {
     border-top: 1px solid #ddd;
     padding: 20px;
@@ -111,18 +108,29 @@
 }
 
 .leave {
-    margin-bottom: 25px;
-    padding: 14px;
+    margin: 2px 5px 5px 5px; 
+    border-radius: 12px;
+    padding: 0px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.leave button {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
+    padding: 16px 20px;
+    background: transparent;
     cursor: pointer;
-    transition: 0.3s;
-    border-radius: 16px;
+    border: none;
+    font-size: 1rem;
+    text-align: left;
+    transition: background-color .2s;
 }
 
-.leave span {
+.leave button span {
     font-weight: bold;
 }
 

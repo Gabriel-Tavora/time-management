@@ -53,6 +53,7 @@
   font-size: 1em;
   border-radius: 10px;
   cursor: pointer;
+  
 }
 
 .time-menu-send {
@@ -76,7 +77,9 @@
 .time-menu-send-obs textarea {
   height: 100px;
   width: 100%;
+  padding: 9px;
   cursor: pointer;
+  font-size: 0.8em;
 }
 
 .time-menu-send-btn {

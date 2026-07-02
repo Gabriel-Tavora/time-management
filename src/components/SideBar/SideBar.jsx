@@ -19,11 +19,8 @@ function Sidebar() {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
 
-  const handleMyPanel = () => {
-    navigate("/userscreen");
-  };
-  const handleRegisterHours = () => {
-    navigate("/registerhours");
+  const handleNavigate = (path) => {
+    navigate(path);
   };
   return (
     <aside className={expanded ? "sidebar open" : "sidebar"}>
@@ -39,14 +36,14 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <button onClick={handleMyPanel}>
+            <button onClick={() => {handleNavigate("/userscreen")}}>
               <FaHome />
               {expanded && <span>Meu Painel</span>}
             </button>
           </li>
 
           <li>
-            <button onClick={handleRegisterHours}>
+            <button onClick={() => {handleNavigate("/registerhours")}}>
               <FaClock />
               {expanded && <span>Registrar Horas Extras</span>}
             </button>
@@ -79,8 +76,10 @@ function Sidebar() {
           {expanded && <FaBars />}
         </div>
         <div className="leave">
-          {expanded && <span>Sair</span>}
-          <FaChevronRight className="leave-icon" />
+          <button onClick={() => {handleNavigate("/")}}>
+            {expanded && <span>Sair</span>}
+            <FaChevronRight className="leave-icon" />
+          </button>
         </div>
       </nav>
     </aside>

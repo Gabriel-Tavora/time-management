@@ -23,23 +23,19 @@ const RegisterHours = () => {
   }, []);
   const HandleBaseTime = (e) => {
     e.preventDefault();
-
     const data = {
       startTime,
       endTime,
       nightTime,
       currentTime,
     };
-
     console.log(data);
   };
 
   const handleEndTimeChange = (e) => {
     const value = e.target.value;
-
     setEndTime(value);
     setNightTime(value >= "22:00");
-    
   };
 
   return (
