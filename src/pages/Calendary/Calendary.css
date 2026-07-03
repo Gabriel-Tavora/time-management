@@ -86,7 +86,7 @@
 .day:hover {
   transform: translateY(-5px);
   background: #eef2ff;
-  box-shadow: 0 8px 20px rgba(79,70,229,.2);
+  box-shadow: 0 8px 20px rgba(152, 151, 192, 0.2);
 }
 
 .today {

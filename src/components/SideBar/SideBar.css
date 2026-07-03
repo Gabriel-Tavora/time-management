@@ -5,13 +5,13 @@
 }
 
 .sidebar {
-    width: 70px;
+    width: 80px;
     height: 100vh;
     background: #fff;
-    border-right: 1px solid #ddd;
-    transition: .3s;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 2px 0 18px rgba(0, 0, 0, 0.08);
+    transition: width .35s ease;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(249, 0, 0, 0.1);
 }
 
 .sidebar.open {
@@ -31,88 +31,98 @@
     padding: 20px;
 }
 
+.sidebar-header {
+    padding: 0px;
+}
+
+.sidebar.open .sidebar-header {
+    padding: 20px;
+}
+
 .logo {
     font-size: 15px;
+    white-space: nowrap;
 }
 
 .logo-icon {
     display: flex;
+    align-items: center;
     font-size: 25px;
 }
 
-
 .toggle-btn {
+    margin: 10px 10px 15px 10px;
+    width: 58px;
+    height: 38px;
     border: none;
-    background: #f2f2f2;
-    padding: 10px;
-    border-radius: 8px;
+    background: #f3f4f6;
+    border-radius: 10px;
     cursor: pointer;
+    transition: width .3s ease, background-color .3s ease, color .3s ease;
 }
 
 .toggle-btn:hover {
-    background: #e7e7e7;
+    background: #4361ee;
+    color: #fff;
 }
 
+.sidebar.open .toggle-btn {
+    width: 45px;
+    margin: 0px;
+}
 .menu {
     flex: 1;
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 10px;
 }
 
 .menu li {
-    width: 100%;
+    margin-bottom: 6px;
 }
 
+.menu-link-list-on,
 .menu-link-list-off {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 16px 20px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 1rem;
-    text-align: left;
+    padding: 16px 18.5px;
+    border-radius: 12px;
     text-decoration: none;
-    color: grey;
-    transition: background-color .2s;
-}
-.menu-link-list-on {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 16px 20px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 1rem;
-    text-align: left;
-    text-decoration: none;
-    color: black;
-    transition: background-color .2s;
+    transition: .25s;
 }
 
-.menu-link-list:hover {
-    background-color: #ecf0ff;
+.menu-link-list-off {
+    color: black;
+}
+
+.menu-link-list-on {
+    background: #eef2ff;
+    color: #4361ee;
+    font-weight: 600;
+}
+
+.menu-link-list-on:hover,
+.menu-link-list-off:hover {
+    background: #f7f7ff;
 }
 
 .menu svg {
     font-size: 22px;
+    min-width: 22px;
 }
 
 .profile {
-    border-top: 1px solid #ddd;
-    padding: 20px;
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 20px;
+    border-top: 1px solid #e5e7eb;
 }
 
 .profile-icon {
     font-size: 40px;
+    color: #4361ee;
 }
 
 .profile-info h4 {
@@ -121,42 +131,47 @@
 
 .profile-info p {
     font-size: 12px;
-    color: #777;
+    color: #6b7280;
 }
 
 .leave {
-    margin: 2px 5px 5px 5px;
-    border-radius: 12px;
-    padding: 0px;
-    cursor: pointer;
-    transition: 0.3s;
+    margin: 10px;
 }
 
 .menu-link {
-    width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 15px;
-    padding: 16px 20px;
-    background: transparent;
-    cursor: pointer;
-    border: none;
-    font-size: 1rem;
-    text-align: left;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 12px;
     text-decoration: none;
-    color: black;
-    transition: background-color .2s;
+    color: #dc2626;
+    transition: .25s;
 }
 
-.leave span {
-    font-weight: bold;
+.menu-link:hover {
+    background: #fee2e2;
 }
 
 .leave-icon {
-    font-size: 25px;
+    font-size: 22px;
 }
 
-.leave:hover {
-    background: #eef2ff;
+.menu span,
+.logo,
+.profile-info {
+    animation: fade .25s ease;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

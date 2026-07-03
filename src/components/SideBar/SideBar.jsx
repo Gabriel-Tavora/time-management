@@ -32,28 +32,28 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <NavLink to="/userscreen" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
+            <NavLink to="/userscreen" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaHome />
               {expanded && <span>Meu Painel</span>}
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/registerhours" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
+            <NavLink to="/registerhours" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaClock />
               {expanded && <span>Registrar Horas Extras</span>}
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/historyHours" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
+            <NavLink to="/historyHours" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaUserCircle />
               {expanded && <span>Histórico</span>}
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
+            <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaCalendarAlt />
               {expanded && <span>Calendário</span>}
             </NavLink>
