@@ -32,28 +32,28 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <NavLink to="/userscreen" className="menu-link-list">
+            <NavLink to="/userscreen" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
               <FaHome />
               {expanded && <span>Meu Painel</span>}
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/registerhours" className="menu-link-list">
+            <NavLink to="/registerhours" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
               <FaClock />
               {expanded && <span>Registrar Horas Extras</span>}
             </NavLink>
           </li>
 
           <li>
-            <NavLink className="menu-link-list">
+            <NavLink to="/historyHours" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
               <FaUserCircle />
               {expanded && <span>Histórico</span>}
             </NavLink>
           </li>
 
           <li>
-            <NavLink className="menu-link-list">
+            <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-off" : "menu-link-list-on")}>
               <FaCalendarAlt />
               {expanded && <span>Calendário</span>}
             </NavLink>
