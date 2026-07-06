@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate,NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 // CSS
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import "./MainInformations.css";
@@ -9,7 +9,9 @@ const MainInformations = () => {
   const [user, setUser] = useState(null);
   const [registros, setRegistros] = useState([]);
   const navigate = useNavigate();
-
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(1, "0");
   const handleNavigate = (path) => {
     navigate(path);
   };
@@ -39,7 +41,7 @@ const MainInformations = () => {
         </div>
 
         <div className="main-header-time">
-          <h2>Abril/2024</h2>
+          <h2>0{month}/{year}</h2>
           <FaCalendarAlt />
         </div>
       </div>
@@ -55,7 +57,7 @@ const MainInformations = () => {
       <div className="main-register">
         <div className="main-register-title">
           <h2>Meus Registros de Horas Extras</h2>
-          <button onClick={() => {handleNavigate("/RegisterHours")}}>
+          <button onClick={() => { handleNavigate("/RegisterHours") }}>
             <FaPlus />
             Registrar Hora Extra
           </button>

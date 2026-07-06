@@ -35,7 +35,7 @@ const RegisterHours = () => {
     setMensagem(null);
 
     if (!endTime) {
-      setMensagem({ tipo: "erro", texto: "Informe o horário de saída." });
+      setMensagem({ tipo: "erro", texto: "Informe o horário de saída!" });
       return;
     }
 

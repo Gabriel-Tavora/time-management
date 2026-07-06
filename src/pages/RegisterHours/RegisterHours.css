@@ -26,7 +26,7 @@
 }
 
 .time-menu-form {
-  padding: 130px;
+  padding: 80px;
   background: white;
   border: none;
   border-radius: 16px;
@@ -44,7 +44,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 1.1em;
+  font-size: 1.15em;
   font-weight: 600;
   color: #2d3748;
 }

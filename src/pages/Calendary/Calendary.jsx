@@ -8,7 +8,7 @@ const Calendary = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const year = currentDate.getFullYear();
-  
+
   const month = currentDate.getMonth();
 
   const firstDay = new Date(year, month, 1).getDay();
@@ -27,17 +27,17 @@ const Calendary = () => {
 
   const calendarDays = [];
 
-  // Dias vazios
+  
   for (let i = 0; i < firstDay; i++) {
     calendarDays.push(null);
   }
 
-  // Dias do mês
+  
   for (let day = 1; day <= daysInMonth; day++) {
     calendarDays.push(day);
   }
 
-  // Completa até 42 posições (6 semanas)
+  
   while (calendarDays.length < 42) {
     calendarDays.push(null);
   }
