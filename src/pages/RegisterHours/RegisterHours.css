@@ -1,7 +1,7 @@
 .time-menu {
   display: flex;
-  height: 100vh;
-  background-color: rgb(59, 59, 59);
+  min-height: 100vh;
+  background-color: #eef2f8;
 }
 
 .add-time-menu {
@@ -10,7 +10,7 @@
   list-style-type: none;
   justify-items: center;
   align-content: center;
-  color: white;
+  color: #2d3748;
 }
 
 .time-menu-container {
@@ -19,96 +19,168 @@
   gap: 15px;
 }
 
+.time-menu-container h1 {
+  color: #2d3748;
+  font-size: 2rem;
+  margin: 0;
+}
+
 .time-menu-form {
   padding: 50px;
-  border: 3px solid white;
+  background: white;
+  border: none;
   border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .time-menu-form-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .time-menu-group {
   display: flex;
   flex-direction: column;
-  gap: 30px;
   gap: 8px;
-  font-size: 1.4em;
-  font-weight: bold;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #2d3748;
 }
 
 .time-menu-group label {
-  align-self: center;
+  align-self: flex-start;
   cursor: pointer;
 }
 
 .time-menu-group input {
   height: 2.5rem;
-  width: 300px;
-  justify-items: center;
+  width: 100%;
+  padding: 0 12px;
   font-size: 0.95em;
+  border: 2px solid #e2e8f0;
   border-radius: 10px;
   cursor: pointer;
-  
+  transition: 0.2s;
+  color: #2d3748;
+}
+
+.time-menu-group input:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.time-menu-night-alert {
+  background: #eef2ff;
+  color: #4338ca;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.95em;
+  font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .time-menu-send {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  font-size: 1.4em;
+  gap: 20px;
+  font-size: 1em;
   font-weight: bold;
 }
 
 .time-menu-send-obs {
   display: flex;
   flex-direction: column;
-  font-size: 1em;
-}
-
-.time-menu-send-obs {
-  font-size: 1.2em;
+  gap: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #2d3748;
 }
 
 .time-menu-send-obs textarea {
   height: 100px;
   width: 100%;
-  padding: 9px;
-  cursor: pointer;
-  font-size: 0.8em;
+  padding: 12px;
+  cursor: text;
+  font-size: 0.9em;
+  font-weight: normal;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.time-menu-send-obs textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.time-menu-mensagem {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.time-menu-mensagem-sucesso {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.time-menu-mensagem-erro {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .time-menu-send-btn {
-  height: 40px;
-  width: 50%;
+  height: 45px;
+  width: 260px;
   align-self: center;
   justify-content: center;
-  border: 2px solid #eef2ff;
-  border-radius: 8px;
-  background-color: grey;
-  color: #eef2ff;
+  border: none;
+  border-radius: 10px;
+  background-color: #4f46e5;
+  color: white;
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px;
-  font-weight: bold;
-  font-size: 0.8em;
+  font-size: 0.95em;
   cursor: pointer;
+  transition: 0.3s;
 }
-.time-menu-send-btn:hover {
-  background-color: rgb(148, 148, 148);
-  border: 2px solid #e3eaff;
-  transition: all 0.4s;
+
+.time-menu-send-btn:hover:not(:disabled) {
+  background-color: #4338ca;
+  transform: scale(1.03);
 }
+
+.time-menu-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .src {
-  font-size: 20px;
-  border: solid 2px white;
+  font-size: 16px;
+  border: none;
   border-radius: 20px;
   padding: 2px;
-  background-color: rgb(43, 43, 43);
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .time-menu-form {
+    padding: 25px;
+  }
+
+  .time-menu-form-group {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .time-menu-group input {
+    width: 100%;
+  }
 }
