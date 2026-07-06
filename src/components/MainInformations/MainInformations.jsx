@@ -46,11 +46,10 @@ const MainInformations = () => {
 
       <ul className="main-menu">
         <li>
-          <p>Total de Horas Extras</p>
+          <h2>Total de Horas Extras</h2>
           <h2></h2>
-          <p>No Mês</p>
+          <h2>No Mês</h2>
         </li>
-
       </ul>
 
       <div className="main-register">

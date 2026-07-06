@@ -57,7 +57,7 @@ const RegisterHours = () => {
 
     try {
       setEnviando(true);
-      // await api.post("/hours", data);
+      
       console.log(data);
 
       setMensagem({ tipo: "sucesso", texto: "Hora extra registrada com sucesso!" });
@@ -116,7 +116,7 @@ const RegisterHours = () => {
 
             {nightTime && (
               <div className="time-menu-night-alert">
-                🌙 Horário noturno detectado (após 22:00)
+                🌙 Horário noturno detectado 
               </div>
             )}
 

@@ -6,7 +6,6 @@
 
 .add-time-menu {
   flex: 1;
-  padding: 20px;
   list-style-type: none;
   justify-items: center;
   align-content: center;
@@ -16,17 +15,18 @@
 .time-menu-container {
   display: flex;
   flex-direction: column;
+  padding: 20px;
   gap: 15px;
 }
 
 .time-menu-container h1 {
-  color: #2d3748;
+  color: #4f46e5;
   font-size: 2rem;
   margin: 0;
 }
 
 .time-menu-form {
-  padding: 50px;
+  padding: 130px;
   background: white;
   border: none;
   border-radius: 16px;
@@ -55,12 +55,12 @@
 }
 
 .time-menu-group input {
-  height: 2.5rem;
+  height: 3.5rem;
   width: 100%;
-  padding: 0 12px;
-  font-size: 0.95em;
+  padding: 0 18px;
+  font-size: 1.15em;
   border: 2px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: 0.2s;
   color: #2d3748;
@@ -69,10 +69,11 @@
 .time-menu-group input:focus {
   outline: none;
   border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
 }
 
 .time-menu-night-alert {
-  background: #eef2ff;
+  background: #d1dcff;
   color: #4338ca;
   padding: 12px 16px;
   border-radius: 10px;
