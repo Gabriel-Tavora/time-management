@@ -12,6 +12,11 @@ import HistoryHours from "./pages/HistoryHours/HistoryHours.jsx"
 import RegisterHours from "./pages/RegisterHours/RegisterHours.jsx"
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+//Auth
+import { AuthProvider } from './context/TokenContext';
+import PrivateRoute from "./context/privateRoutex.jsx";
+
+
 
 const router = createBrowserRouter([
   {
@@ -20,19 +25,35 @@ const router = createBrowserRouter([
   },
   {
     path: "/userscreen",
-    element: <UserScreen />,
+    element: (
+      <PrivateRoute>
+        <UserScreen />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/registerhours",
-    element: <RegisterHours />,
+    element: (
+      <PrivateRoute>
+        <RegisterHours />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/historyHours",
-    element: <HistoryHours />,
+    element: (
+      <PrivateRoute>
+        <HistoryHours />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/calendary",
-    element: <Calendary />
+    element: (
+      <PrivateRoute>
+        <Calendary />
+      </PrivateRoute>
+    ),
   },
   {
     path: "*",
@@ -41,6 +62,8 @@ const router = createBrowserRouter([
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </StrictMode>
 );

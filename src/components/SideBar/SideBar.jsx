@@ -1,6 +1,6 @@
 //react
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 //CSS
 import "./SideBar.css";
 
@@ -14,10 +14,23 @@ import {
   FaCog,
   FaUserCircle,
 } from "react-icons/fa";
+//Auth logout
+import { useAuthValue } from "../../context/TokenContext";
 
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);
 
+  const navigate = useNavigate();
+  //logout atribuição
+  const { logout } = useAuthValue();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    logout();
+    navigate("/");
+  };
+  
   return (
     <aside className={expanded ? "sidebar open" : "sidebar"}>
       <nav>
@@ -72,10 +85,10 @@ function Sidebar() {
           {expanded && <FaBars />}
         </div>
         <div className="leave">
-          <NavLink to="/" className="menu-link">
+          <button onClick={handleLogout} className="menu-link">
             {expanded && <span>Sair</span>}
             <FaChevronRight className="leave-icon" />
-          </NavLink>
+          </button>
         </div>
       </nav>
     </aside >

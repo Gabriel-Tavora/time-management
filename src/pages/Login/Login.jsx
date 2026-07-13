@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { login } from "../../services/api.js";
+import { login as apiLogin } from "../../services/api.js";
+//Auth
+import { useAuthValue } from '../../context/TokenContext.jsx';
 //css
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const { login } = useAuthValue();
+  //navigate
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/userscreen");
+
     try {
-      const user = await login(email, password);
-      localStorage.setItem("user", JSON.stringify(user));
+      const data = await apiLogin(email, password);
+
+      login(data.id, data.token);
 
       navigate("/userscreen");
     } catch (error) {

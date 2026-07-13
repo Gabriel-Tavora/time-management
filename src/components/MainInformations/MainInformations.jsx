@@ -1,17 +1,23 @@
+//react
 import React, { useEffect, useState } from "react";
+//navigate
 import { useNavigate, NavLink } from "react-router-dom";
 // CSS
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import "./MainInformations.css";
-
+//Auth
+import { useAuthValue } from '../../context/TokenContext';
 const MainInformations = () => {
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [registros, setRegistros] = useState([]);
-  const navigate = useNavigate();
+  //data
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(1, "0");
+
+
   const handleNavigate = (path) => {
     navigate(path);
   };
