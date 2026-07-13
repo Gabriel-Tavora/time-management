@@ -7,12 +7,16 @@ import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import "./MainInformations.css";
 //Auth
 import { useAuthValue } from '../../context/TokenContext';
+import { getCurrentUser } from "../../services/userService";
+
 const MainInformations = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [registros, setRegistros] = useState([]);
-  //data
+  // 
+  const { token } = useAuthValue();
+  //dataTime
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(1, "0");
@@ -24,25 +28,30 @@ const MainInformations = () => {
 
   useEffect(() => {
     async function carregarDados() {
-      const usuario = JSON.parse(localStorage.getItem("user"));
+      try {
+        const usuario = await getCurrentUser(token);
 
-      if (!usuario) return;
+        setUser(usuario);
 
-      setUser(usuario);
+        const dados = await getUserHours(usuario.id);
 
-      const dados = await getUserHours(usuario.id);
-
-      setRegistros(dados);
+        setRegistros(dados);
+      } catch (err) {
+        console.error(err);
+      }
     }
 
-    carregarDados();
-  }, []);
-
+    if (token) {
+      carregarDados();
+    }
+  }, [token]);
   return (
     <aside className="main-informations">
       <div className="main-header">
         <div className="main-header-title">
-          <h1></h1>
+          {user != null && (
+            <h1>Olá, {user?.displayName}</h1>
+          )}
           <p>Acompanhe suas Horas Extras.</p>
         </div>
 
