@@ -21,5 +21,6 @@ export function getCurrentDate() {
     month,
     year,
     formatted: `${day}-${month}-${year}`,
+    formattedPost: `${year}-${month}-${day}`,
   };
 }

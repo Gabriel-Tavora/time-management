@@ -11,6 +11,7 @@ import { createOvertime } from "../../services/overtimeService";
 import { useAuthValue } from "../../context/TokenContext";
 //Utils 
 import { calculateNightHours } from '../../utils/calculateNightHours.js';
+import { getCurrentDate } from '../../utils/formatHours.js';
 const RegisterHours = () => {
   const [startTime, setStartTime] = useState("17:00");
   const [endTime, setEndTime] = useState(0);
@@ -21,16 +22,9 @@ const RegisterHours = () => {
   const [message, setMessage] = useState(null);
   const { token } = useAuthValue();
 
-  const getCurrentDate = () => {
-    const date = new Date();
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
   useEffect(() => {
-    
-    setWorkDate(getCurrentDate());
+    const { formattedPost } = getCurrentDate();
+    setWorkDate(formattedPost);
 
     if (endTime) {
       const hours = calculateNightHours(startTime, endTime);
