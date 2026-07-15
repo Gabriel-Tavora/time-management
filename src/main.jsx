@@ -21,7 +21,7 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element:  <UserScreen />,
+    element: <Login />,
   },
   {
     path: "/userscreen",

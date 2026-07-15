@@ -10,13 +10,12 @@ import "./Login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuthValue();
+  const { login, loading} = useAuthValue();
   //navigate
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/userscreen");
     try {
       const data = await apiLogin(email, password);
 
@@ -61,7 +60,9 @@ const Login = () => {
             Esqueceu a senha?
           </a>
 
-          <button type="submit">Entrar</button>
+          <button type="submit">
+            {loading ? "Carregando..." : "Entrar"}
+          </button>
         </form>
       </section>
     </div>

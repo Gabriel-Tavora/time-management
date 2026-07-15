@@ -9,9 +9,11 @@ import { FaPlus } from "react-icons/fa";
 import { createOvertime } from "../../services/overtimeService";
 //context
 import { useAuthValue } from "../../context/TokenContext";
+//Utils 
+import { calculateNightHours } from '../../utils/calculateNightHours.js';
 const RegisterHours = () => {
   const [startTime, setStartTime] = useState("17:00");
-  const [endTime, setEndTime] = useState("");
+  const [endTime, setEndTime] = useState(0);
   const [nightTime, setNightTime] = useState(false);
   const [workDate, setWorkDate] = useState("");
   const [observation, setObservation] = useState("");
@@ -26,17 +28,26 @@ const RegisterHours = () => {
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
   };
-
   useEffect(() => {
+    
     setWorkDate(getCurrentDate());
-  }, []);
 
+    if (endTime) {
+      const hours = calculateNightHours(startTime, endTime);
+
+      setNightHours(hours);
+      setNightTime(hours > 0);
+    }
+  }, [startTime]);
   const handleEndTimeChange = (e) => {
     const value = e.target.value;
     setEndTime(value);
-    setNightTime(value >= "22:00");
-  };
 
+    const hours = calculateNightHours(startTime, value);
+
+    setNightHours(hours);
+    setNightTime(hours > 0);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
@@ -61,9 +72,10 @@ const RegisterHours = () => {
       setIsSubmitting(true);
 
       const overtimeData = {
-        work_date: `${workDate}T00:00:00Z`,
-        start_time: `${workDate}T${startTime}:00Z`,
-        end_time: `${workDate}T${endTime}:00Z`,
+        work_date: new Date(`${workDate}T00:00:00`).toISOString(),
+        start_time: new Date(`${workDate}T${startTime}:00`).toISOString(),
+        end_time: new Date(`${workDate}T${endTime}:00`).toISOString(),
+
         jira_task_identifier: observation,
       };
 

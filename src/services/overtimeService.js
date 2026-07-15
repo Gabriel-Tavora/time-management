@@ -4,7 +4,7 @@ export async function createOvertime(token, overtimeData) {
   if (!token) {
     throw new Error("Usuário não autenticado.");
   }
-
+  console.log(JSON.stringify(overtimeData, null, 2));
   const response = await fetch(`${API_URL}/overtime`, {
     method: "POST",
     headers: {

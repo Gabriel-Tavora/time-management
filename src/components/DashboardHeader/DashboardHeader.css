@@ -1,0 +1,40 @@
+.main-header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.main-header-title {
+  margin: 50px 0px 0px 50px;
+}
+
+.main-header-title h1 {
+  color: #2d3748;
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.main-header-title p {
+  color: #666;
+  margin-top: 5px;
+}
+
+.main-header-time {
+  display: flex;
+  gap: 15px;
+  margin: 0px 0px 20px 50px;
+  align-items: center;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.main-header-time h2 {
+  color: #2d3748;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.main-header-time svg {
+  font-size: 22px;
+  color: #4f46e5;
+}
