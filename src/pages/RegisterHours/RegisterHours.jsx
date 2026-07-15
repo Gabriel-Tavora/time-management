@@ -1,16 +1,23 @@
+//react
 import React, { useState, useEffect } from "react";
-import { FaPlus } from "react-icons/fa";
+//components
 import Sidebar from "../../components/SideBar/SideBar.jsx";
+//css
 import "./RegisterHours.css";
-
+import { FaPlus } from "react-icons/fa";
+//services
+import { createOvertime } from "../../services/overtimeService";
+//context
+import { useAuthValue } from "../../context/TokenContext";
 const RegisterHours = () => {
   const [startTime, setStartTime] = useState("17:00");
   const [endTime, setEndTime] = useState("");
   const [nightTime, setNightTime] = useState(false);
   const [workDate, setWorkDate] = useState("");
   const [observation, setObservation] = useState("");
-  const [enviando, setEnviando] = useState(false);
-  const [mensagem, setMensagem] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState(null);
+  const { token } = useAuthValue();
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -32,43 +39,53 @@ const RegisterHours = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensagem(null);
+    setMessage(null);
 
     if (!endTime) {
-      setMensagem({ tipo: "erro", texto: "Informe o horário de saída!" });
-      return;
-    }
-
-    if (endTime <= startTime) {
-      setMensagem({
-        tipo: "erro",
-        texto: "O horário de saída deve ser depois do horário inicial.",
+      setMessage({
+        type: "error",
+        text: "Informe o horário de saída!",
       });
       return;
     }
 
-    const data = {
-      workDate,
-      startTime,
-      endTime,
-      nightTime,
-      observation,
-    };
+    if (endTime <= startTime) {
+      setMessage({
+        type: "error",
+        text: "O horário de saída deve ser depois do horário inicial.",
+      });
+      return;
+    }
 
     try {
-      setEnviando(true);
-      
-      console.log(data);
+      setIsSubmitting(true);
 
-      setMensagem({ tipo: "sucesso", texto: "Hora extra registrada com sucesso!" });
+      const overtimeData = {
+        work_date: `${workDate}T00:00:00Z`,
+        start_time: `${workDate}T${startTime}:00Z`,
+        end_time: `${workDate}T${endTime}:00Z`,
+        jira_task_identifier: observation,
+      };
+
+      await createOvertime(token, overtimeData);
+
+      setMessage({
+        type: "success",
+        text: "Hora extra registrada com sucesso!",
+      });
+
       setEndTime("");
       setObservation("");
       setNightTime(false);
     } catch (err) {
       console.error(err);
-      setMensagem({ tipo: "erro", texto: "Erro ao registrar. Tente novamente." });
+
+      setMessage({
+        type: "error",
+        text: "Erro ao registrar. Tente novamente.",
+      });
     } finally {
-      setEnviando(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -116,7 +133,7 @@ const RegisterHours = () => {
 
             {nightTime && (
               <div className="time-menu-night-alert">
-                🌙 Horário noturno detectado 
+                🌙 Horário noturno detectado
               </div>
             )}
 
@@ -133,19 +150,21 @@ const RegisterHours = () => {
                 />
               </div>
 
-              {mensagem && (
-                <p className={`time-menu-mensagem time-menu-mensagem-${mensagem.tipo}`}>
-                  {mensagem.texto}
+              {message && (
+                <p
+                  className={`time-menu-message time-menu-message-${message.type}`}
+                >
+                  {message.text}
                 </p>
               )}
 
               <button
                 type="submit"
                 className="time-menu-send-btn"
-                disabled={enviando}
+                disabled={isSubmitting}
               >
                 <FaPlus className="src" />
-                {enviando ? "Registrando..." : "Registrar Hora Extra"}
+                {isSubmitting ? "Registrando..." : "Registrar Hora Extra"}
               </button>
             </div>
           </form>
