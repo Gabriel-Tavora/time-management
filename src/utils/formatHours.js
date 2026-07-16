@@ -5,11 +5,12 @@ export function formatHours(decimalHours) {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-// formatar hora extras UserScreen
+// receber formatar hora extras UserScreen
 export function formatDate(hours_time_time) {
   return new Date(hours_time_time).toLocaleDateString("pt-BR");
 }
-// formatar hora extras RegisterHour
+
+// enviar formatar hora extras RegisterHour
 export function formatDataSend(workDate, time = null) {
   const dateTime = time
     ? `${workDate}T${time}:00`
@@ -17,6 +18,7 @@ export function formatDataSend(workDate, time = null) {
 
   return new Date(dateTime).toISOString();
 }
+
 //buscar horas do pc do usuário
 export function getCurrentDate() {
   const date = new Date();
@@ -24,12 +26,16 @@ export function getCurrentDate() {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   return {
     day,
     month,
     year,
-    formatted: `${day}-${month}-${year}`,
+    firstDay,
+    daysInMonth,
+    formatted: `${day}/${month}/${year}`,
     formattedPost: `${year}-${month}-${day}`,
   };
 }

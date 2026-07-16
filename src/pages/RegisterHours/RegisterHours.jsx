@@ -11,7 +11,6 @@ import { createOvertime } from "../../services/overtimeService";
 //context
 import { useAuthValue } from "../../context/TokenContext";
 //Utils
-import { calculateNightHours } from "../../utils/calculateNightHours.js";
 import {
   getCurrentDate,
   formatHours,
@@ -26,12 +25,12 @@ const RegisterHours = () => {
     setStartTime,
     endTime,
     setEndTime,
-    nightHours,
-    setNightHours,
+    nightTime,
+    setNightTime,
     workDate,
     setWorkDate,
   } = useRegisterHours();
-  const [jiraTask, setJiraTesk] = useState("");
+  const [jiraTask, setJiraTask] = useState("");
   const [observation, setObservation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
@@ -41,18 +40,13 @@ const RegisterHours = () => {
     const { formattedPost } = getCurrentDate();
     setWorkDate(formattedPost);
 
-    if (endTime) {
-      const hours = calculateNightHours(startTime, endTime);
-      setNightHours(hours);
-    }
-  }, [startTime, endTime]);
+  }, []);
 
   const handleEndTimeChange = (e) => {
     const value = e.target.value;
-    setEndTime(value);
 
-    const hours = calculateNightHours(startTime, value);
-    setNightHours(hours);
+    setEndTime(value);
+    setNightTime(value >= "22:00");
   };
 
   const handleSubmit = async (e) => {
@@ -74,16 +68,22 @@ const RegisterHours = () => {
       });
       return;
     }
-
+    if(!jiraTask){
+      setMessage({
+        type: "error",
+        text: "Código Jira necessário para registrar hora extra! ",
+      });
+      return;
+    }
     try {
       setIsSubmitting(true);
       const overtimeData = {
         work_date: formatDataSend(workDate),
         start_time: formatDataSend(workDate, startTime),
         end_time: formatDataSend(workDate, endTime),
-        night_time: formatDataSend(workDate, formatHours(nightHours)),
         jira_task_identifier: jiraTask,
       };
+      console.log(overtimeData);
 
       await createOvertime(token, overtimeData);
 
@@ -94,7 +94,7 @@ const RegisterHours = () => {
 
       setEndTime("");
       setObservation("");
-      setNightHours(0);
+      setNightTime(false);
     } catch (err) {
       console.error(err);
 
@@ -125,7 +125,7 @@ const RegisterHours = () => {
               handleEndTimeChange={handleEndTimeChange}
             />
 
-            {nightHours > 0 && (
+            {nightTime && (
               <div className="time-menu-night-alert">
                 🌙 Horário noturno detectado
               </div>

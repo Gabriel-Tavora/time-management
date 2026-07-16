@@ -42,12 +42,16 @@
   transform: scale(1.03);
 }
 
+.table-container {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
 .main-register-stats {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 15px;
-  overflow: hidden;
 
 }
 
@@ -58,6 +62,9 @@
   font-weight: 600;
   color: white;
   background: #4f46e5;
+  top: 0;
+  position: sticky;
+  z-index: 10;
 }
 
 .main-register-stats td {
@@ -66,6 +73,7 @@
   color: #2d3748;
   border-bottom: 1px solid #eef2f8;
   text-align: center;
+
 }
 
 .main-register-stats-body tr {
@@ -79,6 +87,7 @@
 .main-register-stats-body tr:last-child td {
   border-bottom: none;
 }
+
 .main-register a {
   text-decoration: none;
   color: #4f46e5;
@@ -87,5 +96,5 @@
 
 .main-register a:hover {
   color: #3b30af;
- text-decoration: underline;
+  text-decoration: underline;
 }

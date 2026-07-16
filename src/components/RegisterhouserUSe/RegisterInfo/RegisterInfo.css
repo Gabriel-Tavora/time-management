@@ -55,19 +55,19 @@
   border-color: #4f46e5;
 }
 
-.time-menu-mensagem {
+.time-menu-message {
   padding: 10px 16px;
   border-radius: 10px;
   font-size: 0.9em;
   text-align: center;
 }
 
-.time-menu-mensagem-sucesso {
+.time-menu-message-success  {
   background: #dcfce7;
   color: #15803d;
 }
 
-.time-menu-mensagem-erro {
+.time-menu-message-error {
   background: #fee2e2;
   color: #b91c1c;
 }

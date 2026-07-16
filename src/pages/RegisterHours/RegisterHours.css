@@ -1,7 +1,7 @@
 .time-menu {
   display: flex;
   min-height: 100vh;
-  background-color: #e0e7ff;
+  background-color: #eef2f8;
 }
 
 .add-time-menu {
@@ -27,7 +27,7 @@
 
 .time-menu-form {
   padding: 80px;
-  background: rgb(185, 199, 207);
+  background: white;
   border: 2.5px solid #4f46e5;
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);

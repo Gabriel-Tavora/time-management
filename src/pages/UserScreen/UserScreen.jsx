@@ -28,11 +28,8 @@ const UserScreen = () => {
     async function loadingData() {
       try {
         const userInformations = await getCurrentUser(token);
-
         setUser(userInformations);
-
         const dataUserTime = await getUserHours(token);
-        console.log(dataUserTime);
         setDataTime(dataUserTime);
       } catch (error) {
         console.error(error);

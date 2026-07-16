@@ -3,7 +3,7 @@ import { useState } from "react";
 export function useRegisterHours() {
   const [startTime, setStartTime] = useState("17:00");
   const [endTime, setEndTime] = useState("");
-  const [nightHours, setNightHours] = useState(0);
+  const [nightTime, setNightTime] = useState(false);
   const [workDate, setWorkDate] = useState("");
 
   return {
@@ -11,8 +11,8 @@ export function useRegisterHours() {
     setStartTime,
     endTime,
     setEndTime,
-    nightHours,
-    setNightHours,
+    nightTime,
+    setNightTime,
     workDate,
     setWorkDate,
   };

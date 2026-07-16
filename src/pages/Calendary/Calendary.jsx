@@ -1,43 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+//compone
 import Sidebar from "../../components/SideBar/SideBar";
+//css
 import "./Calendary.css";
-
+//utils
+import { calendaryGet } from '../../utils/calendaryget';
+import { formatDate } from '../../utils/formatHours';
+// services
+import { getUserHours } from '../../services/userHours';
+//context
+import { useAuthValue } from "../../context/TokenContext.jsx"
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 const Calendary = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [userCurrentDate, setUserCurrentDate] = useState(null);
+  const [workDates, setWorkDates] = useState(new Set());
 
-  const year = currentDate.getFullYear();
+  const { token } = useAuthValue();
 
-  const month = currentDate.getMonth();
+  const {
+    year,
+    month,
+    firstDay,
+    daysInMonth,
+    today,
+  } = calendaryGet(currentDate);
 
-  const firstDay = new Date(year, month, 1).getDay();
+  const calendarDays = [];
 
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  useEffect(() => {
+    async function loadingData() {
+      const userData = await getUserHours(token);
+      setUserCurrentDate(userData);
+      
+      const dates = new Set(
+        userData.map(item => formatDate(item.overtime_records.work_date))
+      );
 
-  const today = new Date();
+      setWorkDates(dates);
+    }
 
+    if (token) {
+      loadingData();
+    }
+  }, [token]);
   const previousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
   };
-
   const nextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
 
-  const calendarDays = [];
-
-  
   for (let i = 0; i < firstDay; i++) {
     calendarDays.push(null);
   }
 
-  
   for (let day = 1; day <= daysInMonth; day++) {
     calendarDays.push(day);
   }
 
-  
   while (calendarDays.length < 42) {
     calendarDays.push(null);
   }
@@ -84,13 +106,21 @@ const Calendary = () => {
               today.getDate() === day &&
               today.getMonth() === month &&
               today.getFullYear() === year;
+            const currentDay = String(day).padStart(2, "0");
+            const currentMonth = String(month + 1).padStart(2, "0");
+            const currentYear = year;
 
+            const buttonDate = `${currentDay}/${currentMonth}/${currentYear}`;
+
+            const hasOvertime = workDates.has(buttonDate);
             return (
               <button
                 key={index}
-                className={`day ${!day ? "empty" : ""} ${isToday ? "today" : ""
-                  }`}
-              >
+                className={`day
+                  ${!day ? "empty" : ""}
+                  ${isToday ? "today" : ""}
+                  ${hasOvertime ? "overtime-day" : ""}
+                  `}>
                 {day}
               </button>
             );

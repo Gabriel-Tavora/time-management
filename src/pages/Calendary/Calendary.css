@@ -46,6 +46,7 @@
   transform: scale(1.08);
   background: #4338ca;
 }
+
 .week-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -80,7 +81,7 @@
   justify-content: flex-start;
   padding: 12px;
   transition: .25s;
-  box-shadow: 0 4px 10px rgba(0,0,0,.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
 }
 
 .day:hover {
@@ -107,6 +108,16 @@
 .empty:hover {
   transform: none;
   background: transparent;
+}
+
+.overtime-day {
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+}
+
+.overtime-day:hover {
+  background: #16a34a;
 }
 
 @media (max-width: 900px) {

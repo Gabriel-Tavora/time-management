@@ -1,6 +1,6 @@
 //react
 import { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 //CSS
 import "./SideBar.css";
 
@@ -14,23 +14,34 @@ import {
   FaCog,
   FaUserCircle,
 } from "react-icons/fa";
-//Auth logout
+//context
 import { useAuthValue } from "../../context/TokenContext";
 
+//services
+import { getCurrentUser } from '../../services/userService';
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);
-
+  const [userData, setUserData] = useState(null)
   const navigate = useNavigate();
+  const location = useLocation();
   //logout atribuição
-  const { logout } = useAuthValue();
-
+  const { logout, token } = useAuthValue();
+  //token
   const handleLogout = (e) => {
     e.preventDefault();
-
     logout();
     navigate("/");
   };
-  
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getCurrentUser(token);
+      setUserData(data);
+      return;
+    }
+    getData();
+  }, [token]);
+
   return (
     <aside className={expanded ? "sidebar open" : "sidebar"}>
       <nav>
@@ -59,31 +70,26 @@ function Sidebar() {
           </li>
 
           <li>
-            <NavLink to="/historyHours" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
-              <FaUserCircle />
-              {expanded && <span>Histórico</span>}
-            </NavLink>
-          </li>
-
-          <li>
             <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaCalendarAlt />
               {expanded && <span>Calendário</span>}
             </NavLink>
           </li>
         </ul>
-        <div className="profile">
-          <FaUserCircle className="profile-icon" />
 
+        <NavLink to="/historyHours" className={({ isActive }) => (isActive ? "profile-on" : "profile")}>
+          <FaUserCircle className="profile-icon" />
           {expanded && (
             <div className="profile-info">
-              <h4>John Doe</h4>
-              <p>johndoe@gmail.com</p>
+              <div>
+                <h4>{userData?.name}</h4>
+                <p>{userData?.email}</p>
+              </div>
+              {expanded && <FaBars className="profile-icon-end" />}
             </div>
           )}
+        </NavLink>
 
-          {expanded && <FaBars />}
-        </div>
         <div className="leave">
           <button onClick={handleLogout} className="menu-link">
             {expanded && <span>Sair</span>}
