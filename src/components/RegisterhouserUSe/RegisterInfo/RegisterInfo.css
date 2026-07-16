@@ -1,0 +1,110 @@
+.time-menu-send {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.time-menu-send-obs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.time-menu-send-obs label {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+.time-menu-send-obs input {
+  height: 2.7rem;
+  width: 100%;
+  padding: 2px 18px;
+  font-size: 0.95em;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #2d3748;
+}
+
+.time-menu-send-obs input:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.time-menu-send-obs textarea {
+  height: 100px;
+  width: 100%;
+  padding: 12px;
+  cursor: text;
+  font-size: 0.9em;
+  font-weight: normal;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.time-menu-send-obs textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.time-menu-mensagem {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.time-menu-mensagem-sucesso {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.time-menu-mensagem-erro {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.time-menu-send-btn {
+  height: 45px;
+  width: 260px;
+  align-self: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.time-menu-send-btn:hover:not(:disabled) {
+  background-color: #4338ca;
+  transform: scale(1.03);
+}
+
+.time-menu-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.src {
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  padding: 2px;
+  background: transparent;
+}

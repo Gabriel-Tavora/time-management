@@ -10,7 +10,6 @@ export const calculateNightHours = (start, end) => {
 
   let nightMinutes = 0;
 
-  // Caso passe da meia-noite
   if (endMinutes < startMinutes) {
     const adjustedEnd = endMinutes + 24 * 60;
 
@@ -20,7 +19,7 @@ export const calculateNightHours = (start, end) => {
       nightMinutes += adjustedEnd - nightStart;
     }
   } 
-  // Horário normal
+  
   else {
     if (startMinutes >= nightStart) {
       nightMinutes = endMinutes - startMinutes;

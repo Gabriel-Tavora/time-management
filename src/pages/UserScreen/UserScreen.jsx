@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-
 // Components
 import Sidebar from "../../components/SideBar/SideBar.jsx";
-import DashboardHeader from '../../components/DashboardHeader/DashboardHeader.jsx';
-import OvertimeTable from '../../components/OvertimeTable/OvertimeTable.jsx';
-
+import DashboardHeader from '../../components/UserScreenUse/DashboardHeader/DashboardHeader.jsx';
+import OvertimeTable from '../../components/UserScreenUse/OvertimeTable/OvertimeTable.jsx';
 // CSS
 import "./UserScreen.css";
 

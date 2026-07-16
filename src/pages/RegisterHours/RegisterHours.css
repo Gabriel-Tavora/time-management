@@ -1,7 +1,7 @@
 .time-menu {
   display: flex;
   min-height: 100vh;
-  background-color: #eef2f8;
+  background-color: #e0e7ff;
 }
 
 .add-time-menu {
@@ -27,148 +27,22 @@
 
 .time-menu-form {
   padding: 80px;
-  background: white;
-  border: none;
+  background: rgb(185, 199, 207);
+  border: 2.5px solid #4f46e5;
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-.time-menu-form-group {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.time-menu-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 1.15em;
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.time-menu-group label {
-  align-self: flex-start;
-  cursor: pointer;
-}
-
-.time-menu-group input {
-  height: 3.5rem;
-  width: 100%;
-  padding: 0 18px;
-  font-size: 1.15em;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-  color: #2d3748;
-}
-
-.time-menu-group input:focus {
-  outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-}
 
 .time-menu-night-alert {
-  background: #d1dcff;
+  background: #c3d1ff;
   color: #4338ca;
+  text-align: center;
   padding: 12px 16px;
   border-radius: 10px;
-  font-size: 0.95em;
+  font-size: 1.05em;
   font-weight: 600;
   margin-bottom: 30px;
-}
-
-.time-menu-send {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  font-size: 1em;
-  font-weight: bold;
-}
-
-.time-menu-send-obs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 1.1em;
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.time-menu-send-obs textarea {
-  height: 100px;
-  width: 100%;
-  padding: 12px;
-  cursor: text;
-  font-size: 0.9em;
-  font-weight: normal;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  resize: vertical;
-  font-family: inherit;
-}
-
-.time-menu-send-obs textarea:focus {
-  outline: none;
-  border-color: #4f46e5;
-}
-
-.time-menu-mensagem {
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 0.9em;
-  text-align: center;
-}
-
-.time-menu-mensagem-sucesso {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.time-menu-mensagem-erro {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.time-menu-send-btn {
-  height: 45px;
-  width: 260px;
-  align-self: center;
-  justify-content: center;
-  border: none;
-  border-radius: 10px;
-  background-color: #4f46e5;
-  color: white;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  font-size: 0.95em;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.time-menu-send-btn:hover:not(:disabled) {
-  background-color: #4338ca;
-  transform: scale(1.03);
-}
-
-.time-menu-send-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.src {
-  font-size: 16px;
-  border: none;
-  border-radius: 20px;
-  padding: 2px;
-  background: transparent;
 }
 
 @media (max-width: 900px) {

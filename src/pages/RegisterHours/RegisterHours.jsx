@@ -2,21 +2,32 @@
 import React, { useState, useEffect } from "react";
 //components
 import Sidebar from "../../components/SideBar/SideBar.jsx";
+import DateCatch from "../../components/RegisterhouserUSe/DateCatch/DateCatch.jsx";
+import RegisterInfo from "../../components/RegisterhouserUSe/RegisterInfo/RegisterInfo.jsx";
 //css
 import "./RegisterHours.css";
-import { FaPlus } from "react-icons/fa";
 //services
 import { createOvertime } from "../../services/overtimeService";
 //context
 import { useAuthValue } from "../../context/TokenContext";
-//Utils 
-import { calculateNightHours } from '../../utils/calculateNightHours.js';
-import { getCurrentDate } from '../../utils/formatHours.js';
+//Utils
+import { calculateNightHours } from "../../utils/calculateNightHours.js";
+import { getCurrentDate, formatHours,formatDataSend } from "../../utils/formatHours.js";
+//hooks
+import { useRegisterHours } from "../../hooks/useRegisterHours.js";
+
 const RegisterHours = () => {
-  const [startTime, setStartTime] = useState("17:00");
-  const [endTime, setEndTime] = useState(0);
-  const [nightTime, setNightTime] = useState(false);
-  const [workDate, setWorkDate] = useState("");
+  const {
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime,
+    nightHours,
+    setNightHours,
+    workDate,
+    setWorkDate,
+  } = useRegisterHours();
+  const [jiraTask, setjiraTesk] = useState("");
   const [observation, setObservation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
@@ -28,24 +39,22 @@ const RegisterHours = () => {
 
     if (endTime) {
       const hours = calculateNightHours(startTime, endTime);
-
       setNightHours(hours);
-      setNightTime(hours > 0);
     }
-  }, [startTime]);
+  }, [startTime, endTime]);
+
   const handleEndTimeChange = (e) => {
     const value = e.target.value;
     setEndTime(value);
 
     const hours = calculateNightHours(startTime, value);
-
     setNightHours(hours);
-    setNightTime(hours > 0);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
-
+    
     if (!endTime) {
       setMessage({
         type: "error",
@@ -64,13 +73,12 @@ const RegisterHours = () => {
 
     try {
       setIsSubmitting(true);
-
       const overtimeData = {
-        work_date: new Date(`${workDate}T00:00:00`).toISOString(),
-        start_time: new Date(`${workDate}T${startTime}:00`).toISOString(),
-        end_time: new Date(`${workDate}T${endTime}:00`).toISOString(),
-
-        jira_task_identifier: observation,
+        work_date: formatDataSend(workDate),
+        start_time: formatDataSend(workDate,startTime),
+        end_time: formatDataSend(workDate,endTime),
+        night_time: formatDataSend(workDate, formatHours(nightHours)),
+        jira_task_identifier: jiraTask,
       };
 
       await createOvertime(token, overtimeData);
@@ -82,7 +90,7 @@ const RegisterHours = () => {
 
       setEndTime("");
       setObservation("");
-      setNightTime(false);
+      setNightHours(0);
     } catch (err) {
       console.error(err);
 
@@ -104,75 +112,29 @@ const RegisterHours = () => {
           <h1>Registrar Hora Extra</h1>
 
           <form className="time-menu-form" onSubmit={handleSubmit}>
-            <div className="time-menu-form-group">
-              <div className="time-menu-group">
-                <label htmlFor="workDate">Data do Trabalho</label>
-                <input
-                  id="workDate"
-                  type="date"
-                  value={workDate}
-                  onChange={(e) => setWorkDate(e.target.value)}
-                  name="workDate"
-                />
-              </div>
+            <DateCatch
+              workDate={workDate}
+              setWorkDate={setWorkDate}
+              startTime={startTime}
+              setStartTime={setStartTime}
+              endTime={endTime}
+              handleEndTimeChange={handleEndTimeChange}
+            />
 
-              <div className="time-menu-group">
-                <label htmlFor="startTime">Horário Inicial</label>
-                <input
-                  id="startTime"
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                />
-              </div>
-
-              <div className="time-menu-group">
-                <label htmlFor="endTime">Horário de Saída</label>
-                <input
-                  id="endTime"
-                  type="time"
-                  value={endTime}
-                  onChange={handleEndTimeChange}
-                />
-              </div>
-            </div>
-
-            {nightTime && (
+            {nightHours > 0 && (
               <div className="time-menu-night-alert">
                 🌙 Horário noturno detectado
               </div>
             )}
 
-            <div className="time-menu-send">
-              <div className="time-menu-send-obs">
-                <label htmlFor="observation">Observação:</label>
-                <textarea
-                  id="observation"
-                  name="observation"
-                  rows="4"
-                  value={observation}
-                  onChange={(e) => setObservation(e.target.value)}
-                  placeholder="Descreva o motivo da hora extra (opcional)"
-                />
-              </div>
-
-              {message && (
-                <p
-                  className={`time-menu-message time-menu-message-${message.type}`}
-                >
-                  {message.text}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="time-menu-send-btn"
-                disabled={isSubmitting}
-              >
-                <FaPlus className="src" />
-                {isSubmitting ? "Registrando..." : "Registrar Hora Extra"}
-              </button>
-            </div>
+            <RegisterInfo
+              observation={observation}
+              setObservation={setObservation}
+              message={message}
+              isSubmitting={isSubmitting}
+              jiraTask={jiraTask}
+              setjiraTesk={setjiraTesk}
+            />
           </form>
         </div>
       </aside>
