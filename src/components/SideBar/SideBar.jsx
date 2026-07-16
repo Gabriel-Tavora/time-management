@@ -77,7 +77,7 @@ function Sidebar() {
           </li>
         </ul>
 
-        <NavLink to="/historyHours" className={({ isActive }) => (isActive ? "profile-on" : "profile")}>
+        <NavLink to="/UserStats" className={({ isActive }) => (isActive ? "profile-on" : "profile")}>
           <FaUserCircle className="profile-icon" />
           {expanded && (
             <div className="profile-info">

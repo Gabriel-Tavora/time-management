@@ -33,7 +33,7 @@ const Calendary = () => {
     async function loadingData() {
       const userData = await getUserHours(token);
       setUserCurrentDate(userData);
-      
+
       const dates = new Set(
         userData.map(item => formatDate(item.overtime_records.work_date))
       );
@@ -69,9 +69,7 @@ const Calendary = () => {
       <Sidebar />
 
       <div className="calendary-page">
-
         <header className="calendar-header">
-
           <button className="month-btn" onClick={previousMonth}>
             ◀
           </button>
@@ -86,11 +84,9 @@ const Calendary = () => {
               })}
             </h2>
           </div>
-
           <button className="month-btn" onClick={nextMonth}>
             ▶
           </button>
-
         </header>
 
         <div className="week-days">

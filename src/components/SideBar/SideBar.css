@@ -184,6 +184,7 @@
     font-size: 1em;
     color: #dc2626;
     transition: .25s;
+    cursor: pointer;
 }
 
 .menu-link:hover {

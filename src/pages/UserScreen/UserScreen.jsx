@@ -31,6 +31,7 @@ const UserScreen = () => {
         setUser(userInformations);
         const dataUserTime = await getUserHours(token);
         setDataTime(dataUserTime);
+        console.log(dataUserTime)
       } catch (error) {
         console.error(error);
       }
