@@ -4,12 +4,12 @@ import "./RegisterInfo.css";
 import { FaPlus } from "react-icons/fa";
 
 const RegisterInfo = ({
+  jiraTask,
   observation,
-  setObservation,
+  onJiraTaskChange,
+  onObservationChange,
   message,
   isSubmitting,
-  jiraTask, 
-  setjiraTesk
 }) => {
   return (
     <div className="time-menu-send">
@@ -19,9 +19,9 @@ const RegisterInfo = ({
           id="jira"
           type="text"
           value={jiraTask}
-          onChange={(e) => setjiraTesk(e.target.value)}
+          onChange={onJiraTaskChange}
           name="jira"
-          placeholder="Insira a identificação jira do trabalho"
+          placeholder="Insira a identificação Jira do trabalho"
         />
         <label htmlFor="observation">Observação:</label>
         <textarea
@@ -29,7 +29,7 @@ const RegisterInfo = ({
           name="observation"
           rows="4"
           value={observation}
-          onChange={(e) => setObservation(e.target.value)}
+          onChange={onObservationChange}
           placeholder="Descreva o motivo da hora extra (opcional)"
         />
       </div>

@@ -12,7 +12,11 @@ import { createOvertime } from "../../services/overtimeService";
 import { useAuthValue } from "../../context/TokenContext";
 //Utils
 import { calculateNightHours } from "../../utils/calculateNightHours.js";
-import { getCurrentDate, formatHours,formatDataSend } from "../../utils/formatHours.js";
+import {
+  getCurrentDate,
+  formatHours,
+  formatDataSend,
+} from "../../utils/formatHours.js";
 //hooks
 import { useRegisterHours } from "../../hooks/useRegisterHours.js";
 
@@ -27,7 +31,7 @@ const RegisterHours = () => {
     workDate,
     setWorkDate,
   } = useRegisterHours();
-  const [jiraTask, setjiraTesk] = useState("");
+  const [jiraTask, setJiraTesk] = useState("");
   const [observation, setObservation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
@@ -54,7 +58,7 @@ const RegisterHours = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
-    
+
     if (!endTime) {
       setMessage({
         type: "error",
@@ -75,8 +79,8 @@ const RegisterHours = () => {
       setIsSubmitting(true);
       const overtimeData = {
         work_date: formatDataSend(workDate),
-        start_time: formatDataSend(workDate,startTime),
-        end_time: formatDataSend(workDate,endTime),
+        start_time: formatDataSend(workDate, startTime),
+        end_time: formatDataSend(workDate, endTime),
         night_time: formatDataSend(workDate, formatHours(nightHours)),
         jira_task_identifier: jiraTask,
       };
@@ -128,12 +132,12 @@ const RegisterHours = () => {
             )}
 
             <RegisterInfo
+              jiraTask={jiraTask}
               observation={observation}
-              setObservation={setObservation}
+              onJiraTaskChange={(e) => setJiraTask(e.target.value)}
+              onObservationChange={(e) => setObservation(e.target.value)}
               message={message}
               isSubmitting={isSubmitting}
-              jiraTask={jiraTask}
-              setjiraTesk={setjiraTesk}
             />
           </form>
         </div>
