@@ -56,7 +56,7 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <NavLink to="/userscreen" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
+            <NavLink to="/Teamleader" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaHome />
               {expanded && <span>Meu Painel</span>}
             </NavLink>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
+//services
 import { login as apiLogin } from "../../../services/api.js";
-//Auth
+//context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 //css
 import "./Login.css";
@@ -21,7 +22,7 @@ const Login = () => {
 
       login(data.id, data.token);
 
-      navigate("/userscreen");
+      navigate("/Teamleader");
     } catch (error) {
       console.error(error);
       alert(error.message);
