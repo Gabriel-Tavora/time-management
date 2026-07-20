@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 //compone
-import Sidebar from "../../components/SideBar/SideBar";
+import Sidebar from "../../../components/SideBar/SideBar";
 //css
 import "./Calendary.css";
 //utils
-import { calendaryGet } from '../../utils/calendaryget';
-import { formatDate } from '../../utils/formatHours';
+import { calendaryGet } from '../../../utils/calendaryget';
+import { formatDate } from '../../../utils/formatHours';
 // services
-import { getUserHours } from '../../services/userHours';
+import { getUserHours } from '../../../services/userHours';
 //context
-import { useAuthValue } from "../../context/TokenContext.jsx"
+import { useAuthValue } from "../../../context/TokenContext.jsx"
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 const Calendary = () => {

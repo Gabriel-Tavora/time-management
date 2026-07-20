@@ -4,24 +4,23 @@ import { createRoot } from "react-dom/client";
 //css
 import "./index.css";
 // pages
-import Login from "./pages/Login/Login.jsx";
-import UserStats from './pages/UserStats/UserStats';
-import NotFound from "./pages/NotFound/NotFound.jsx";
-import Calendary from './pages/Calendary/Calendary.jsx';
-import UserScreen from "./pages/UserScreen/UserScreen.jsx";
-import RegisterHours from "./pages/RegisterHours/RegisterHours.jsx"
+import Login from "./pages/Auth/Login/Login.jsx";
+import UserStats from "./pages/common/UserStats/UserStats";
+import NotFound from "./pages/common/NotFound/NotFound.jsx";
+import Teamleader from "./pages/teamleader/Teamleader.jsx";
+import Calendary from "./pages/common/Calendary/Calendary.jsx";
+import UserScreen from "./pages/user/UserScreen.jsx";
+import RegisterHours from "./pages/common/RegisterHours/RegisterHours.jsx";
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //Auth
-import { AuthProvider } from './context/TokenContext';
+import { AuthProvider } from "./context/TokenContext";
 import PrivateRoute from "./context/privateRoutex.jsx";
-
-
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <Teamleader />,
   },
   {
     path: "/userscreen",
@@ -59,11 +58,19 @@ const router = createBrowserRouter([
     path: "*",
     element: <NotFound />,
   },
+  {
+    path: "/Teamleader",
+    element: (
+      <PrivateRoute>
+        <Teamleader />
+      </PrivateRoute>
+    ),
+  },
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  </StrictMode>
+  </StrictMode>,
 );

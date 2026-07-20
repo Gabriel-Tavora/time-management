@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 // Components
 import Sidebar from "../../components/SideBar/SideBar.jsx";
-import DashboardHeader from '../../components/UserScreenUse/DashboardHeader/DashboardHeader.jsx';
-import OvertimeTable from '../../components/UserScreenUse/OvertimeTable/OvertimeTable.jsx';
+import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
+import OvertimeTable from "../../components/OvertimeTable/OvertimeTable.jsx";
 // CSS
-import "./UserScreen.css";
+import "./Teamleader.css";
 
 // Auth
 import { useAuthValue } from "../../context/TokenContext";
 import { getCurrentUser } from "../../services/userService";
 import { getUserHours } from "../../services/userHours.js";
 
-//Utils 
-import { getCurrentDate } from "../../utils/formatHours.js"
-const UserScreen = () => {
-
+//Utils
+import { getCurrentDate } from "../../utils/formatHours.js";
+const Teamleader = () => {
   // User Data
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
@@ -31,7 +30,7 @@ const UserScreen = () => {
         setUser(userInformations);
         const dataUserTime = await getUserHours(token);
         setDataTime(dataUserTime);
-        console.log(dataUserTime)
+        console.log(dataUserTime);
       } catch (error) {
         console.error(error);
       }
@@ -46,11 +45,7 @@ const UserScreen = () => {
     <div className="user-screen">
       <Sidebar />
       <main className="main-informations">
-
-        <DashboardHeader
-          user={user}
-          formatted={formatted}
-        />
+        <DashboardHeader user={user} formatted={formatted} />
 
         <ul className="main-menu">
           <li>
@@ -59,13 +54,10 @@ const UserScreen = () => {
           </li>
         </ul>
 
-        <OvertimeTable
-          data={dataTime}
-        />
-
+        <OvertimeTable data={dataTime} />
       </main>
     </div>
   );
 };
 
-export default UserScreen;
+export default Teamleader;

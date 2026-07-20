@@ -1,0 +1,104 @@
+.stats {
+  display: flex;
+  min-height: 100vh;
+}
+
+.menu-stats {
+  flex: 1;
+  background: #eef2f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.menu-stats-cont {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 30px;
+}
+
+.profile-avatar img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info h1 {
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.profile-info p {
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+
+.profile-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.profile-buttons button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .95rem;
+  transition: .2s;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-secondary {
+  background: white;
+  color: #2563eb;
+  border: 2px solid #2563eb !important;
+}
+
+.btn-secondary:hover {
+  background: #2563eb;
+  color: white;
+}
+
+
+@media (max-width: 768px) {
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-buttons {
+    flex-direction: column;
+  }
+
+  .profile-buttons button {
+    width: 100%;
+  }
+
+}

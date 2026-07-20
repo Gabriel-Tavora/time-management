@@ -1,10 +1,6 @@
 import React from "react";
 //css
 import "./DateCatch.css";
-// picker 
-import TimePicker from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
 const DateCatch = ({
   workDate,
   setWorkDate,

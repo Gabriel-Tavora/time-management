@@ -3,7 +3,7 @@ import React from 'react'
 import "./OvertimeTable.css"
 import { FaPlus } from "react-icons/fa";
 //Utils
-import { formatHours, formatDate } from "../../../utils/formatHours.js"
+import { formatHours, formatDate } from "../../utils/formatHours.js"
 //router-dom
 import { useNavigate } from "react-router-dom";
 const OvertimeTable = ({ data }) => {

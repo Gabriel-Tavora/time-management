@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { login as apiLogin } from "../../services/api.js";
+import { login as apiLogin } from "../../../services/api.js";
 //Auth
-import { useAuthValue } from "../../context/TokenContext.jsx";
+import { useAuthValue } from "../../../context/TokenContext.jsx";
 //css
 import "./Login.css";
 
