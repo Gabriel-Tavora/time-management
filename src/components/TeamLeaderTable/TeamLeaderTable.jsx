@@ -3,22 +3,14 @@ import React from 'react'
 import "./TeamLeaderTable.css"
 //Utils
 import { formatHours } from "../../utils/formatHours.js"
-//router-dom
-import { useNavigate } from "react-router-dom";
-const TeamLeaderTable = ({ data }) => {
-
-  //navegação de páginas
-  const navigate = useNavigate();
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
+const TeamLeaderTable = ({ data,handleCloseMoth }) => {
 
   return (
     <div className="Leader-main">
       <div className="Leader-title">
         <h2>Resumo dos Colaboradores</h2>
 
-        <button onClick={() => handleNavigate("/RegisterHours")}>
+        <button onClick={handleCloseMoth}>
           Aprovar
         </button>
 
@@ -26,7 +18,7 @@ const TeamLeaderTable = ({ data }) => {
       <div className="Leader-table">
         <table className="Leader-stats">
           <thead>
-            <tr className="main-register-stats-head-tr">
+            <tr>
               <th>Colaborador</th>
               <th>Total de Horas Extras</th>
               <th>Total de Horas Noturnas</th>

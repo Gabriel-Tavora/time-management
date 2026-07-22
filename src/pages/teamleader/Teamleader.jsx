@@ -5,13 +5,12 @@ import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
 import TeamLeaderTable from '../../components/TeamLeaderTable/TeamLeaderTable.jsx';
 // CSS
 import "./Teamleader.css";
-
-// Services
+//Context
 import { useAuthValue } from "../../context/TokenContext";
-import { getCurrentUser } from "../../services/userService";
-import { getUserHours } from "../../services/userHours.js";
-import { EmployeeDataAll, EmployeeDataMonth } from '../../services/exerciceData.js';
-import { EmployeeDataRecord } from '../../services/overtimeData.js';
+// Services
+import { getCurrentUser } from "../../services/userData.js";
+import { employeeDataAll, employeeDataMonth, closeMonth } from '../../services/exerciceData.js';
+import { employeeDataRecord, getUserHours } from '../../services/overtimeData.js';
 
 //Utils
 import { getCurrentDate } from "../../utils/formatHours.js";
@@ -20,6 +19,7 @@ const Teamleader = () => {
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
   const [colaboratorData,setColaboratorData] = useState([]);
+  const [idMonth, setIdMonth] = useState([]);
   // time Data
   const { formatted } = getCurrentDate();
   //token
@@ -29,14 +29,17 @@ const Teamleader = () => {
   useEffect(() => {
     async function loadingData() {
       try {
-        const infoMonth = await EmployeeDataMonth(token);
+
+        const infoMonth = await employeeDataMonth(token);
         console.log(infoMonth);
+        await setIdMonth(infoMonth);
 
-        console.log("----");
+        //------------------------
 
-        const responseData = await EmployeeDataRecord(token, infoMonth?.id)
+        const responseData = await employeeDataRecord(token, infoMonth?.id);
         console.log(responseData);
         await setColaboratorData(responseData);
+        
         // --------------------------
         const userInformations = await getCurrentUser(token);
         setUser(userInformations);
@@ -55,6 +58,13 @@ const Teamleader = () => {
     }
   }, [token]);
 
+  const handleCloseMoth = async () => {
+    try{
+      await closeMonth(token, idMonth?.id);
+    }catch(e){
+      console.error(e.message);
+    }
+  };
   return (
     <div className="Leader-screen">
       <Sidebar />
@@ -70,6 +80,7 @@ const Teamleader = () => {
         <div className="Leader-tables">
           <TeamLeaderTable 
           data={colaboratorData} 
+          handleCloseMoth={handleCloseMoth}
           />
         </div>
       </main>

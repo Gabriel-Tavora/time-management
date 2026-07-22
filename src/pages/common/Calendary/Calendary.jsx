@@ -7,7 +7,7 @@ import "./Calendary.css";
 import { calendaryGet } from '../../../utils/calendaryget';
 import { formatDate } from '../../../utils/formatHours';
 // services
-import { getUserHours } from '../../../services/userHours';
+import { getUserHours } from '../../../services/overtimeData.js';
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx"
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];

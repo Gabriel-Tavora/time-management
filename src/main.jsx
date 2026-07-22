@@ -7,6 +7,7 @@ import "./index.css";
 import Login from "./pages/Auth/Login/Login.jsx";
 import UserStats from "./pages/common/UserStats/UserStats";
 import NotFound from "./pages/common/NotFound/NotFound.jsx";
+import Coordinator from "./pages/coordinator/coordinator.jsx";
 import Teamleader from "./pages/teamleader/Teamleader.jsx";
 import Calendary from "./pages/common/Calendary/Calendary.jsx";
 import UserScreen from "./pages/user/UserScreen.jsx";
@@ -20,7 +21,7 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <Coordinator />,
   },
   {
     path: "/userscreen",
@@ -63,6 +64,14 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <Teamleader />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Coordinator",
+    element: (
+      <PrivateRoute>
+        <Coordinator />
       </PrivateRoute>
     ),
   },

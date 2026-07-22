@@ -1,0 +1,138 @@
+.Coordinator-main {
+  display: grid;
+  padding: 25px;
+  border-radius: 15px;
+  background: white;
+  gap: 30px;
+  max-width: 65rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  margin: 50px auto 0px auto;
+}
+
+.Coordinator-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Coordinator-title h2 {
+  color: #2d3748;
+  margin: 0;
+}
+.Coordinator-title div {
+  display: flex;
+  gap: 25px;
+}
+.approved-btn,
+.rejected-btn {
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+}
+
+.approved-btn {
+  background: #16a34a;
+  border: 2px solid #15803d;
+}
+
+.rejected-btn {
+  background: #ef4444;
+  border: 2px solid #dc2626;
+}
+
+.approved-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 15px rgba(22, 163, 74, .35);
+}
+
+.rejected-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 15px rgba(239, 68, 68, .35);
+}
+
+.approved-btn:active,
+.rejected-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
+}
+.Coordinator-table {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.Coordinator-stats {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 15px;
+  table-layout: fixed;
+}
+
+.Coordinator-stats thead tr th {
+  padding: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: #4f46e5;
+  top: 0;
+  position: sticky;
+  z-index: 10;
+}
+
+.Coordinator-stats td {
+  padding: 18px 24px;
+  font-size: 0.95rem;
+  color: #2d3748;
+  border-bottom: 1px solid #eef2f8;
+  text-align: center;
+}
+
+.Coordinator-body tr {
+  transition: 0.2s;
+}
+
+.Coordinator-body tr:hover {
+  background: #eef2ff;
+}
+
+.Coordinator-body tr:last-child td {
+  border-bottom: none;
+}
+
+.Coordinator-main a {
+  text-decoration: none;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.Coordinator-main a:hover {
+  color: #3b30af;
+  text-decoration: underline;
+}
+
+.status {
+  border: 2px solid black;
+  border-radius: 16px;
+  padding: 5px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.approved {
+  background-color: rgb(204, 255, 201);
+  border: 2px solid rgb(99, 255, 71);
+  color: rgb(115, 255, 0);
+}

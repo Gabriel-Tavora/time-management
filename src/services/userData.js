@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.1.21:5000";
+import { API_URL } from "./api";
 
 export async function getCurrentUser(token) {
   const response = await fetch(`${API_URL}/users/me`, {

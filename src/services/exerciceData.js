@@ -1,6 +1,6 @@
-const API_URL = "http://192.168.1.21:5000";
+import { API_URL } from "./api";
 
-export async function EmployeeDataAll(token) {
+export async function employeeDataAll(token) {
   const response = await fetch(`${API_URL}/exercice`, {
     method: "GET",
     headers: {
@@ -15,7 +15,7 @@ export async function EmployeeDataAll(token) {
   return await response.json();
 }
 
-export async function EmployeeDataMonth(token) {
+export async function employeeDataMonth(token) {
   const response = await fetch(`${API_URL}/exercice/actual`, {
     method: "GET",
     headers: {
@@ -25,6 +25,21 @@ export async function EmployeeDataMonth(token) {
 
   if (!response.ok) {
     throw new Error("Erro ao buscar dados");
+  }
+
+  return await response.json();
+}
+
+export async function closeMonth(token, idExercice) {
+  const response = await fetch(`${API_URL}/exercice/${idExercice}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao fechar o exercício");
   }
 
   return await response.json();

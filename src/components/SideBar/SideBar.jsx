@@ -18,7 +18,8 @@ import {
 import { useAuthValue } from "../../context/TokenContext";
 
 //services
-import { getCurrentUser } from '../../services/userService';
+import { getCurrentUser } from '../../services/userData.js';
+
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);
   const [userData, setUserData] = useState(null)

@@ -1,6 +1,6 @@
-const API_URL = "http://192.168.1.21:5000";
+import { API_URL } from "./api";
 
-export async function EmployeeDataRecord(token, id) {
+export async function employeeDataRecord(token, id) {
   const response = await fetch(`${API_URL}/overtime/${id}`, {
     method: "GET",
     headers: {
@@ -10,6 +10,41 @@ export async function EmployeeDataRecord(token, id) {
 
   if (!response.ok) {
     throw new Error("Erro ao buscar dados");
+  }
+
+  return await response.json();
+}
+export async function getUserHours(token) {
+  const response = await fetch(`${API_URL}/overtime/employee`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar horas");
+  }
+
+  return await response.json();
+}
+
+export async function createOvertime(token, overtimeData) {
+  if (!token) {
+    throw new Error("Usuário não autenticado.");
+  }
+  console.log(JSON.stringify(overtimeData, null, 2));
+  const response = await fetch(`${API_URL}/overtime`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(overtimeData),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error);
   }
 
   return await response.json();

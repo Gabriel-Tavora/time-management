@@ -7,7 +7,7 @@ import RegisterInfo from "../../../components/RegisterhouserUSe/RegisterInfo/Reg
 //css
 import "./RegisterHours.css";
 //services
-import { createOvertime } from "../../../services/overtimeService";
+import { createOvertime } from "../../../services/overtimeData.js";
 //context
 import { useAuthValue } from "../../../context/TokenContext";
 //Utils

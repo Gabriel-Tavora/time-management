@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 //services
-import { login as apiLogin } from "../../../services/api.js";
+import { login as apiLogin } from "../../../services/login.js";
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 //css

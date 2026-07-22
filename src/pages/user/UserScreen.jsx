@@ -6,13 +6,16 @@ import OvertimeTable from "../../components/OvertimeTable/OvertimeTable.jsx";
 // CSS
 import "./UserScreen.css";
 
-// Auth
+// services
+import { getCurrentUser } from "../../services/userData.js";
+import { getUserHours } from "../../services/overtimeData.js";
+
+//context
 import { useAuthValue } from "../../context/TokenContext.jsx";
-import { getCurrentUser } from "../../services/userService.js";
-import { getUserHours } from "../../services/userHours.js";
 
 //Utils
 import { getCurrentDate } from "../../utils/formatHours.js";
+
 const UserScreen = () => {
   // User Data
   const [user, setUser] = useState(null);
