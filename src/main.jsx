@@ -5,12 +5,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 // pages
 import Login from "./pages/Auth/Login/Login.jsx";
+import UserScreen from "./pages/user/UserScreen.jsx";
 import UserStats from "./pages/common/UserStats/UserStats";
+import SuperAdmin from "./pages/superAdmin/SuperAdmin.jsx";
+import Teamleader from "./pages/teamleader/Teamleader.jsx";
 import NotFound from "./pages/common/NotFound/NotFound.jsx";
 import Coordinator from "./pages/coordinator/coordinator.jsx";
-import Teamleader from "./pages/teamleader/Teamleader.jsx";
 import Calendary from "./pages/common/Calendary/Calendary.jsx";
-import UserScreen from "./pages/user/UserScreen.jsx";
 import RegisterHours from "./pages/common/RegisterHours/RegisterHours.jsx";
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -21,7 +22,7 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Coordinator />,
+    element: <SuperAdmin />,
   },
   {
     path: "/userscreen",
@@ -72,6 +73,14 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <Coordinator />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/SuperAdmin",
+    element: (
+      <PrivateRoute>
+        <SuperAdmin />
       </PrivateRoute>
     ),
   },

@@ -4,7 +4,7 @@ import Sidebar from "../../components/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
 import OvertimeTable from "../../components/OvertimeTable/OvertimeTable.jsx";
 // CSS
-import "./UserScreen.css";
+import "./SuperAdmin.css";
 
 // services
 import { getCurrentUser } from "../../services/userData.js";
@@ -16,7 +16,7 @@ import { useAuthValue } from "../../context/TokenContext.jsx";
 //Utils
 import { getCurrentDate } from "../../utils/formatHours.js";
 
-const UserScreen = () => {
+const SuperAdmin = () => {
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
   const { formatted } = getCurrentDate();
@@ -48,8 +48,7 @@ const UserScreen = () => {
 
         <ul className="main-menu">
           <li>
-            <h2>Total de Horas Extras</h2>
-            <h2>No Mês</h2>
+            <h2>SuperAdmin</h2>
           </li>
         </ul>
 
@@ -59,4 +58,4 @@ const UserScreen = () => {
   );
 };
 
-export default UserScreen;
+export default SuperAdmin;
