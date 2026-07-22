@@ -17,7 +17,7 @@ const OvertimeTable = ({ data }) => {
   return (
     <div className="main-register">
       <div className="main-register-title">
-        <h2>Meus Registros de Horas Extras</h2>
+        <h2>Registros de Horas Extras</h2>
 
         <button onClick={() => handleNavigate("/RegisterHours")}>
           <FaPlus />

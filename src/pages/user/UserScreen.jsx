@@ -48,8 +48,7 @@ const UserScreen = () => {
 
         <ul className="main-menu">
           <li>
-            <h2>Total de Horas Extras</h2>
-            <h2>No Mês</h2>
+            <h2>Usuário</h2>
           </li>
         </ul>
 

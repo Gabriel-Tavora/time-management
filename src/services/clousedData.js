@@ -1,5 +1,14 @@
 import { API_URL } from "./api";
 
+async function parseErrorMessage(response, fallback) {
+  try {
+    const data = await response.json();
+    return data?.message || data?.error || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function getClousedMonth(token) {
   const response = await fetch(`${API_URL}/cloused`, {
     method: "GET",
@@ -9,7 +18,11 @@ export async function getClousedMonth(token) {
   });
 
   if (!response.ok) {
-    throw new Error("Erro ao buscar dados");
+    const message = await parseErrorMessage(
+      response,
+      "Erro ao buscar dados"
+    );
+    throw new Error(`${message} (status ${response.status})`);
   }
 
   return response.json();
@@ -22,7 +35,11 @@ export async function getClousedMonthRecords(token, idCloused) {
   });
 
   if (!response.ok) {
-    throw new Error("Erro ao buscar horas do período fechado");
+    const message = await parseErrorMessage(
+      response,
+      `Erro ao buscar horas do período fechado (id: ${idCloused})`
+    );
+    throw new Error(`${message} (status ${response.status})`);
   }
 
   return response.json();
@@ -39,7 +56,11 @@ async function updateMonthStatus(token, exerciceId, state) {
   });
 
   if (!response.ok) {
-    throw new Error(`Erro ao atualizar competência para ${state}`);
+    const message = await parseErrorMessage(
+      response,
+      `Erro ao atualizar competência ${exerciceId} para o status "${state}"`
+    );
+    throw new Error(`${message} (status ${response.status})`);
   }
 
   return response.json();

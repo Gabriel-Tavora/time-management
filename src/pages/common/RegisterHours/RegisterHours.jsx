@@ -68,7 +68,7 @@ const RegisterHours = () => {
       });
       return;
     }
-    if(!jiraTask){
+    if (!jiraTask) {
       setMessage({
         type: "error",
         text: "Código Jira necessário para registrar hora extra! ",

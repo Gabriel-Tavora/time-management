@@ -68,7 +68,7 @@ const Coordinator = () => {
     }
   };
   return (
-    <div className="Leader-screen">
+    <div className="Coordinator-screen">
       <Sidebar />
       <main className="main-informations">
         <DashboardHeader user={user} formatted={formatted} />
@@ -79,7 +79,7 @@ const Coordinator = () => {
           </li>
         </ul>
 
-        <div className="Leader-tables">
+        <div className="Coordinator-tables">
           <CoordinatorTable
             data={colaboratorData}
             Approval={Approval}

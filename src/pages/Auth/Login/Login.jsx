@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,NavLink } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 //services
 import { login as apiLogin } from "../../../services/login.js";
@@ -22,7 +22,7 @@ const Login = () => {
 
       login(data.id, data.token);
 
-      navigate("/Teamleader");
+      navigate("/Coordinator");
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -57,9 +57,9 @@ const Login = () => {
             />
           </div>
 
-          <a href="#" className="forgot-pass">
-            Esqueceu a senha?
-          </a>
+          <NavLink to="/FotgotPassword" className="forgot-pass">
+            <span>Esqueceu a senha?</span>
+          </NavLink>
 
           <button type="submit">
             {loading ? "Carregando..." : "Entrar"}

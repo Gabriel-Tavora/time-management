@@ -13,6 +13,7 @@ import NotFound from "./pages/common/NotFound/NotFound.jsx";
 import Coordinator from "./pages/coordinator/coordinator.jsx";
 import Calendary from "./pages/common/Calendary/Calendary.jsx";
 import RegisterHours from "./pages/common/RegisterHours/RegisterHours.jsx";
+import FotgotPassword from './pages/Auth/FotgotPassword/FotgotPassword';
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //Auth
@@ -22,7 +23,12 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <SuperAdmin />,
+    element: <Login />,
+  },
+  {
+    path: "/FotgotPassword",
+    element: (<FotgotPassword />
+    ),
   },
   {
     path: "/userscreen",

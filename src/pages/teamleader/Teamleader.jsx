@@ -14,30 +14,25 @@ import { employeeDataRecord, getUserHours } from '../../services/overtimeData.js
 
 //Utils
 import { getCurrentDate } from "../../utils/formatHours.js";
+
 const Teamleader = () => {
-  // User Data
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
   const [colaboratorData,setColaboratorData] = useState([]);
   const [idMonth, setIdMonth] = useState([]);
-  // time Data
   const { formatted } = getCurrentDate();
-  //token
   const { token } = useAuthValue();
 
-  //buscar dados dos usuários
+  
   useEffect(() => {
     async function loadingData() {
       try {
-
+        //id do mês
         const infoMonth = await employeeDataMonth(token);
-        console.log(infoMonth);
         await setIdMonth(infoMonth);
 
-        //------------------------
-
+        // todas as horas extras do mês
         const responseData = await employeeDataRecord(token, infoMonth?.id);
-        console.log(responseData);
         await setColaboratorData(responseData);
         
         // --------------------------
@@ -47,7 +42,6 @@ const Teamleader = () => {
         const dataUserTime = await getUserHours(token);
         setDataTime(dataUserTime);
 
-        console.log(dataUserTime);
       } catch (error) {
         console.error(error);
       }
@@ -59,10 +53,14 @@ const Teamleader = () => {
   }, [token]);
 
   const handleCloseMoth = async () => {
+    e.preventDefault();
+    setMessage(null);
     try{
       await closeMonth(token, idMonth?.id);
+      setMessage("");
     }catch(e){
       console.error(e.message);
+      setMessage("Informe o horário de saída!");
     }
   };
   return (
