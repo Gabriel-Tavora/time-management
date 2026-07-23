@@ -3,17 +3,17 @@ import React from "react";
 import "./CoordinatorTable.css";
 //Utils
 import { formatHours } from "../../utils/formatHours.js";
-const CoordinatorTable = ({ data, Approval, Rejected }) => {
+const CoordinatorTable = ({ data, Approval, Rejected,disabled }) => {
   return (
     <div className="Coordinator-main">
       <div className="Coordinator-title">
         <h2>Resumo dos Colaboradores</h2>
 
         <div>
-          <button className="approved-btn" onClick={Approval}>
+          <button className="approved-btn" onClick={Approval} disabled={disabled}>
             Aprovar
           </button>
-          <button className="rejected-btn" onClick={Rejected}>
+          <button className="rejected-btn" onClick={Rejected} disabled={disabled}>
             Rejeitar
           </button>
         </div>

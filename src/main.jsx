@@ -23,12 +23,11 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <UserStats />,
   },
   {
     path: "/FotgotPassword",
-    element: (<FotgotPassword />
-    ),
+    element: (<FotgotPassword />),
   },
   {
     path: "/userscreen",

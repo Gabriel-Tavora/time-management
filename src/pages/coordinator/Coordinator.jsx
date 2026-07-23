@@ -21,12 +21,12 @@ import { getCurrentDate } from "../../utils/formatHours.js";
 const Coordinator = () => {
   const [user, setUser] = useState(null);
   const [closedData, setClosedData] = useState([]);
-  const [colaboratorData, setColaboratorData] = useState([]); 
+  const [colaboratorData, setColaboratorData] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [idMonth, setIdMonth] = useState(null);
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
 
-  
   useEffect(() => {
     async function loadingData() {
       try {
@@ -37,7 +37,10 @@ const Coordinator = () => {
         setIdMonth(currentClosure?.id);
 
         if (currentClosure?.id) {
-          const records = await getClousedMonthRecords(token, currentClosure.id);
+          const records = await getClousedMonthRecords(
+            token,
+            currentClosure.id,
+          );
           setColaboratorData(records);
         }
 
@@ -54,12 +57,20 @@ const Coordinator = () => {
   }, [token]);
 
   const Approval = async () => {
-    try {
-      await closeApprovedMonth(token, idMonth);
-    } catch (e) {
-      console.error(e.message);
-    }
-  };
+  if (!idMonth || isSubmitting) return;
+  setIsSubmitting(true);
+  try {
+    await closeApprovedMonth(token, idMonth);
+    setClosedData((prev) => prev.filter((c) => c.id !== idMonth));
+    setColaboratorData([]);
+    setIdMonth(null);
+  } catch (e) {
+    console.error(e.message);
+    // idealmente mostrar um toast/alerta aqui
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   const Rejected = async () => {
     try {
       await closeRejectedMonth(token, idMonth);
@@ -84,6 +95,7 @@ const Coordinator = () => {
             data={colaboratorData}
             Approval={Approval}
             Rejected={Rejected}
+            disabled={!idMonth}
           />
         </div>
       </main>

@@ -12,7 +12,7 @@ const UserStats = () => {
       <Sidebar />
 
       <main className="menu-stats">
-        <form className="menu-stats-cont">
+        <div className="menu-stats-cont">
           <header className="profile-header">
             <div className="profile-avatar">
               <img
@@ -30,10 +30,10 @@ const UserStats = () => {
           <InfoCards />
 
           <div className="profile-buttons">
-            <button className="btn-primary">Editar Perfil</button>
-            <button className="btn-secondary">Alterar Senha</button>
+            <button type="button" className="btn-primary">Editar Perfil</button>
+            <button type="button" className="btn-secondary">Alterar Senha</button>
           </div>
-        </form>
+        </div>
       </main>
     </div>
   );

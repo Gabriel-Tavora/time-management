@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { FaEnvelope } from "react-icons/fa";
 //css
 import "./FotgotPassword.css";
@@ -7,7 +7,7 @@ import "./FotgotPassword.css";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null); 
+  const [message, setMessage] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -32,8 +32,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="login-page">
-      <section className="login-section">
+    <div className="Forgotlogin">
+      <section className="Forgotlogin-section">
         <h1>Esqueci a senha</h1>
 
         <form onSubmit={handleSubmit}>
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
             <FaEnvelope className="input-icon" />
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Envie seu Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -49,7 +49,11 @@ const ForgotPassword = () => {
           </div>
 
           {message && (
-            <p className={message.type === "success" ? "form-success" : "form-error"}>
+            <p
+              className={
+                message.type === "success" ? "form-success" : "form-error"
+              }
+            >
               {message.text}
             </p>
           )}
@@ -57,15 +61,10 @@ const ForgotPassword = () => {
           <button type="submit" disabled={loading}>
             {loading ? "Enviando..." : "Enviar"}
           </button>
-
-          <button
-            type="button"
-            className="link-button"
-            onClick={() => navigate("/login")}
-          >
-            Voltar ao login
-          </button>
         </form>
+        <NavLink to="/Login" className="forgot-pass">
+          <span>Voltar para Login</span>
+        </NavLink>
       </section>
     </div>
   );
