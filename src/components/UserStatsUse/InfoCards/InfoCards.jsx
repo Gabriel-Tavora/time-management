@@ -3,6 +3,7 @@ import React, { useEffect,useState } from "react";
 import "./InfoCards.css";
 //services
 import { getCurrentUser } from "../../../services/userData.js";
+//context
 import { useAuthValue } from "../../../context/TokenContext";
 const InfoCards = () => {
   const [user, setUser] = useState(null);

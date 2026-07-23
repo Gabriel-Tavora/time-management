@@ -29,13 +29,8 @@
   border-radius: 15px;
   background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  transition: .25s;
 }
 
-.main-menu li:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
-}
 
 .main-menu li h2 {
   color: #4f46e5;

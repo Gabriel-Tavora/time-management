@@ -1,5 +1,5 @@
 //react
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 //CSS
 import "./SideBar.css";
@@ -22,26 +22,30 @@ import { getCurrentUser } from '../../services/userData.js';
 
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);
-  const [userData, setUserData] = useState(null)
+  const [user, setUser] = useState(null)
   const navigate = useNavigate();
   const location = useLocation();
-  //logout atribuição
-  const { logout, token } = useAuthValue();
-  //token
+  const { logout, token, employee } = useAuthValue();
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getCurrentUser(token);
+      setUser(data);
+      return;
+    }
+    getData();
+  }, [token]);
+
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
     navigate("/");
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getCurrentUser(token);
-      setUserData(data);
-      return;
-    }
-    getData();
-  }, [token]);
+  const closeDialog = () => {
+    dialogRef.current?.close();
+  };
 
   return (
     <aside className={expanded ? "sidebar open" : "sidebar"}>
@@ -57,7 +61,7 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <NavLink to="/Teamleader" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
+            <NavLink to={`/${employee}`} className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
               <FaHome />
               {expanded && <span>Meu Painel</span>}
             </NavLink>
@@ -83,8 +87,8 @@ function Sidebar() {
           {expanded && (
             <div className="profile-info">
               <div>
-                <h4>{userData?.name}</h4>
-                <p>{userData?.email}</p>
+                <h4>{user?.name}</h4>
+                <p>{user?.email}</p>
               </div>
               {expanded && <FaBars className="profile-icon-end" />}
             </div>
@@ -92,10 +96,22 @@ function Sidebar() {
         </NavLink>
 
         <div className="leave">
-          <button onClick={handleLogout} className="menu-link">
+          <button onClick={() => dialogRef.current?.showModal()} className="menu-link">
             {expanded && <span>Sair</span>}
             <FaChevronRight className="leave-icon" />
           </button>
+
+          <dialog ref={dialogRef} className="logout-dialog">
+            <h2>Tem certeza que deseja sair?</h2>
+            <div className="dialog-actions">
+              <button onClick={closeDialog} className="dialog-cancel-btn">
+                Cancelar
+              </button>
+              <button onClick={handleLogout} className="dialog-confirm-btn">
+                Sair
+              </button>
+            </div>
+          </dialog>
         </div>
       </nav>
     </aside >

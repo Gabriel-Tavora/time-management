@@ -46,13 +46,17 @@ export async function getClousedMonthRecords(token, idCloused) {
 }
 
 async function updateMonthStatus(token, exerciceId, state) {
+  console.log({
+    exercice_id: exerciceId,
+    state: state,
+  });
   const response = await fetch(`${API_URL}/cloused`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ exercice_id: exerciceId, state }),
+    body: JSON.stringify({ exercice_id: exerciceId, state: state }),
   });
 
   if (!response.ok) {

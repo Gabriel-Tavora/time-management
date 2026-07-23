@@ -34,7 +34,7 @@ const Coordinator = () => {
         setClosedData(closedList);
 
         const currentClosure = closedList?.[0];
-        setIdMonth(currentClosure?.id);
+        setIdMonth(currentClosure?.exercice_id);
 
         if (currentClosure?.id) {
           const records = await getClousedMonthRecords(
@@ -59,6 +59,7 @@ const Coordinator = () => {
   const Approval = async () => {
   if (!idMonth || isSubmitting) return;
   setIsSubmitting(true);
+
   try {
     await closeApprovedMonth(token, idMonth);
     setClosedData((prev) => prev.filter((c) => c.id !== idMonth));
@@ -66,7 +67,6 @@ const Coordinator = () => {
     setIdMonth(null);
   } catch (e) {
     console.error(e.message);
-    // idealmente mostrar um toast/alerta aqui
   } finally {
     setIsSubmitting(false);
   }

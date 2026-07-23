@@ -62,7 +62,7 @@ const ForgotPassword = () => {
             {loading ? "Enviando..." : "Enviar"}
           </button>
         </form>
-        <NavLink to="/Login" className="forgot-pass">
+        <NavLink to="/" className="forgot-pass">
           <span>Voltar para Login</span>
         </NavLink>
       </section>

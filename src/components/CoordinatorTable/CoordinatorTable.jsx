@@ -3,7 +3,7 @@ import React from "react";
 import "./CoordinatorTable.css";
 //Utils
 import { formatHours } from "../../utils/formatHours.js";
-const CoordinatorTable = ({ data, Approval, Rejected,disabled }) => {
+const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   return (
     <div className="Coordinator-main">
       <div className="Coordinator-title">
@@ -25,21 +25,20 @@ const CoordinatorTable = ({ data, Approval, Rejected,disabled }) => {
               <th>Colaborador</th>
               <th>Total de Horas Extras</th>
               <th>Total de Horas Noturnas</th>
-             
+
             </tr>
           </thead>
 
           <tbody className="Coordinator-body">
             {data
               ?.filter(
-                (register) => register.overtime_records.overtime_type_id != 1,
+                (register) => register.overtime_records?.overtime_type_id != 1,
               )
-              .map((register) => (
-                <tr key={register.overtime_records.id}>
-                  <td>{register.users.name}</td>
-                  <td>{formatHours(register.overtime_records.total_hours)}</td>
-                  <td>{formatHours(register.overtime_records.nigth_hours)}</td>
-                  
+              .map((register, index) => (
+                <tr key={register.overtime_records?.id ?? `row-${index}`}>
+                  <td>{register.users?.name}</td>
+                  <td>{formatHours(register.overtime_records?.total_hours)}</td>
+                  <td>{formatHours(register.overtime_records?.nigth_hours)}</td>
                 </tr>
               ))}
           </tbody>

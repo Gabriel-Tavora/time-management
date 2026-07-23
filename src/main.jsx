@@ -1,19 +1,19 @@
-// re4act
+// react
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 //css
 import "./index.css";
 // pages
 import Login from "./pages/Auth/Login/Login.jsx";
+import FotgotPassword from "./pages/Auth/FotgotPassword/FotgotPassword";
 import UserScreen from "./pages/user/UserScreen.jsx";
-import UserStats from "./pages/common/UserStats/UserStats";
-import SuperAdmin from "./pages/superAdmin/SuperAdmin.jsx";
-import Teamleader from "./pages/teamleader/Teamleader.jsx";
-import NotFound from "./pages/common/NotFound/NotFound.jsx";
-import Coordinator from "./pages/coordinator/coordinator.jsx";
-import Calendary from "./pages/common/Calendary/Calendary.jsx";
 import RegisterHours from "./pages/common/RegisterHours/RegisterHours.jsx";
-import FotgotPassword from './pages/Auth/FotgotPassword/FotgotPassword';
+import UserStats from "./pages/common/UserStats/UserStats";
+import Calendary from "./pages/common/Calendary/Calendary.jsx";
+import Teamleader from "./pages/teamleader/Teamleader.jsx";
+import Coordinator from "./pages/coordinator/coordinator.jsx";
+import SuperAdmin from "./pages/superAdmin/SuperAdmin.jsx";
+import NotFound from "./pages/common/NotFound/NotFound.jsx";
 // router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //Auth
@@ -21,14 +21,10 @@ import { AuthProvider } from "./context/TokenContext";
 import PrivateRoute from "./context/privateRoutex.jsx";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <UserStats />,
-  },
-  {
-    path: "/FotgotPassword",
-    element: (<FotgotPassword />),
-  },
+  
+  { path: "/", element: <Login /> },
+  { path: "/FotgotPassword", element: <FotgotPassword /> },
+
   {
     path: "/userscreen",
     element: (
@@ -61,10 +57,8 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+
+  // privadas - por role
   {
     path: "/Teamleader",
     element: (
@@ -89,7 +83,11 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+
+  // fallback - sempre por último
+  { path: "*", element: <NotFound /> },
 ]);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>

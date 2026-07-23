@@ -7,11 +7,11 @@ import { formatHours } from "../../utils/formatHours.js";
 const TeamLeaderTable = ({ data, handleCloseMoth }) => {
   const dialogRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  
   async function handleApprove() {
     try {
       setLoading(true);
       await handleCloseMoth();
-
       dialogRef.current.showModal();
     } catch (error) {
       console.error(error);

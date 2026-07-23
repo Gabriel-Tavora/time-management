@@ -15,7 +15,7 @@ export async function getCurrentUser(token) {
   return await response.json();
 }
 
-export async function createUser(userData,token) {
+export async function createUser(userData, token) {
   const response = await fetch(`${API_URL}/users`, {
     method: "POST",
     headers: {
@@ -23,7 +23,7 @@ export async function createUser(userData,token) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      name:userData?.name,
+      name: userData?.name,
       display_name: userData?.display_name,
       email: userData?.email,
       password: userData?.password,

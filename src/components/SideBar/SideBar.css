@@ -200,7 +200,78 @@
 .profile-info {
     animation: fade .25s ease;
 }
+.logout-dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+  align-self: center;
+  justify-self: center;
+  min-width: 320px;
+  text-align: center;
+  position: relative;
+}
 
+.logout-dialog::backdrop {
+  background: rgba(0, 0, 0, .5);
+}
+
+.logout-dialog h2 {
+  font-size: 1.1em;
+  margin: 12px 0 20px 0;
+  color: #1f2937;
+}
+
+.dialog-close-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.dialog-close-icon:hover {
+  color: #4b5563;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.logout-dialog button {
+  flex: 1;
+  padding: 10px 0px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+  transition: 0.3s;
+}
+
+.dialog-confirm-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.dialog-confirm-btn:hover {
+  transform: scale(1.03);
+  background: #b91c1c;
+}
+
+.dialog-cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.dialog-cancel-btn:hover {
+  transform: scale(1.03);
+  background: #e5e7eb;
+}
 @keyframes fade {
     from {
         opacity: 0;

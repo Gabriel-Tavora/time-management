@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate,NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 //services
 import { login as apiLogin } from "../../../services/login.js";
@@ -11,21 +11,29 @@ import "./Login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading} = useAuthValue();
-  //navigate
+  const [submitting, setSubmitting] = useState(false);
+  const { login } = useAuthValue();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
       const data = await apiLogin(email, password);
 
-      login(data.id, data.token);
+      const employeePage = login(data.id, data.token, data.role_id);
 
-      navigate("/Coordinator");
+      if (employeePage) {
+        navigate(`/${employeePage}`);
+      } else {
+        console.warn("Nenhuma página mapeada para este usuário.");
+        alert("Não foi possível determinar seu painel de acesso. Contate o suporte.");
+      }
     } catch (error) {
       console.error(error);
       alert(error.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -61,8 +69,8 @@ const Login = () => {
             <span>Esqueceu a senha?</span>
           </NavLink>
 
-          <button type="submit">
-            {loading ? "Carregando..." : "Entrar"}
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Carregando..." : "Entrar"}
           </button>
         </form>
       </section>
