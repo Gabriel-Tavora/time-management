@@ -4,7 +4,7 @@ import Sidebar from "../../components/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
 import CoordinatorTable from "../../components/CoordinatorTable/CoordinatorTable.jsx";
 // CSS
-import "./coordinator.css";
+import "./Coordinator.css";
 //Context
 import { useAuthValue } from "../../context/TokenContext";
 // Services
