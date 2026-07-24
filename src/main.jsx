@@ -11,7 +11,7 @@ import RegisterHours from "./pages/common/RegisterHours/RegisterHours.jsx";
 import UserStats from "./pages/common/UserStats/UserStats";
 import Calendary from "./pages/common/Calendary/Calendary.jsx";
 import Teamleader from "./pages/teamleader/Teamleader.jsx";
-import Coordinator from "./pages/coordinator/coordinator.jsx";
+import Coordinator from './pages/coordinator/Coordinator';
 import SuperAdmin from "./pages/superAdmin/SuperAdmin.jsx";
 import NotFound from "./pages/common/NotFound/NotFound.jsx";
 // router
@@ -22,7 +22,7 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 
 const router = createBrowserRouter([
   
-  { path: "/", element: <UserScreen /> },
+  { path: "/", element: <Login /> },
   { path: "/FotgotPassword", element: <FotgotPassword /> },
 
   {

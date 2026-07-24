@@ -29,9 +29,7 @@ export function storeLoginData({ children }) {
 
 
 
-  const Login = (token, id, role_id) {
-    const emplo
-  }
+  
 }
 
 
