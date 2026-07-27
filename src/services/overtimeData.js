@@ -28,24 +28,41 @@ export async function getUserHours(token) {
   return await response.json();
 }
 
+// -------------------------
+
 export async function createOvertime(token, overtimeData) {
   if (!token) {
-    throw new Error("Usuário não autenticado.");
+    throw {
+      status: 401,
+      message: "Usuário não autenticado.",
+    };
   }
-  console.log(JSON.stringify(overtimeData, null, 2));
+
   const response = await fetch(`${API_URL}/overtime`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(overtimeData),
   });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    data = {
+      message: "Erro inesperado.",
+    };
   }
 
-  return await response.json();
+  if (!response.ok) {
+    throw {
+      status: response.status,
+      message: data.message || data.error || "Erro ao cadastrar.",
+    };
+  }
+
+  return data;
 }

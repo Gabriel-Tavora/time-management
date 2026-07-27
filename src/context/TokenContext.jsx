@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-const AuthContext = createContext();
+const TokenContext = createContext();
 
 const ROLE_TO_EMPLOYEE = {
   6: "userscreen",
@@ -63,7 +63,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider
+    <TokenContext.Provider
       value={{
         id,
         token,
@@ -76,8 +76,8 @@ export function AuthProvider({ children }) {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </TokenContext.Provider>
   );
 }
 
-export const useAuthValue = () => useContext(AuthContext);
+export const useAuthValue = () => useContext(TokenContext);
