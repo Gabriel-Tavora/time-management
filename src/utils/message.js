@@ -22,10 +22,10 @@ export const Messages = {
     "Código Jira inválido. Exemplo: DEV-123.",
 
   DUPLICATED:
-    "Já existe uma hora cadastrada nesse horário.",
+    "Já existe uma hora cadastrada nesse mesmo horário.",
 
   OVERLAP:
-    "Existe conflito entre o horário informado e outro registro.",
+    "Existe conflito entre o horário informado em outro registro.",
 
   SESSION:
     "Sua sessão expirou. Faça login novamente.",

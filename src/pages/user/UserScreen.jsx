@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 // Components
-import Sidebar from "../../components/SideBar/SideBar.jsx";
-import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
-import OvertimeTable from "../../components/OvertimeTable/OvertimeTable.jsx";
+import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
+import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
+import UserTable from "../../components/Tables/UserTable/UserTable.jsx";
 // CSS
 import "./UserScreen.css";
 
@@ -52,7 +52,7 @@ const UserScreen = () => {
           </li>
         </ul>
 
-        <OvertimeTable data={dataTime} />
+        <UserTable data={dataTime} />
       </main>
     </div>
   );

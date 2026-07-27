@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 // Components
-import Sidebar from "../../components/SideBar/SideBar.jsx";
-import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
-import CoordinatorTable from "../../components/CoordinatorTable/CoordinatorTable.jsx";
+import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
+import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
+import CoordinatorTable from "../../components/Tables/CoordinatorTable/CoordinatorTable.jsx";
 // CSS
 import "./Coordinator.css";
 //Context
@@ -57,20 +57,20 @@ const Coordinator = () => {
   }, [token]);
 
   const Approval = async () => {
-  if (!idMonth || isSubmitting) return;
-  setIsSubmitting(true);
+    if (!idMonth || isSubmitting) return;
+    setIsSubmitting(true);
 
-  try {
-    await closeApprovedMonth(token, idMonth);
-    setClosedData((prev) => prev.filter((c) => c.id !== idMonth));
-    setColaboratorData([]);
-    setIdMonth(null);
-  } catch (e) {
-    console.error(e.message);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    try {
+      await closeApprovedMonth(token, idMonth);
+      setClosedData((prev) => prev.filter((c) => c.id !== idMonth));
+      setColaboratorData([]);
+      setIdMonth(null);
+    } catch (e) {
+      console.error(e.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const Rejected = async () => {
     try {
       await closeRejectedMonth(token, idMonth);

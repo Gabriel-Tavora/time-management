@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 // Components
-import Sidebar from "../../components/SideBar/SideBar.jsx";
-import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
-import TeamLeaderTable from '../../components/TeamLeaderTable/TeamLeaderTable.jsx';
+import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
+import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
+import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderTable.jsx';
 // CSS
 import "./Teamleader.css";
 //Context

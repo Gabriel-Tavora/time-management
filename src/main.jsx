@@ -1,29 +1,58 @@
-// react
-import { StrictMode } from "react";
+// React
+import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-//css
+import { HelmetProvider } from "react-helmet-async";
+
+// CSS
 import "./index.css";
-// pages
-import Login from "./pages/Auth/Login/Login.jsx";
-import FotgotPassword from "./pages/Auth/FotgotPassword/FotgotPassword";
-import UserScreen from "./pages/user/UserScreen.jsx";
-import RegisterHours from "./pages/common/RegisterHours/RegisterHours.jsx";
-import UserStats from "./pages/common/UserStats/UserStats";
-import Calendary from "./pages/common/Calendary/Calendary.jsx";
-import Teamleader from "./pages/teamleader/Teamleader.jsx";
-import Coordinator from './pages/coordinator/Coordinator';
-import SuperAdmin from "./pages/superAdmin/SuperAdmin.jsx";
-import NotFound from "./pages/common/NotFound/NotFound.jsx";
-// router
+
+// Router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-//Auth
+// Auth
 import { AuthProvider } from "./context/TokenContext";
 import PrivateRoute from "./context/privateRoutex.jsx";
 
+// Lazy Pages
+const Login = lazy(() => import("./pages/Auth/Login/Login.jsx"));
+const FotgotPassword = lazy(() =>
+  import("./pages/Auth/FotgotPassword/FotgotPassword.jsx")
+);
+const UserScreen = lazy(() => import("./pages/user/UserScreen.jsx"));
+const RegisterHours = lazy(() =>
+  import("./pages/common/RegisterHours/RegisterHours.jsx")
+);
+const UserStats = lazy(() =>
+  import("./pages/common/UserStats/UserStats.jsx")
+);
+const Calendary = lazy(() =>
+  import("./pages/common/Calendary/Calendary.jsx")
+);
+
+const Teamleader = lazy(() =>
+  import("./pages/teamleader/Teamleader.jsx")
+);
+
+const Coordinator = lazy(() =>
+  import("./pages/coordinator/Coordinator.jsx")
+);
+
+const SuperAdmin = lazy(() =>
+  import("./pages/superAdmin/SuperAdmin.jsx")
+);
+
+const NotFound = lazy(() =>
+  import("./pages/common/NotFound/NotFound.jsx")
+);
+
 const router = createBrowserRouter([
-  
-  { path: "/", element: <RegisterHours /> },
-  { path: "/FotgotPassword", element: <FotgotPassword /> },
+  {
+    path: "/",
+    element: <Login />,
+  },
+  {
+    path: "/FotgotPassword",
+    element: <FotgotPassword />,
+  },
 
   {
     path: "/userscreen",
@@ -58,7 +87,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  // privadas - por role
   {
     path: "/Teamleader",
     element: (
@@ -84,14 +112,20 @@ const router = createBrowserRouter([
     ),
   },
 
-  // fallback - sempre por último
-  { path: "*", element: <NotFound /> },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </StrictMode>,
+    <HelmetProvider>
+      <AuthProvider>
+        <Suspense fallback={<div>Carregando...</div>}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </AuthProvider>
+    </HelmetProvider>
+  </StrictMode>
 );

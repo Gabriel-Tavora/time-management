@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 // Components
-import Sidebar from "../../../components/SideBar/SideBar.jsx";
+import Sidebar from "../../../components/Layouts/SideBar/SideBar.jsx";
 import DateCatch from "../../../components/RegisterhouserUSe/DateCatch/DateCatch.jsx";
 import RegisterInfo from "../../../components/RegisterhouserUSe/RegisterInfo/RegisterInfo.jsx";
 

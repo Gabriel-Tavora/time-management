@@ -2,12 +2,12 @@ import React, { useRef, useState } from "react";
 //css
 import "./TeamLeaderTable.css";
 //Utils
-import { formatHours } from "../../utils/formatHours.js";
+import { formatHours,formatDate } from "../../../utils/formatHours.js";
 
 const TeamLeaderTable = ({ data, handleCloseMoth }) => {
   const dialogRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  
+
   async function handleApprove() {
     try {
       setLoading(true);
@@ -45,34 +45,35 @@ const TeamLeaderTable = ({ data, handleCloseMoth }) => {
         <table className="Leader-stats">
           <thead>
             <tr>
-              <th>Colaborador</th>
-              <th>Total de Horas Extras</th>
-              <th>Total de Horas Noturnas</th>
-              <th>Type</th>
-              <th>Aprovação</th>
+              <th>Colaboradores</th>
+              <th>Data</th>
+              <th>Horas Totais</th>
+              <th>Horas Diurnas</th>
+              <th>Horas Noturnas</th>
+              <th>Tipo</th>
             </tr>
           </thead>
 
           <tbody className="Leader-body">
-            {data?.map((register) => (
-              <tr key={register.overtime_records.id}>
-                <td>{register.users.name}</td>
-                <td>{formatHours(register.overtime_records.total_hours)}</td>
-                <td>{formatHours(register.overtime_records.nigth_hours)}</td>
-                <td>
-                  {register.overtime_records.overtime_type_id === 1
-                    ? "50%"
-                    : "100%"}
-                </td>
-                <td>
-                  {register.overtime_records.overtime_type_id === 1 ? (
-                    <span className="status pending">Pendente</span>
-                  ) : (
-                    <span className="status approved">Aprovado</span>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {data?.map((register) => {
+              const totalHours = register.overtime_records.total_hours ?? 0;
+              const nightHours = register.overtime_records.nigth_hours ?? 0;
+              const dayHours = totalHours - nightHours;
+              return (
+                <tr key={register.overtime_records.id}>
+                  <td>{register.users.name}</td>
+                  <td>{formatDate(register.overtime_records.work_date)}</td>
+                  <td>{formatHours(totalHours)}</td>
+                  <td>{dayHours ? formatHours(dayHours) : "0"}</td>
+                  <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                  <td>
+                    {register.overtime_records.overtime_type_id === 1
+                      ? <span className="status pending">50%</span>
+                      : <span className="status approved">100%</span>}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

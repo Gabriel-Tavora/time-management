@@ -62,9 +62,11 @@ export function useOvertimeRegistration({
 
       const records = await getUserHours(token);
 
-      const dayRecords = records.filter(
-        (record) => record.work_date.slice(0, 10) === workDate
-      );
+      const dayRecords = records
+        .map((record) => record.overtime_records)
+        .filter(
+          (record) => record.work_date?.slice(0, 10) === workDate
+        );
 
       if (isDuplicate(dayRecords, startTime, endTime)) {
         showMessage("error", Messages.DUPLICATED);

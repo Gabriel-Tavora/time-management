@@ -15,10 +15,10 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 //context
-import { useAuthValue } from "../../context/TokenContext";
+import { useAuthValue } from "../../../context/TokenContext.jsx";
 
 //services
-import { getCurrentUser } from '../../services/userData.js';
+import { getCurrentUser } from '../../../services/userData.js';
 
 function Sidebar() {
   const [expanded, setExpanded] = useState(false);

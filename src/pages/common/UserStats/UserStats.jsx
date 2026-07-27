@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // Components
-import Sidebar from "../../../components/SideBar/SideBar";
+import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
 // CSS
 import "./UserStats.css";

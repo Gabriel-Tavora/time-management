@@ -50,14 +50,23 @@ export function validateOvertime({ workDate, startTime, endTime, jiraTask }) {
   return null;
 }
 
+export function getTimeOnly(dateTime) {
+  return dateTime?.slice(11, 16);
+}
+
 export function isDuplicate(records, startTime, endTime) {
   return records.some(
-    (record) => record.start_time === startTime && record.end_time === endTime,
+    (record) =>
+      getTimeOnly(record.start_time) === startTime &&
+      getTimeOnly(record.end_time) === endTime
   );
 }
 
 export function hasTimeConflict(records, startTime, endTime) {
   return records.some((record) => {
-    return startTime < record.end_time && endTime > record.start_time;
+    const recordStart = getTimeOnly(record.start_time);
+    const recordEnd = getTimeOnly(record.end_time);
+
+    return startTime < recordEnd && endTime > recordStart;
   });
 }

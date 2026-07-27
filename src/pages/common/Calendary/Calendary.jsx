@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 //compone
-import Sidebar from "../../../components/SideBar/SideBar";
+import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 //css
 import "./Calendary.css";
 //utils

@@ -9,11 +9,22 @@ export async function employeeDataRecord(token, id) {
   });
 
   if (!response.ok) {
-    throw new Error("Erro ao buscar dados");
+    let data = null;
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+
+    throw {
+      status: response.status,
+      message: data?.message || data?.error || "Erro ao buscar dados",
+    };
   }
 
   return await response.json();
 }
+
 export async function getUserHours(token) {
   const response = await fetch(`${API_URL}/overtime/employee`, {
     headers: {
@@ -22,12 +33,21 @@ export async function getUserHours(token) {
   });
 
   if (!response.ok) {
-    throw new Error("Erro ao buscar horas");
+    let data = null;
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+
+    throw {
+      status: response.status,
+      message: data?.message || data?.error || "Erro ao buscar horas",
+    };
   }
 
   return await response.json();
 }
-
 // -------------------------
 
 export async function createOvertime(token, overtimeData) {
@@ -37,7 +57,7 @@ export async function createOvertime(token, overtimeData) {
       message: "Usuário não autenticado.",
     };
   }
-
+console.log(overtimeData)
   const response = await fetch(`${API_URL}/overtime`, {
     method: "POST",
     headers: {
