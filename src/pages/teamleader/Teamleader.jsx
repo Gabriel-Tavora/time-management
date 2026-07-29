@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
+
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderTable.jsx';
+
 // CSS
 import "./Teamleader.css";
+
 //Context
 import { useAuthValue } from "../../context/TokenContext";
+
 // Services
 import { getCurrentUser } from "../../services/userData.js";
 import { employeeDataAll, employeeDataMonth, closeMonth } from '../../services/exerciceData.js';
@@ -18,49 +22,57 @@ import { getCurrentDate } from "../../utils/formatHours.js";
 const Teamleader = () => {
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
-  const [colaboratorData,setColaboratorData] = useState([]);
+  const [colaboratorData, setColaboratorData] = useState([]);
+  const [message, setMessage] = useState(null);
   const [idMonth, setIdMonth] = useState([]);
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
 
-  
-  useEffect(() => {
-    async function loadingData() {
-      try {
-        //id do mês
-        const infoMonth = await employeeDataMonth(token);
-        await setIdMonth(infoMonth);
+  const loadData = async () => {
+    try {
+      const infoMonth = await employeeDataMonth(token);
+      setIdMonth(infoMonth);
 
-        // todas as horas extras do mês
-        const responseData = await employeeDataRecord(token, infoMonth?.id);
-        await setColaboratorData(responseData);
-        
-        // --------------------------
-        const userInformations = await getCurrentUser(token);
-        setUser(userInformations);
+      const responseData = await employeeDataRecord(token, infoMonth?.id);
+      setColaboratorData(responseData);
 
-        const dataUserTime = await getUserHours(token);
-        setDataTime(dataUserTime);
+      const userInformations = await getCurrentUser(token);
+      setUser(userInformations);
 
-      } catch (error) {
-        console.error(error);
-      }
+      const dataUserTime = await getUserHours(token);
+      setDataTime(dataUserTime);
+    } catch (error) {
+      console.error(error);
     }
+  };
 
+  useEffect(() => {
     if (token) {
-      loadingData();
+      loadData();
     }
   }, [token]);
-
   const handleCloseMoth = async () => {
-    e.preventDefault();
     setMessage(null);
-    try{
+
+    try {
       await closeMonth(token, idMonth?.id);
-      setMessage("");
-    }catch(e){
-      console.error(e.message);
-      setMessage("Informe o horário de saída!");
+
+      await loadData();
+
+      setMessage({
+        type: "success",
+        text: "Mês fechado com sucesso.",
+      });
+      return true;
+    } catch (error) {
+      console.error(error);
+
+      setMessage({
+        type: "error",
+        text: error.message || "Erro ao fechar o mês.",
+      });
+      
+      return false;
     }
   };
   return (
@@ -76,9 +88,10 @@ const Teamleader = () => {
         </ul>
 
         <div className="Leader-tables">
-          <TeamLeaderTable 
-          data={colaboratorData} 
-          handleCloseMoth={handleCloseMoth}
+          <TeamLeaderTable
+            data={colaboratorData}
+            handleCloseMoth={handleCloseMoth}
+            reloadData={loadData}
           />
         </div>
       </main>

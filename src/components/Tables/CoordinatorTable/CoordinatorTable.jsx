@@ -12,11 +12,11 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
         <h2>Resumo dos Colaboradores</h2>
 
         <div>
-          <button className="approved-btn" onClick={Approval} disabled={disabled}>
-            Aprovar
-          </button>
           <button className="rejected-btn" onClick={Rejected} disabled={disabled}>
             Rejeitar
+          </button>
+          <button className="approved-btn" onClick={Approval} disabled={disabled}>
+            Aprovar
           </button>
         </div>
       </div>

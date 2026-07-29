@@ -2,39 +2,63 @@ import React, { useRef, useState } from "react";
 //css
 import "./TeamLeaderTable.css";
 //Utils
-import { formatHours,formatDate } from "../../../utils/formatHours.js";
+import { formatHours, formatDate } from "../../../utils/formatHours.js";
 
 const TeamLeaderTable = ({ data, handleCloseMoth }) => {
   const dialogRef = useRef(null);
+  const dialogAlert = useRef(null)
   const [loading, setLoading] = useState(false);
 
   async function handleApprove() {
-    try {
-      setLoading(true);
-      await handleCloseMoth();
-      dialogRef.current.showModal();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
+  setLoading(true);
+  dialogAlert.current?.close();
+
+  try {
+    await handleCloseMoth();
+    dialogRef.current?.showModal();
+    setTimeout(() => {
+      dialogRef.current?.close();
+    }, 4000);
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao fechar o mês. Tente novamente."); 
+    
+  } finally {
+    setLoading(false);
+  }
+}
+  const closeDialog = () => {
+    dialogAlert.current?.close();
+  };
   return (
     <div className="Leader-main">
       <div className="Leader-title">
-        <h2>Registros de Horas Extras</h2>
+        <h2>Registros de Horas Extras do Mês</h2>
         <button
           className="btn"
-          onClick={handleApprove}
+          onClick={() => dialogAlert.current?.showModal()}
           disabled={loading}
         >
           {loading ? "Carregando..." : "Aprovar Fechamento"}
         </button>
 
+        <dialog ref={dialogAlert} className="close-dialog">
+          <h2>Deseja aprovar o fechamento do mês?</h2>
+          <p>Após confirmar, o período será enviado para aprovação.</p>
+          <div className="dialog-actions">
+            <button onClick={closeDialog} className="dialog-cancel-btn">
+              Cancelar
+            </button>
+            <button onClick={handleApprove} className="dialog-confirm-btn">
+              Aprovar
+            </button>
+          </div>
+        </dialog>
+
         <dialog ref={dialogRef}>
-          <h2>Fechamento Realizado</h2>
-          <h2>com Sucesso</h2>
+          <h2>Fechamento realizado com sucesso!</h2>
           <button onClick={() => dialogRef.current.close()}>
             Fechar
           </button>
@@ -64,8 +88,8 @@ const TeamLeaderTable = ({ data, handleCloseMoth }) => {
                   <td>{register.users.name}</td>
                   <td>{formatDate(register.overtime_records.work_date)}</td>
                   <td>{formatHours(totalHours)}</td>
-                  <td>{dayHours ? formatHours(dayHours) : "0"}</td>
-                  <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                  <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
+                  <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
                   <td>
                     {register.overtime_records.overtime_type_id === 1
                       ? <span className="status pending">50%</span>

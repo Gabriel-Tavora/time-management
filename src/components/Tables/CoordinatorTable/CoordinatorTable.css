@@ -43,7 +43,7 @@
 }
 
 .approved-btn {
-  background: #16a34a;
+  background: #4f46e5;
   border: 2px solid #15803d;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .Coordinator-table {
-  max-height: 350px;
+  max-height: 430px;
   overflow-y: auto;
 }
 
@@ -128,9 +128,15 @@
 
 .status {
   border: 2px solid black;
-  border-radius: 16px;
-  padding: 5px;
+  border-radius: 20px;
+  padding: 6px 12px;
   font-size: 1em;
+  text-align: center;
+}
+.pending {
+  background-color: rgba(245, 245, 0, 0.2);
+  border: 2px solid rgba(245, 245, 0, 0.9);
+  color: black;
 }
 
 .approved {

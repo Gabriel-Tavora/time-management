@@ -6,17 +6,19 @@ export function formatHours(decimalHours) {
 }
 
 // receber formatar hora extras UserScreen
-export function formatDate(hours_time_time) {
-  return new Date(hours_time_time).toLocaleDateString("pt-BR");
+export function formatDate(date) {
+  return new Date(date).toLocaleDateString("pt-BR", {
+    timeZone: "UTC",
+  });
 }
 
 // enviar formatar hora extras RegisterHour
 export function formatDataSend(workDate, time = null) {
-  const dateTime = time
-    ? `${workDate}T${time}:00`
-    : `${workDate}T00:00:00`;
+  if (time) {
+    return `${workDate}T${time}:00Z`;
+  }
 
-  return new Date(dateTime).toISOString();
+  return `${workDate}T00:00:00Z`;
 }
 
 //buscar horas do pc do usuário

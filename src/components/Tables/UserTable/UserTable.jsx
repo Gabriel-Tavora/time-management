@@ -49,8 +49,8 @@ const UserTable = ({ data }) => {
                   <td>{nightHours ? formatHours(nightHours) : "0"}</td>
                   <td>
                     {register.overtime_records.overtime_type_id === 1
-                      ? "50%"
-                      : "100%"}
+                      ? <span className="status pending">50%</span>
+                      : <span className="status approved">100%</span>}
                   </td>
                 </tr>
               );

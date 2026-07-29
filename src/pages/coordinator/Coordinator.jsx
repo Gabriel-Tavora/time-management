@@ -27,30 +27,29 @@ const Coordinator = () => {
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
 
-  useEffect(() => {
-    async function loadingData() {
-      try {
-        const closedList = await getClousedMonth(token);
-        setClosedData(closedList);
+  async function loadingData() {
+    try {
+      const closedList = await getClousedMonth(token);
+      setClosedData(closedList);
 
-        const currentClosure = closedList?.[0];
-        setIdMonth(currentClosure?.exercice_id);
+      const currentClosure = closedList?.[0];
+      setIdMonth(currentClosure?.exercice_id);
 
-        if (currentClosure?.id) {
-          const records = await getClousedMonthRecords(
-            token,
-            currentClosure.id,
-          );
-          setColaboratorData(records);
-        }
-
-        const userInformations = await getCurrentUser(token);
-        setUser(userInformations);
-      } catch (error) {
-        console.error(error);
+      if (currentClosure?.id) {
+        const records = await getClousedMonthRecords(
+          token,
+          currentClosure.id,
+        );
+        setColaboratorData(records);
       }
-    }
 
+      const userInformations = await getCurrentUser(token);
+      setUser(userInformations);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
     if (token) {
       loadingData();
     }

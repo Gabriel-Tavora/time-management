@@ -34,7 +34,13 @@
   gap: 12px;
   padding: 10px;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s ease;
+}
+
+.Leader-title button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .Leader-title .btn:hover {
@@ -56,8 +62,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
 }
+
 .Leader-title dialog::backdrop {
   background: rgba(0, 0, 0, .5);
 }
@@ -67,7 +74,7 @@
   border-radius: 12px;
 }
 
-.Leader-title dialog button {
+.Leader-title dialog > button {
   margin-top: 20px;
   width: 100%;
   padding: 10px 0px;
@@ -77,17 +84,17 @@
   background: #4f46e5;
   color: white;
   font-weight: bold;
-  transition: 0.3s;
+  transition: 0.3s ease;
   font-size: 1em;
 }
 
-.Leader-title dialog button:hover {
+.Leader-title dialog > button:hover {
   transform: scale(1.03);
   background: #4338ca;
 }
 
 .Leader-table {
-  max-height: 350px;
+  max-height: 430px;
   overflow-y: auto;
 }
 
@@ -121,7 +128,7 @@
 }
 
 .Leader-body tr {
-  transition: 0.2s;
+  transition: 0.3s ease;
 }
 
 .Leader-body tr:hover {
@@ -148,6 +155,7 @@
   border-radius: 20px;
   padding: 6px 12px;
   font-size: 1em;
+  text-align: center;
 }
 
 .pending {
@@ -160,4 +168,70 @@
   background-color: rgba(0, 255, 0, 0.2);
   border: 2px solid rgb(0, 216, 0);
   color: black;
+}
+
+/* close dialog */
+
+.close-dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+  align-self: center;
+  justify-self: center;
+  min-width: 320px;
+  text-align: center;
+  position: relative;
+}
+
+.close-dialog::backdrop {
+  background: rgba(0, 0, 0, .5);
+}
+
+.close-dialog h2 {
+  font-size: 1.1em;
+  margin: 12px 0 20px 0;
+  color: #1f2937;
+}
+
+.dialog-close-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.dialog-close-icon:hover {
+  color: #4b5563;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.dialog-actions button {
+  flex: 1;
+  padding: 10px 0px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+  transition: 0.3s ease;
+}
+
+
+.dialog-confirm-btn:hover {
+  transform: scale(1.03);
+  background: green;
+}
+
+.dialog-cancel-btn:hover {
+  transform: scale(1.03);
+  background: #abafb6;
 }

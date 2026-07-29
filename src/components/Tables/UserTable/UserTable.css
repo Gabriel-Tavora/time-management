@@ -43,7 +43,7 @@
 }
 
 .table-container {
-  max-height: 350px;
+  max-height: 430px;
   overflow-y: auto;
 }
 
@@ -97,4 +97,23 @@
 .main-register a:hover {
   color: #3b30af;
   text-decoration: underline;
+}
+
+.status {
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 1em;
+}
+
+.pending {
+  background-color: rgba(245, 245, 0, 0.2);
+  border: 2px solid rgba(245, 245, 0, 0.9);
+  color: black;
+}
+
+.approved {
+  background-color: rgba(0, 255, 0, 0.2);
+  border: 2px solid rgb(0, 216, 0);
+  color: black;
 }

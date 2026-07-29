@@ -62,21 +62,23 @@ export function useOvertimeRegistration({
 
       const records = await getUserHours(token);
 
-      const dayRecords = records
-        .map((record) => record.overtime_records)
-        .filter(
-          (record) => record.work_date?.slice(0, 10) === workDate
-        );
+      if (records) {
+        const dayRecords = records
+          .map((record) => record.overtime_records)
+          .filter(
+            (record) => record.work_date?.slice(0, 10) === workDate
+          );
+        if (isDuplicate(dayRecords, startTime, endTime)) {
+          showMessage("error", Messages.DUPLICATED);
+          return;
+        }
 
-      if (isDuplicate(dayRecords, startTime, endTime)) {
-        showMessage("error", Messages.DUPLICATED);
-        return;
+        if (hasTimeConflict(dayRecords, startTime, endTime)) {
+          showMessage("error", Messages.OVERLAP);
+          return;
+        }
       }
 
-      if (hasTimeConflict(dayRecords, startTime, endTime)) {
-        showMessage("error", Messages.OVERLAP);
-        return;
-      }
 
       const overtimeData = {
         work_date: formatDataSend(workDate),

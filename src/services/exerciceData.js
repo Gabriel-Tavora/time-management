@@ -41,6 +41,10 @@ export async function closeMonth(token, idExercice) {
   if (!response.ok) {
     throw new Error("Erro ao fechar o exercício");
   }
+  if (response.status === 204) {
+    return;
+  }
+  const text = await response.text();
 
-  return await response.json();
+  return text ? JSON.parse(text) : null;
 }
