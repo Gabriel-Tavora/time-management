@@ -65,7 +65,7 @@ const Login = () => {
             />
           </div>
 
-          <NavLink to="/FotgotPassword" className="forgot-pass">
+          <NavLink to="/ForgotPassword" className="forgot-pass">
             <span>Esqueceu a senha?</span>
           </NavLink>
 

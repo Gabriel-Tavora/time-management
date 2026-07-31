@@ -1,6 +1,7 @@
-import React from 'react'
+import React from 'react';
 //css
-import "./UserTable.css"
+import "./UserTable.css";
+import "../tables.css"
 import { FaPlus } from "react-icons/fa";
 //Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js"
@@ -14,8 +15,8 @@ const UserTable = ({ data }) => {
   };
   console.log(data);
   return (
-    <div className="main-register">
-      <div className="main-register-title">
+    <div className="table-page main-register">
+      <div className="table-header main-register-title">
         <h2>Registros de Horas Extras</h2>
 
         <button onClick={() => handleNavigate("/RegisterHours")}>
@@ -25,9 +26,9 @@ const UserTable = ({ data }) => {
 
       </div>
       <div className="table-container">
-        <table className="main-register-stats">
-          <thead className="main-register-stats-head">
-            <tr className="main-register-stats-head-tr">
+        <table className="app-table main-register-stats">
+          <thead>
+            <tr>
               <th>Data</th>
               <th>Horas Totais</th>
               <th>Horas Diurnas</th>
@@ -36,7 +37,7 @@ const UserTable = ({ data }) => {
             </tr>
           </thead>
 
-          <tbody className="main-register-stats-body">
+          <tbody >
             {data?.map((register) => {
               const totalHours = register.overtime_records.total_hours ?? 0;
               const nightHours = register.overtime_records.nigth_hours ?? 0;

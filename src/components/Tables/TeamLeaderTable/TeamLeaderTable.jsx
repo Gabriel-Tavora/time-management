@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 //css
 import "./TeamLeaderTable.css";
+import "../tables.css";
 //Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
 
@@ -11,24 +12,24 @@ const TeamLeaderTable = ({ data, handleCloseMoth }) => {
 
   async function handleApprove() {
 
-  setLoading(true);
-  dialogAlert.current?.close();
+    setLoading(true);
+    dialogAlert.current?.close();
 
-  try {
-    await handleCloseMoth();
-    dialogRef.current?.showModal();
-    setTimeout(() => {
-      dialogRef.current?.close();
-    }, 4000);
+    try {
+      await handleCloseMoth();
+      dialogRef.current?.showModal();
+      setTimeout(() => {
+        dialogRef.current?.close();
+      }, 4000);
 
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao fechar o mês. Tente novamente."); 
-    
-  } finally {
-    setLoading(false);
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao fechar o mês. Tente novamente.");
+
+    } finally {
+      setLoading(false);
+    }
   }
-}
   const closeDialog = () => {
     dialogAlert.current?.close();
   };
@@ -78,20 +79,22 @@ const TeamLeaderTable = ({ data, handleCloseMoth }) => {
             </tr>
           </thead>
 
-          <tbody className="Leader-body">
+          <tbody >
             {data?.map((register) => {
-              const totalHours = register.overtime_records.total_hours ?? 0;
-              const nightHours = register.overtime_records.nigth_hours ?? 0;
-              const dayHours = totalHours - nightHours;
+              const record = register.overtime_records;
+              const totalHours = record?.total_hours ?? 0;
+              const nightHours = record?.nigth_hours ?? 0;
+              const dayHours = Math.max(totalHours - nightHours, 0);
+
               return (
-                <tr key={register.overtime_records.id}>
-                  <td>{register.users.name}</td>
-                  <td>{formatDate(register.overtime_records.work_date)}</td>
+                <tr key={record?.id}>
+                  <td>{register.users?.name}</td>
+                  <td>{record?.work_date ? formatDate(record.work_date) : "-"}</td>
                   <td>{formatHours(totalHours)}</td>
                   <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
                   <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
                   <td>
-                    {register.overtime_records.overtime_type_id === 1
+                    {record?.overtime_type_id === 1
                       ? <span className="status pending">50%</span>
                       : <span className="status approved">100%</span>}
                   </td>

@@ -1,0 +1,116 @@
+
+.table-page {
+  display: grid;
+  padding: 25px;
+  gap: 30px;
+
+  width: 100%;
+  max-width: 65rem;
+
+  margin: 50px auto 0;
+
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+}
+
+/* Cabeçalho */
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-header h2 {
+  margin: 0;
+  color: #2d3748;
+}
+
+/* Scroll */
+
+.table-container {
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+/* table */
+
+.app-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 15px;
+}
+
+.app-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  padding: 14px 18px;
+
+  background: #4f46e5;
+  color: white;
+
+  text-align: center;
+  font-size: .95rem;
+  font-weight: 600;
+}
+
+.app-table td {
+  padding: 18px 24px;
+
+  border-bottom: 1px solid #eef2f8;
+
+  text-align: center;
+  font-size: .95rem;
+  color: #2d3748;
+}
+
+.app-table tbody tr {
+  transition: .2s;
+}
+
+.app-table tbody tr:hover {
+  background: #eef2ff;
+}
+
+.app-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+.table-page a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.table-page a:hover {
+  color: #3b30af;
+  text-decoration: underline;
+}
+
+
+.status {
+  display: inline-block;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+  border: 2px solid;
+
+  text-align: center;
+  font-size: 1rem;
+}
+
+.pending {
+  background: rgba(245,245,0,.2);
+  border-color: rgba(245,245,0,.9);
+}
+
+.approved {
+  background: rgba(0,255,0,.2);
+  border-color: rgb(0,216,0);
+}

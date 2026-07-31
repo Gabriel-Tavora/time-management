@@ -25,7 +25,7 @@ export async function getClousedMonth(token) {
     throw new Error(`${message} (status ${response.status})`);
   }
 
-  return response.json();
+  return await response.json();
 }
 
 export async function getClousedMonthRecords(token, idCloused) {
@@ -42,7 +42,7 @@ export async function getClousedMonthRecords(token, idCloused) {
     throw new Error(`${message} (status ${response.status})`);
   }
 
-  return response.json();
+  return await response.json();
 }
 
 async function updateMonthStatus(token, exerciceId, state) {
@@ -71,7 +71,59 @@ async function updateMonthStatus(token, exerciceId, state) {
 }
 
 export const closeApprovedMonth = (token, id) =>
-  updateMonthStatus(token, id, "PENDING_COORDINATOR_APPROVAL");
+  updateMonthStatus(token, id, "PENDING_MANAGER_APPROVAL");
 
 export const closeRejectedMonth = (token, id) =>
   updateMonthStatus(token, id, "REJECTED");
+
+
+// manager
+
+export async function getClousedMonthManager(token) {
+  const response = await fetch(`${API_URL}/cloused/menager`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const message = await parseErrorMessage(
+      response,
+      "Erro ao buscar dados"
+    );
+    throw new Error(`${message} (status ${response.status})`);
+  }
+  return response.json();
+}
+
+async function updateMonthStatusManager(token, exerciceId, state) {
+  console.log({
+    exercice_id: exerciceId,
+    state: state,
+  });
+  const response = await fetch(`${API_URL}/cloused/menager`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ exercice_id: exerciceId, state: state }),
+  });
+
+  if (!response.ok) {
+    const message = await parseErrorMessage(
+      response,
+      `Erro ao atualizar competência ${exerciceId} para o status "${state}"`
+    );
+    throw new Error(`${message} (status ${response.status})`);
+  }
+
+  return response.json();
+}
+
+export const closeApprovedMonthManager = (token, id) =>
+  updateMonthStatusManager(token, id, "APPROVED");
+
+export const closeRejectedMonthManager = (token, id) =>
+  updateMonthStatusManager(token, id, "REJECTED");

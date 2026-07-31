@@ -1,15 +1,15 @@
 import React from "react";
 //css
-import "./CoordinatorTable.css";
+import "./MenagerTable.css";
 import "../tables.css";
 //Utils
 import { formatHours } from "../../../utils/formatHours.js";
 import { formatDate } from "../../../utils/formatHours.js";
 
-const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
+const MenagerTable = ({ data, Approval, Rejected, disabled }) => {
   return (
-    <div className="table-page Coordinator-main">
-      <div className="table-header Coordinator-title">
+    <div className="table-page Manager-main">
+      <div className="table-header Manager-title">
         <h2>Resumo dos Colaboradores</h2>
 
         <div>
@@ -21,8 +21,8 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
           </button>
         </div>
       </div>
-      <div className="table-container Coordinator-table">
-        <table className="app-table Coordinator-stats">
+      <div className="table-container Manager-table">
+        <table className="app-table Manager-stats">
           <thead>
             <tr>
               <th>Colaborador</th>
@@ -34,14 +34,13 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody >
             {data?.map((register) => {
               const record = register.overtime_record;
 
               const totalHours = record?.total_hours ?? 0;
               const nightHours = record?.nigth_hours ?? 0;
               const dayHours = Math.max(totalHours - nightHours, 0);
-
               return (
                 <tr key={record?.id}>
                   <td>{register.users?.name}</td>
@@ -64,4 +63,4 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   );
 };
 
-export default CoordinatorTable;
+export default MenagerTable;

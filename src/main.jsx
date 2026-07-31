@@ -14,8 +14,8 @@ import PrivateRoute from "./context/privateRoutex.jsx";
 
 // Lazy Pages
 const Login = lazy(() => import("./pages/Auth/Login/Login.jsx"));
-const FotgotPassword = lazy(() =>
-  import("./pages/Auth/FotgotPassword/FotgotPassword.jsx")
+const ForgotPassword = lazy(() =>
+  import("./pages/Auth/ForgotPassword/ForgotPassword.jsx")
 );
 const UserScreen = lazy(() => import("./pages/user/UserScreen.jsx"));
 const RegisterHours = lazy(() =>
@@ -36,6 +36,10 @@ const Coordinator = lazy(() =>
   import("./pages/coordinator/Coordinator.jsx")
 );
 
+const Menager = lazy(() => 
+  import("./pages/Menager/Menager.jsx")
+);
+
 const SuperAdmin = lazy(() =>
   import("./pages/superAdmin/SuperAdmin.jsx")
 );
@@ -50,8 +54,8 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/FotgotPassword",
-    element: <FotgotPassword />,
+    path: "/ForgotPassword",
+    element: <ForgotPassword />,
   },
 
   {
@@ -100,6 +104,14 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <Coordinator />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Menager",
+    element: (
+      <PrivateRoute>
+        <Menager />
       </PrivateRoute>
     ),
   },

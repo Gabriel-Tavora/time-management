@@ -5,7 +5,7 @@ const ROLE_TO_EMPLOYEE = {
   6: "userscreen",
   7: "Teamleader",
   8: "Coordinator",
-  9: "Coordinator",
+  9: "Menager",
 };
 
 export function AuthProvider({ children }) {
@@ -31,7 +31,6 @@ export function AuthProvider({ children }) {
 
   const login = (id, token, role_id) => {
     const employeePage = ROLE_TO_EMPLOYEE[role_id] ?? null;
-
     setId(id);
     setToken(token);
     setRoleId(role_id);

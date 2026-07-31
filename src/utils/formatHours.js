@@ -4,7 +4,9 @@ export function formatHours(decimalHours) {
   const minutes = Math.round((decimalHours - hours) * 60);
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
-
+export function formatHousDay(time) {
+  return time.slice(11, 16);
+}
 // receber formatar hora extras UserScreen
 export function formatDate(date) {
   return new Date(date).toLocaleDateString("pt-BR", {
@@ -12,7 +14,7 @@ export function formatDate(date) {
   });
 }
 
-// enviar formatar hora extras RegisterHour
+// formatar data para enviar pelo RegisterHour
 export function formatDataSend(workDate, time = null) {
   if (time) {
     return `${workDate}T${time}:00Z`;

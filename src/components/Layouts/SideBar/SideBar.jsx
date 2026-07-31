@@ -25,7 +25,7 @@ function Sidebar() {
   const [user, setUser] = useState(null)
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout, token, employee } = useAuthValue();
+  const { logout, token, employee, roleId } = useAuthValue();
   const dialogRef = useRef(null);
 
   useEffect(() => {
@@ -66,20 +66,23 @@ function Sidebar() {
               {expanded && <span>Meu Painel</span>}
             </NavLink>
           </li>
+          {(roleId === 6 || roleId === 7) && (
+            <>
+              <li>
+                <NavLink to="/registerhours" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
+                  <FaClock />
+                  {expanded && <span>Registrar Horas Extras</span>}
+                </NavLink>
+              </li>
 
-          <li>
-            <NavLink to="/registerhours" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
-              <FaClock />
-              {expanded && <span>Registrar Horas Extras</span>}
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
-              <FaCalendarAlt />
-              {expanded && <span>Calendário</span>}
-            </NavLink>
-          </li>
+              <li>
+                <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
+                  <FaCalendarAlt />
+                  {expanded && <span>Calendário</span>}
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
 
         <NavLink to="/UserStats" className={({ isActive }) => (isActive ? "profile-on" : "profile")}>

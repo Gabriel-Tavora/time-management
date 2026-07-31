@@ -1,4 +1,4 @@
-.Coordinator-title div {
+.Manager-title div {
   display: flex;
   gap: 25px;
 }
@@ -21,7 +21,7 @@
 
 .approved-btn {
   background: #4f46e5;
-  border: 2px solid #352ec0;
+  border: 2px solid #15803d;
 }
 
 .rejected-btn {
@@ -32,7 +32,7 @@
 .approved-btn:hover {
   transform: translateY(-3px);
   filter: brightness(1.05);
-   box-shadow: 0 10px 15px #4e46e582;
+  box-shadow: 0 10px 15px #4e46e582;
 }
 
 .rejected-btn:hover {
