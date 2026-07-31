@@ -20,20 +20,16 @@ import { getCurrentDate } from "../../utils/formatHours.js";
 
 const Menager = () => {
   const [user, setUser] = useState(null);
-  const [closedData, setClosedData] = useState([]);
   const [colaboratorData, setColaboratorData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [idMonth, setIdMonth] = useState(null);
+  const [closedMonth, setClosedMonth] = useState(null);
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
 
   async function loadingData() {
     try {
       const closedList = await getClousedMonthManager(token);
-      console.log(closedList)
-      
-      setClosedData(closedList.id);
-      setIdMonth(closedList?.exercice_id);
+      setClosedMonth(closedList);
 
       if (closedList?.id) {
         const records = await getClousedMonthRecords(
@@ -42,7 +38,6 @@ const Menager = () => {
         );
         setColaboratorData(records);
       }
-
       const userInformations = await getCurrentUser(token);
       setUser(userInformations);
     } catch (error) {
@@ -56,14 +51,15 @@ const Menager = () => {
   }, [token]);
 
   const Approval = async () => {
-    if (!idMonth || isSubmitting) return;
+    if (!closedMonth || isSubmitting) return;
+
     setIsSubmitting(true);
 
     try {
-      await closeApprovedMonthManager(token, idMonth);
-      setClosedData((prev) => prev.filter((c) => c.id !== idMonth));
+      await closeApprovedMonthManager(token, closedMonth.exercice_id);
+
+      setClosedMonth(null);
       setColaboratorData([]);
-      setIdMonth(null);
     } catch (e) {
       console.error(e.message);
     } finally {
@@ -72,10 +68,19 @@ const Menager = () => {
   };
 
   const Rejected = async () => {
+    if (!closedMonth || isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
-      await closeRejectedMonthManager(token, idMonth);
+      await closeRejectedMonthManager(token, closedMonth.exercice_id);
+
+      setClosedMonth(null);
+      setColaboratorData([]);
     } catch (e) {
       console.error(e.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -95,7 +100,7 @@ const Menager = () => {
             data={colaboratorData}
             Approval={Approval}
             Rejected={Rejected}
-            disabled={!idMonth}
+            disabled={!closedMonth?.exercice_id}
           />
         </div>
       </main>

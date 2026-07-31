@@ -46,10 +46,6 @@ export async function getClousedMonthRecords(token, idCloused) {
 }
 
 async function updateMonthStatus(token, exerciceId, state) {
-  console.log({
-    exercice_id: exerciceId,
-    state: state,
-  });
   const response = await fetch(`${API_URL}/cloused`, {
     method: "POST",
     headers: {
@@ -98,10 +94,6 @@ export async function getClousedMonthManager(token) {
 }
 
 async function updateMonthStatusManager(token, exerciceId, state) {
-  console.log({
-    exercice_id: exerciceId,
-    state: state,
-  });
   const response = await fetch(`${API_URL}/cloused/menager`, {
     method: "PATCH",
     headers: {
@@ -118,7 +110,7 @@ async function updateMonthStatusManager(token, exerciceId, state) {
     );
     throw new Error(`${message} (status ${response.status})`);
   }
-
+  console.log(response)
   return response.json();
 }
 
