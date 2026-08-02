@@ -11,6 +11,7 @@
   align-items: center;
   gap: 12px;
   transition: .3s;
+  font-weight: bold;
 }
 
 .main-register-title button:hover {

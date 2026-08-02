@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { FaEnvelope, FaLock } from "react-icons/fa";
 //services
 import { login as apiLogin } from "../../../services/login.js";
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 //css
 import "./Login.css";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+//components
+import AnalogClock from "../../../components/Layouts/AnalogClock/AnalogClock.jsx";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,7 +29,9 @@ const Login = () => {
         navigate(`/${employeePage}`);
       } else {
         console.warn("Nenhuma página mapeada para este usuário.");
-        alert("Não foi possível determinar seu painel de acesso. Contate o suporte.");
+        alert(
+          "Não foi possível determinar seu painel de acesso. Contate o suporte.",
+        );
       }
     } catch (error) {
       console.error(error);
@@ -39,8 +43,17 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <section className="login-section">
-        <h1>Login</h1>
+      <div className="background-clock">
+        <AnalogClock />
+      </div>
+      <section className="login-card">
+        <div className="login-header">
+          <h1>
+            <span>Login</span>
+          </h1>
+
+          <p>Insira seus Dados</p>
+        </div>
 
         <form onSubmit={handleLogin}>
           <div className="input-group">
@@ -50,7 +63,6 @@ const Login = () => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </div>
 
@@ -58,20 +70,17 @@ const Login = () => {
             <FaLock className="input-icon" />
             <input
               type="password"
-              placeholder="Senha"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </div>
 
-          <NavLink to="/ForgotPassword" className="forgot-pass">
-            <span>Esqueceu a senha?</span>
-          </NavLink>
+          <div className="login-options">
+            <NavLink to="/ForgotPassword">Esqueceu a Senha?</NavLink>
+          </div>
 
-          <button type="submit" disabled={submitting}>
-            {submitting ? "Carregando..." : "Entrar"}
-          </button>
+          <button type="submit">Entrar</button>
         </form>
       </section>
     </div>

@@ -1,16 +1,27 @@
+/* Layout */
+
 .calendary-menu {
   display: flex;
   min-height: 100vh;
-  background: #eef2f8;
+
+  background:
+    radial-gradient(circle at 15% 15%, rgba(124, 92, 255, .18), transparent 35%),
+    radial-gradient(circle at 85% 10%, rgba(37, 99, 235, .18), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(96, 165, 250, .12), transparent 45%),
+    linear-gradient(135deg, #050816 0%, #0b1023 35%, #141b3a 100%);
 }
 
 .calendary-page {
   flex: 1;
+
   display: flex;
   flex-direction: column;
-  padding: 35px 70px;
   gap: 25px;
+
+  padding: 35px 70px;
 }
+
+/* Header */
 
 .calendar-header {
   display: flex;
@@ -19,109 +30,174 @@
 }
 
 .calendar-header h1 {
-  color: #2d3748;
   margin: 0;
+
+  color: #fff;
   font-size: 2.2rem;
+
+  text-shadow: 0 0 20px rgba(124, 92, 255, .2);
 }
 
 .calendar-header h2 {
   margin-top: 5px;
-  color: #666;
+
+  color: #bfc7e6;
+
   text-transform: capitalize;
 }
 
+/* Botão */
+
 .month-btn {
-  width: 45px;
-  height: 45px;
+  width: 48px;
+  height: 48px;
+
   border: none;
   border-radius: 50%;
-  background: #4f46e5;
-  color: white;
+
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+
+  color: #fff;
+
   cursor: pointer;
+
   font-size: 1.1rem;
-  transition: .3s;
+
+  transition: .35s;
 }
 
 .month-btn:hover {
-  transform: scale(1.08);
-  background: #4338ca;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 30px rgba(80, 110, 255, .4);
 }
+
+/* Semana */
 
 .week-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+
   gap: 15px;
 }
 
 .week-days h3 {
-  text-align: center;
-  padding: 15px;
   margin: 0;
-  color: white;
-  background: #4f46e5;
-  border-radius: 10px;
+  padding: 15px;
+
+  text-align: center;
+
+  color: #fff;
+
+  border-radius: 16px;
+
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+
+  box-shadow:
+    0 8px 20px rgba(80, 110, 255, .2);
 }
+
+/* Calendário */
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 120px;
+
   gap: 15px;
 }
 
+/* Dia */
+
 .day {
-  border: none;
-  border-radius: 15px;
-  background: white;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: bold;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 12px;
-  transition: .25s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+
+  padding: 14px;
+
+  border: 1px solid rgba(124, 92, 255, .18);
+  border-radius: 20px;
+
+  background: rgba(12, 18, 45, .65);
+  backdrop-filter: blur(20px);
+
+  color: #fff;
+
+  font-size: 1.05rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .35s;
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, .25),
+    inset 0 0 0 1px rgba(255, 255, 255, .03);
 }
 
 .day:hover {
-  transform: translateY(-5px);
-  background: #eef2ff;
-  box-shadow: 0 8px 20px rgba(152, 151, 192, 0.2);
+  transform: translateY(-4px);
+
+  border-color: rgba(124, 92, 255, .45);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, .35),
+    0 0 20px rgba(124, 92, 255, .15);
 }
 
+/* Hoje */
+
 .today {
-  background: #4f46e5;
-  color: white;
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+
+  border-color: transparent;
 }
 
 .today:hover {
-  background: #4338ca;
+  box-shadow:
+    0 15px 35px rgba(80, 110, 255, .45);
 }
+
+/* Vazio */
 
 .empty {
   background: transparent;
+
+  border: none;
+
   box-shadow: none;
+
   cursor: default;
 }
 
 .empty:hover {
   transform: none;
+
   background: transparent;
+
+  box-shadow: none;
 }
 
+/* Hora Extra */
+
 .overtime-day {
-  background: #22c55e;
-  color: white;
-  font-weight: bold;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+
+  border-color: transparent;
+
+  color: #fff;
 }
 
 .overtime-day:hover {
-  background: #16a34a;
+  box-shadow:
+    0 15px 35px rgba(34, 197, 94, .35);
 }
 
-@media (max-width: 900px) {
+/* Responsivo */
 
+@media (max-width: 900px) {
   .calendary-page {
     padding: 20px;
   }
@@ -137,5 +213,4 @@
   .calendar-header h2 {
     font-size: 1rem;
   }
-
 }

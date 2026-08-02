@@ -1,40 +1,79 @@
 .main-header {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
 }
 
 .main-header-title {
-  margin: 50px 0px 0px 50px;
+  margin: 50px 0 0 50px;
 }
 
 .main-header-title h1 {
-  color: #2d3748;
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 25px rgba(124, 92, 255, 0.18);
 }
 
 .main-header-title p {
-  color: #666;
-  margin-top: 5px;
+  margin-top: 10px;
+  color: #bfc7e6;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .main-header-time {
-  display: flex;
-  gap: 15px;
-  margin: 0px 0px 20px 50px;
+  display: inline-flex;
   align-items: center;
-  color: #4f46e5;
-  font-weight: 600;
+  gap: 14px;
+  width: fit-content;
+  margin: 0 0 25px 50px;
+  padding: 14px 22px;
+  border-radius: 18px;
+  background: rgba(12, 18, 45, 0.65);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(124, 92, 255, 0.25);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(124, 92, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  transition:
+    border-color .35s ease,
+    box-shadow .35s ease,
+    transform .35s ease;
+}
+
+.main-header-time:hover {
+  border-color: rgba(124, 92, 255, 0.45);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(124, 92, 255, 0.2);
 }
 
 .main-header-time h2 {
-  color: #2d3748;
-  text-transform: capitalize;
   margin: 0;
+
+  color: #ffffff;
+
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  text-transform: capitalize;
+}
+
+.main-header-time p,
+.main-header-time span {
+  color: #bfc7e6;
 }
 
 .main-header-time svg {
   font-size: 22px;
-  color: #4f46e5;
+  color: #7c5cff;
+  filter: drop-shadow(0 0 10px rgba(124, 92, 255, 0.4));
 }

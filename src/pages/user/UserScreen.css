@@ -1,40 +1,77 @@
 .user-screen {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(124, 92, 255, 0.18),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(37, 99, 235, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(96, 165, 250, 0.12),
+      transparent 45%
+    ),
+    linear-gradient(135deg, #050816 0%, #0b1023 35%, #141b3a 100%);
 }
 
 .main-informations {
+  position: relative;
   flex: 1;
-  padding: 20px;
-  list-style-type: none;
-  background: #eef2f8;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+.main-informations::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 30% 80%,
+      rgba(139, 92, 246, 0.12),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(59, 130, 246, 0.12),
+      transparent 30%
+    );
 }
 
 .main-menu {
+  position: relative;
+  z-index: 2;
   display: grid;
-  counter-reset: grid-counter;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 230px));
   justify-content: center;
-  gap: 15px;
+  list-style: none;
 }
 
 .main-menu li {
   display: flex;
-  width: 260px;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 14px;
-  border-radius: 15px;
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  justify-content: center;
+  width: 260px;
+  min-height: 10px;
+  padding: 10px;
+  color: rgb(85, 130, 255);
+  padding: 14px 22px;
+  border-radius: 18px;
+  background: rgba(12, 18, 45, 0.65);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(124, 92, 255, 0.25);
+  border-color: rgba(124, 92, 255, 0.45);
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(124, 92, 255, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    
+
 }
-
-
-.main-menu li h2 {
-  color: #4f46e5;
-  font-size: 1.2rem;
-  margin: 0;
-}
-
