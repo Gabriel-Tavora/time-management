@@ -47,14 +47,11 @@ const ForgotPassword = () => {
     e.preventDefault();
     setMessage(null);
     setLoading(true);
-
     try {
       await sendEmail(email.trim());
-
       showSuccess(
         "Se o email existir, você receberá um código para redefinir sua senha."
       );
-
       setStep(STEPS.PASSWORD);
     } catch (err) {
       showError(
@@ -69,21 +66,15 @@ const ForgotPassword = () => {
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
     setMessage(null);
-
     if (password !== confirmPassword) {
       showError("As senhas não coincidem.");
       return;
     }
-
     setLoading(true);
-
     try {
       await resetPassword(code.trim(), password);
-
       setAttempts(0);
-
       showSuccess("Senha redefinida com sucesso.");
-
       setTimeout(() => navigate("/"), 2000);
     } catch (err) {
       const newAttempts = attempts + 1;
@@ -93,13 +84,11 @@ const ForgotPassword = () => {
         showError(
           "Você excedeu o número máximo de tentativas. Reinicie o processo."
         );
-
         setAttempts(0);
         setPassword("");
         setConfirmPassword("");
         setCode("");
         setStep(STEPS.EMAIL);
-
         return;
       }
 

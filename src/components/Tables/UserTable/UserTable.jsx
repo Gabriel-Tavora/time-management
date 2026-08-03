@@ -22,18 +22,22 @@ const UserTable = ({ data, closureStatus }) => {
       <ul className="menu-information">
         <li>
           <h1>Total de Horas Extras</h1>
-          <h3>{formatHours(summary.totalHours)}</h3>
+          <h3 className="time">{formatHours(summary.totalHours)}</h3>
         </li>
         <li>
           <h1>Total de Horas Noturnas</h1>
-          <h3>{formatHours(summary.totalNightHours)}</h3>
+          <h3 className="night">{formatHours(summary.totalNightHours)}</h3>
         </li>
         <li>
           <h1>Status do Fechamento</h1>
-          <h3>{closureStatus ?? "—"}</h3>
+          {data ? (
+            <h3 className="status pending">Pending</h3>
+          ) : (
+            <h3 className="status approved">Approved</h3>
+          )}
         </li>
       </ul>
-      
+
       <div className="table-page main-register">
         <div className="table-header main-register-title">
           <h2>Registros de Horas Extras</h2>

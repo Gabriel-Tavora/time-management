@@ -1,18 +1,38 @@
-
-.Leader-title button {
-  width: 200px;
-  border: none;
-  border-radius: 10px;
-  background-color: #4f46e5;
-  color: white;
-  font-weight: bold;
+.menu-information {
+  position: relative;
+  z-index: 2;
   display: flex;
-  align-items: center;
   justify-content: center;
+  list-style: none;
+  gap: 50px;
+}
+
+/* Botão */
+.Leader-title button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  padding: 12px;
   gap: 12px;
-  padding: 10px;
+  border: 1px solid rgba(var(--accent-rgb), .45);
+  border-radius: var(--radius-md);
+  background: var(--gradient-accent);
+  color: #fff;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    filter .35s ease;
+}
+
+.Leader-title button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 12px 35px rgba(var(--glow-rgb), .45),
+    0 0 20px rgba(var(--accent-rgb), .25);
 }
 
 .Leader-title button:disabled {
@@ -21,93 +41,50 @@
   transform: none;
 }
 
-.Leader-title .btn:hover {
-  background-color: #4338ca;
-  transform: scale(1.03);
-}
-
-
-.Leader-title dialog {
-  border: none;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
-  align-self: center;
-  justify-self: center;
-}
-
-.Leader-title dialog[open] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-}
-
-.Leader-title dialog::backdrop {
-  background: rgba(0, 0, 0, .5);
-}
-
-.Leader-title dialog h2 {
-  padding: 3px;
-  border-radius: 12px;
-}
-
-.Leader-title dialog > button {
-  margin-top: 20px;
-  width: 100%;
-  padding: 10px 0px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background: #4f46e5;
-  color: white;
-  font-weight: bold;
-  transition: 0.3s ease;
-  font-size: 1em;
-}
-
-.Leader-title dialog > button:hover {
-  transform: scale(1.03);
-  background: #4338ca;
-}
-
-
+/* Dialog */
 .close-dialog {
-  border: none;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+  border: 1px solid rgba(var(--accent-rgb), .25);
+  border-radius: var(--radius-lg);
+  padding: 25px;
+  background: rgba(var(--glass-tint), .85);
+  backdrop-filter: blur(25px);
+  color: #fff;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, .45),
+    0 0 30px rgba(var(--accent-rgb), .2);
   align-self: center;
   justify-self: center;
-  min-width: 320px;
-  text-align: center;
-  position: relative;
-}
-
-.close-dialog::backdrop {
-  background: rgba(0, 0, 0, .5);
 }
 
 .close-dialog h2 {
-  font-size: 1.1em;
-  margin: 12px 0 20px 0;
-  color: #1f2937;
+  margin: 12px 0 20px;
+  color: #fff;
+  font-size: 1.1rem;
 }
 
-.dialog-close-icon {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  font-size: 20px;
-  color: #9ca3af;
+
+/* Botão interno do dialog */
+.close-dialog button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: 0.3s ease;
+  background: var(--gradient-accent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: .35s;
 }
 
-.dialog-close-icon:hover {
-  color: #4b5563;
+.close-dialog button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(var(--glow-rgb), .4);
 }
 
+
+/* Ações */
 .dialog-actions {
   display: flex;
   gap: 12px;
@@ -116,22 +93,22 @@
 
 .dialog-actions button {
   flex: 1;
-  padding: 10px 0px;
+  padding: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-weight: bold;
-  font-size: 1em;
-  transition: 0.3s ease;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: .35s;
 }
 
-
-.dialog-confirm-btn:hover {
-  transform: scale(1.03);
-  background: green;
+.dialog-cancel-btn {
+  background: rgba(255, 255, 255, .08);
+  color: #bfc7e6;
 }
 
 .dialog-cancel-btn:hover {
-  transform: scale(1.03);
-  background: #abafb6;
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, .15);
 }

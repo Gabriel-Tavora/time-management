@@ -25,9 +25,9 @@ function Sidebar() {
   const [user, setUser] = useState(null)
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout, token, employee, roleId } = useAuthValue();
   const dialogRef = useRef(null);
-
+  const { logout, token, employee, roleId } = useAuthValue();
+  
   useEffect(() => {
     const getData = async () => {
       const data = await getCurrentUser(token);

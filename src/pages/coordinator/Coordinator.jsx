@@ -5,6 +5,7 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import CoordinatorTable from "../../components/Tables/CoordinatorTable/CoordinatorTable.jsx";
 // CSS
 import "./Coordinator.css";
+import "../../styles/global.css"
 //Context
 import { useAuthValue } from "../../context/TokenContext";
 // Services
@@ -70,6 +71,7 @@ const Coordinator = () => {
       setIsSubmitting(false);
     }
   };
+
   const Rejected = async () => {
     try {
       await closeRejectedMonth(token, idMonth);
@@ -78,7 +80,7 @@ const Coordinator = () => {
     }
   };
   return (
-    <div className="Coordinator-screen">
+    <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
         <DashboardHeader user={user} formatted={formatted} />

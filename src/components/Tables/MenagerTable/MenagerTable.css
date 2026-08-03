@@ -1,48 +1,95 @@
-.Manager-title div {
+/* ============================
+   AÇÕES
+============================ */
+
+.Manager-title div{
   display: flex;
   gap: 25px;
 }
 
+
+/* ============================
+   BOTÕES DE AÇÃO
+============================ */
+
 .approved-btn,
 .rejected-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 200px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: bold;
+  height: 40px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  color: #fff;
+
+  font-size: .95rem;
+  font-weight: 700;
+
   cursor: pointer;
+
   transition:
-    transform .25s ease,
-    box-shadow .25s ease,
-    filter .25s ease;
+    transform .35s ease,
+    box-shadow .35s ease,
+    filter .35s ease;
 }
+
+
+/* ============================
+   APROVAR
+============================ */
 
 .approved-btn {
-  background: #4f46e5;
-  border: 2px solid #15803d;
+  background: var(--gradient-success);
+
+  border-color: rgba(var(--success-rgb), .35);
+
+  box-shadow:
+    0 8px 25px rgba(var(--success-rgb), .2),
+    inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
-.rejected-btn {
-  background: #ff00008a;
-  border: 2px solid #dc2626a5;
-}
 
 .approved-btn:hover {
   transform: translateY(-3px);
+
   filter: brightness(1.05);
-  box-shadow: 0 10px 15px #4e46e582;
+
+  box-shadow:
+    0 12px 35px rgba(var(--success-rgb), .45),
+    0 0 20px rgba(var(--success-rgb), .25);
 }
+
+
+/* ============================
+   REJEITAR
+============================ */
+
+.rejected-btn {
+  background: var(--danger-gradient);
+
+  border-color: rgba(var(--danger-rgb), .45);
+
+  box-shadow:
+    0 8px 25px rgba(var(--danger-rgb), .2),
+    inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
 
 .rejected-btn:hover {
   transform: translateY(-3px);
+
   filter: brightness(1.05);
-  box-shadow: 0 10px 15px rgba(239, 68, 68, .35);
+
+  box-shadow:
+    0 12px 35px rgba(var(--danger-rgb), .45),
+    0 0 20px rgba(var(--danger-rgb), .25);
 }
 
 .approved-btn:active,
 .rejected-btn:active {
-  transform: translateY(1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
+  transform: scale(.97);
 }

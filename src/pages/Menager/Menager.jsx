@@ -5,6 +5,7 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import MenagerTable from "../../components/Tables/MenagerTable/MenagerTable.jsx"
 // CSS
 import "./Menager.css";
+import "../../styles/global.css"
 //Context
 import { useAuthValue } from "../../context/TokenContext.jsx";
 // Services
@@ -84,7 +85,7 @@ const Menager = () => {
     }
   };
   return (
-    <div className="Manager-screen">
+    <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
         <DashboardHeader user={user} formatted={formatted} />

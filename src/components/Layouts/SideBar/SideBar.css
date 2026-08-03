@@ -80,29 +80,20 @@
 .toggle-btn {
   width: 58px;
   height: 38px;
-
   margin: 10px 10px 15px;
-
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, .08);
   border-radius: 12px;
-
-  background: rgba(255,255,255,.04);
-
+  background: rgba(255, 255, 255, .04);
   color: #bfc7e6;
-
   cursor: pointer;
-
-  transition:
-    .35s ease;
+  transition: 0.5s ease;
 }
 
 .toggle-btn:hover {
-  background: linear-gradient(90deg,#7c3aed,#2563eb);
-
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
   color: #fff;
-
   box-shadow:
-    0 0 20px rgba(124,92,255,.35);
+    0 0 20px rgba(124, 92, 255, .35);
 }
 
 .sidebar.open .toggle-btn {
@@ -143,19 +134,17 @@
 
 .menu-link-list-on {
   color: #fff;
-  background: linear-gradient(
-    90deg,
-    rgba(124,58,237,.22),
-    rgba(37,99,235,.22)
-  );
-  border: 1px solid rgba(124,92,255,.3);
+  background: linear-gradient(90deg,
+      rgba(124, 58, 237, .22),
+      rgba(37, 99, 235, .22));
+  border: 1px solid rgba(124, 92, 255, .3);
   box-shadow:
-    0 0 20px rgba(124,92,255,.15);
+    0 0 20px rgba(124, 92, 255, .15);
 }
 
 .menu-link-list-off:hover,
 .menu-link-list-on:hover {
-  background: rgba(255,255,255,.05);
+  background: rgba(255, 255, 255, .05);
   color: #fff;
 }
 
@@ -191,19 +180,17 @@
 }
 
 .profile:hover {
-  background: rgba(255,255,255,.05);
+  background: rgba(255, 255, 255, .05);
 }
 
 .profile-on {
   color: #fff;
 
-  background: linear-gradient(
-    90deg,
-    rgba(124,58,237,.2),
-    rgba(37,99,235,.2)
-  );
+  background: linear-gradient(90deg,
+      rgba(124, 58, 237, .2),
+      rgba(37, 99, 235, .2));
 
-  border: 1px solid rgba(124,92,255,.25);
+  border: 1px solid rgba(124, 92, 255, .25);
 }
 
 .profile-icon {
@@ -248,8 +235,8 @@
   gap: 12px;
   width: 100%;
   padding: 15px;
-  border: 1px solid rgba(255,255,255,.06);
-  border-color: rgba(220,38,38,.20);
+  border: 1px solid rgba(255, 255, 255, .06);
+  border-color: rgba(220, 38, 38, .20);
   background: rgba(255, 0, 0, 0.10);
   border-radius: 16px;
   color: #ff6c6c;
@@ -260,9 +247,9 @@
 
 .menu-link:hover {
   background: rgba(255, 0, 0, 0.15);
-  border-color: rgba(220,38,38,.25);
+  border-color: rgba(220, 38, 38, .25);
   box-shadow:
-    0 0 20px rgba(220,38,38,.15);
+    0 0 20px rgba(220, 38, 38, .15);
 }
 
 .leave-icon {
@@ -279,18 +266,18 @@
   align-self: center;
   min-width: 340px;
   padding: 30px;
-  border: 1px solid rgba(124,92,255,.25);
+  border: 1px solid rgba(124, 92, 255, .25);
   border-radius: 24px;
-  background: rgba(12,18,45,.88);
+  background: rgba(12, 18, 45, .88);
   backdrop-filter: blur(24px);
   box-shadow:
-    0 20px 60px rgba(0,0,0,.45),
-    0 0 30px rgba(124,92,255,.18);
+    0 20px 60px rgba(0, 0, 0, .45),
+    0 0 30px rgba(124, 92, 255, .18);
   text-align: center;
 }
 
 .logout-dialog::backdrop {
-  background: rgba(4,8,20,.65);
+  background: rgba(4, 8, 20, .65);
   backdrop-filter: blur(6px);
 }
 
@@ -345,26 +332,26 @@
 .dialog-confirm-btn {
   color: #fff;
 
-  background: linear-gradient(90deg,#7c3aed,#2563eb);
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
 }
 
 .dialog-confirm-btn:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 10px 30px rgba(80,110,255,.45);
+    0 10px 30px rgba(80, 110, 255, .45);
 }
 
 .dialog-cancel-btn {
   color: #fff;
 
-  background: rgba(255,255,255,.06);
+  background: rgba(255, 255, 255, .06);
 
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, .08);
 }
 
 .dialog-cancel-btn:hover {
-  background: rgba(255,255,255,.1);
+  background: rgba(255, 255, 255, .1);
 }
 
 /* ===========================

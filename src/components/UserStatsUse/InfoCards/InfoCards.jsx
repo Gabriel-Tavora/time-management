@@ -5,26 +5,32 @@ import "./InfoCards.css";
 import { getCurrentUser } from "../../../services/userData.js";
 //context
 import { useAuthValue } from "../../../context/TokenContext";
-const InfoCards = () => {
+const InfoCards = ({ onEmailLoaded }) => {
   const [user, setUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [userError, setUserError] = useState(null);
   const { token } = useAuthValue();
 
-  useEffect(() => {
-    async function loadingData() {
-      setIsLoadingUser(true);
-      setUserError(null);
-      try {
-        const data = await getCurrentUser(token);
-        setUser(data);
-      } catch (e) {
-        console.error(e);
-        setUserError("Não foi possível carregar seus dados. Tente novamente.");
-      } finally {
-        setIsLoadingUser(false);
-      }
+  async function loadingData() {
+    setIsLoadingUser(true);
+    setUserError(null);
+    try {
+      const data = await getCurrentUser(token);
+      setUser(data);
+    } catch (e) {
+      console.error(e);
+      setUserError("Não foi possível carregar seus dados. Tente novamente.");
+    } finally {
+      setIsLoadingUser(false);
     }
+  }
+  useEffect(() => {
+    if (user?.email) {
+      onEmailLoaded?.(user.email);
+    }
+  }, [user, onEmailLoaded]);
+
+  useEffect(() => {
     if (token) {
       loadingData();
     }
