@@ -51,7 +51,7 @@ const NotFound = lazy(() =>
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <UserStats />,
+    element: <Login />,
   },
   {
     path: "/ForgotPassword",

@@ -44,13 +44,15 @@
       transparent 30%
     );
 }
-
 .main-menu {
   position: relative;
   z-index: 2;
   display: grid;
   justify-content: center;
   list-style: none;
+
+  margin-top: -90px; /* sobe o bloco */
+  margin-bottom: 60px;
 }
 
 .main-menu li {
@@ -72,6 +74,4 @@
     0 20px 45px rgba(0, 0, 0, 0.35),
     0 0 30px rgba(124, 92, 255, 0.2),
     inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-    
-
 }

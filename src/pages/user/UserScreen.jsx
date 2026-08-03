@@ -27,10 +27,9 @@ const UserScreen = () => {
       try {
         const userInformations = await getCurrentUser(token);
         setUser(userInformations);
-        
+
         const dataUserTime = await getUserHours(token);
         setDataTime(dataUserTime);
-        
       } catch (error) {
         console.error(error);
       }
@@ -45,12 +44,15 @@ const UserScreen = () => {
     <div className="user-screen">
       <Sidebar />
       <main className="main-informations">
-        <DashboardHeader user={user} formatted={formatted} />
-        <ul className="main-menu">
-          <li>
-            <h2>Usuário</h2>
-          </li>
-        </ul>
+        <div>
+          <DashboardHeader user={user} formatted={formatted} />
+          <ul className="main-menu">
+            <li>
+              <h2>Usuário</h2>
+            </li>
+          </ul>
+        </div>
+
         <UserTable data={dataTime} />
       </main>
     </div>
