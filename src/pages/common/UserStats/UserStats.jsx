@@ -1,88 +1,71 @@
-import React, { useEffect, useState, useRef } from "react";
-// Components
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
-// CSS
+import { usePasswordReset } from "../../../hooks/usePasswordReset";
+import { useTheme } from "../../../hooks/useTheme";
 import "./UserStats.css";
-import "../../../styles/global.css"
-import { FaEnvelope, FaKey, FaLock } from "react-icons/fa";
+import "../../../styles/global.css";
+import { FaKey, FaLock } from "react-icons/fa";
 import { FiSun, FiMoon } from "react-icons/fi";
-//services
-import { resetPassword, sendEmail } from '../../../services/login';
-//hooks
-import { ResetPassword } from "../../../hooks/useResetPassword"
+
 const UserStats = () => {
-  const { email,
+  const navigate = useNavigate();
+  const confirmDialogRef = useRef(null);
+  const formDialogRef = useRef(null);
+  const { theme, toggle, isDark } = useTheme();
+
+  const {
+    email,
     setEmail,
     code,
     setCode,
     password,
     setPassword,
+    confirmPassword,
+    setConfirmPassword,
     loading,
-    setLoading,
     message,
-    setMessage,
-    theme,
-    setTheme,
-    attempts,
-    setAttempts, } = ResetPassword()
+    resetForm,
+    sendCode,
+    submitPassword,
+    cleanup,
+  } = usePasswordReset({
+    maxAttempts: 3,
+    onSuccess: () => navigate("/"),
+  });
 
-  const { refEmail, refPassword } = useRef(null);
-  
-  const handleEmail = async () => {
-    if (email) {
-      refEmail.current?.showModal()
-      sendEmail(email);
-    }
-  }
-  const handlePassword = () => {
-    resetPassword(code)
-  }
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  React.useEffect(() => cleanup, [cleanup]);
 
-  const handleSubmitPassword = async (e) => {
-    e.preventDefault();
-    setMessage(null);
-    if (password !== confirmPassword) {
-      showError("As senhas não coincidem.");
-      return;
-    }
-    setLoading(true);
-    try {
-      await resetPassword(code.trim(), password);
-      setAttempts(0);
-      showSuccess("Senha redefinida com sucesso.");
-      setTimeout(() => navigate("/"), 2000);
-    } catch (err) {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
+  const handleOpenConfirm = () => {
+    confirmDialogRef.current?.showModal();
+  };
 
-      if (newAttempts >= MAX_ATTEMPTS) {
-        showError(
-          "Você excedeu o número máximo de tentativas. Reinicie o processo."
-        );
-        setAttempts(0);
-        setPassword("");
-        setConfirmPassword("");
-        setCode("");
-        return;
-      }
+  const handleCancelConfirm = () => {
+    confirmDialogRef.current?.close();
+  };
 
-      showError(
-        `${err.message || "Código inválido ou expirado."} Restam ${MAX_ATTEMPTS - newAttempts
-        } tentativa(s).`
-      );
-    } finally {
-      setLoading(false);
+  const handleConfirmSendCode = async () => {
+    const result = await sendCode();
+    if (result.success) {
+      confirmDialogRef.current?.close();
+      formDialogRef.current?.showModal();
     }
   };
+
+  const handleCancelForm = () => {
+    formDialogRef.current?.close();
+    resetForm();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await submitPassword(code, password);
+  };
+
   return (
     <div className="stats">
       <Sidebar />
-
       <main className="menu-stats">
         <div className="menu-stats-cont">
           <header className="profile-header">
@@ -92,17 +75,18 @@ const UserStats = () => {
                 alt="Avatar"
               />
             </div>
-
             <div className="profile-info">
               <h1>Minha Conta</h1>
               <p>Visualize suas informações pessoais.</p>
             </div>
             <div className="Change-theme">
               <button
-                className={theme === "dark" ? "sun-button" : "moon-button"}
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                type="button"
+                className={isDark ? "sun-button" : "moon-button"}
+                onClick={toggle}
+                aria-label="Alternar tema"
               >
-                {theme === "dark" ? (
+                {isDark ? (
                   <FiSun className="sun-icon" />
                 ) : (
                   <FiMoon className="moon-icon" />
@@ -110,44 +94,66 @@ const UserStats = () => {
               </button>
             </div>
           </header>
+
           <InfoCards onEmailLoaded={setEmail} />
 
           <div className="profile-buttons">
             <button type="button" className="btn-primary">
               Editar Perfil
             </button>
-            <button onClick={handleEmail()} type="button" className="btn-secondary">
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleOpenConfirm}
+              disabled={!email}
+            >
               Alterar Senha
             </button>
           </div>
 
-          <dialog className="change-email">
-            <h2>Um Código foi Enviado para o seu Email</h2>
-            <p>insira o Código e sua nova senha abaixo:</p>
+          {/* Dialog 1: confirmação */}
+          <dialog ref={confirmDialogRef} className="dialog-confirm">
+            <h2>Alterar senha</h2>
+            <p>
+              Um código será enviado para <strong>{email}</strong>. Deseja
+              continuar?
+            </p>
+            {message && (
+              <p className={`form-message ${message.type}`}>{message.text}</p>
+            )}
             <div className="dialog-actions">
-              <button className="cancel-btn">
+              <button
+                className="cancel-btn"
+                onClick={handleCancelConfirm}
+                disabled={loading}
+              >
                 Cancelar
               </button>
-              <button className="confirm-btn">
-                Sair
+              <button
+                className="confirm-btn"
+                onClick={handleConfirmSendCode}
+                disabled={loading}
+              >
+                {loading ? "Enviando..." : "Enviar código"}
               </button>
             </div>
           </dialog>
 
-          <dialog>
-            <form >
+          {/* Dialog 2: código + nova senha */}
+          <dialog ref={formDialogRef} className="dialog-form">
+            <h2>Confirme o código e defina a nova senha</h2>
+            <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <FaKey className="input-icon" />
                 <input
                   type="text"
-                  placeholder="Digite o código enviado por email"
+                  placeholder="Digite o código"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   disabled={loading}
                   required
                 />
               </div>
-
               <div className="input-group">
                 <FaLock className="input-icon" />
                 <input
@@ -157,9 +163,9 @@ const UserStats = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                   required
+                  minLength={8}
                 />
               </div>
-
               <div className="input-group">
                 <FaLock className="input-icon" />
                 <input
@@ -169,12 +175,29 @@ const UserStats = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={loading}
                   required
+                  minLength={8}
                 />
               </div>
-              <FormMessage message={message} />
-              <button type="submit" disabled={loading}>
-                {loading ? "Enviando..." : "Confirmar"}
-              </button>
+              {message && (
+                <p className={`form-message ${message.type}`}>{message.text}</p>
+              )}
+              <div className="dialog-actions">
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={handleCancelForm}
+                  disabled={loading}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="confirm-btn"
+                  disabled={loading}
+                >
+                  {loading ? "Enviando..." : "Confirmar"}
+                </button>
+              </div>
             </form>
           </dialog>
         </div>

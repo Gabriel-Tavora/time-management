@@ -57,73 +57,38 @@ const router = createBrowserRouter([
     path: "/ForgotPassword",
     element: <ForgotPassword />,
   },
-
   {
     path: "/userscreen",
-    element: (
-      <PrivateRoute>
-        <UserScreen />
-      </PrivateRoute>
-    ),
+    element: <UserScreen />,
   },
   {
     path: "/registerhours",
-    element: (
-      <PrivateRoute>
-        <RegisterHours />
-      </PrivateRoute>
-    ),
+    element: <RegisterHours />,
   },
   {
     path: "/UserStats",
-    element: (
-      <PrivateRoute>
-        <UserStats />
-      </PrivateRoute>
-    ),
+    element: <UserStats />,
   },
   {
     path: "/calendary",
-    element: (
-      <PrivateRoute>
-        <Calendary />
-      </PrivateRoute>
-    ),
+    element: <Calendary />,
   },
-
   {
     path: "/Teamleader",
-    element: (
-      <PrivateRoute>
-        <Teamleader />
-      </PrivateRoute>
-    ),
+    element: <Teamleader />,
   },
   {
     path: "/Coordinator",
-    element: (
-      <PrivateRoute>
-        <Coordinator />
-      </PrivateRoute>
-    ),
+    element: <Coordinator />,
   },
   {
     path: "/Menager",
-    element: (
-      <PrivateRoute>
-        <Menager />
-      </PrivateRoute>
-    ),
+    element: <Menager />,
   },
   {
     path: "/SuperAdmin",
-    element: (
-      <PrivateRoute>
-        <SuperAdmin />
-      </PrivateRoute>
-    ),
+    element: <SuperAdmin />,
   },
-
   {
     path: "*",
     element: <NotFound />,

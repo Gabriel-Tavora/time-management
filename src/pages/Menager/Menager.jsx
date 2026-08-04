@@ -53,14 +53,13 @@ const Menager = () => {
 
   const Approval = async () => {
     if (!closedMonth || isSubmitting) return;
-
     setIsSubmitting(true);
 
     try {
       await closeApprovedMonthManager(token, closedMonth.exercice_id);
-
       setClosedMonth(null);
       setColaboratorData([]);
+      
     } catch (e) {
       console.error(e.message);
     } finally {

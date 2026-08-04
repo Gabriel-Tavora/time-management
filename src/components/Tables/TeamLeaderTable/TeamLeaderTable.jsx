@@ -12,10 +12,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
   const [loading, setLoading] = useState(false);
 
   async function handleApprove() {
-
     setLoading(true);
     dialogAlert.current?.close();
-
+    
     try {
       await handleCloseMonth();
       dialogRef.current?.showModal();
