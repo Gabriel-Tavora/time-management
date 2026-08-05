@@ -98,12 +98,9 @@ const UserStats = () => {
           <InfoCards onEmailLoaded={setEmail} />
 
           <div className="profile-buttons">
-            <button type="button" className="btn-primary">
-              Editar Perfil
-            </button>
             <button
               type="button"
-              className="btn-secondary"
+              className="btn-primary"
               onClick={handleOpenConfirm}
               disabled={!email}
             >

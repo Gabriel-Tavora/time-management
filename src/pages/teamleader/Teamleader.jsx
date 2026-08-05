@@ -7,7 +7,6 @@ import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderT
 
 // CSS
 import "./Teamleader.css";
-import "../../styles/global.css"
 //Context
 import { useAuthValue } from "../../context/TokenContext";
 

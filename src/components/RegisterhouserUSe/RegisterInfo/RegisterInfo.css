@@ -4,11 +4,9 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-
   font-size: 1rem;
   font-weight: 700;
-
-  color: #fff;
+  color: var(--input-text);
 }
 
 /* Campos */
@@ -17,121 +15,87 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   font-size: 1.05rem;
   font-weight: 600;
-
-  color: #fff;
+  color: var(--input-text);
 }
 
 .time-menu-send-obs label {
   align-self: flex-start;
   cursor: pointer;
-
-  color: #bfc7e6;
+  color: var(--input-label);
 }
 
 .time-menu-send-obs input {
   width: 100%;
   height: 2.9rem;
-
   padding: 0 18px;
-
   font-size: .95rem;
-
-  color: #fff;
-
-  background: rgba(255,255,255,.04);
-
-  border: 1px solid rgba(255,255,255,.08);
+  color: var(--input-text);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 16px;
-
   transition: .3s;
 }
 
 .time-menu-send-obs input::placeholder {
-  color: #7d89b5;
+  color: var(--input-placeholder);
 }
 
 .time-menu-send-obs input:focus {
   outline: none;
-
-  background: rgba(255,255,255,.08);
-
-  border-color: #5c8eff;
-
-  box-shadow:
-    0 0 20px rgba(92,142,255,.25);
+  background: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-focus-shadow);
 }
 
 .time-menu-send-obs textarea {
   width: 100%;
   height: 110px;
-
   padding: 14px;
-
   resize: vertical;
-
   font: inherit;
-  color: #fff;
-
-  background: rgba(255,255,255,.04);
-
-  border: 1px solid rgba(255,255,255,.08);
+  color: var(--input-text);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 16px;
-
   transition: .3s;
 }
 
 .time-menu-send-obs textarea::placeholder {
-  color: #7d89b5;
+  color: var(--input-placeholder);
 }
 
 .time-menu-send-obs textarea:focus {
   outline: none;
-
-  background: rgba(255,255,255,.08);
-
-  border-color: #5c8eff;
-
-  box-shadow:
-    0 0 20px rgba(92,142,255,.25);
+  background: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-focus-shadow);
 }
 
 /* Mensagem */
 
 .time-menu-message {
   padding: 12px 18px;
-
   border-radius: 16px;
-
   text-align: center;
   font-size: .95rem;
   font-weight: 600;
-
   backdrop-filter: blur(10px);
 }
 
 .time-menu-message-success {
-  color: #9dffc4;
-
-  background: rgba(34,197,94,.12);
-
-  border: 1px solid rgba(34,197,94,.35);
-
-  box-shadow:
-    0 0 18px rgba(34,197,94,.15);
+  color: var(--success-text);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  box-shadow: var(--success-shadow);
 }
 
 .time-menu-message-error {
-  color: #ffb3b3;
-
-  background: rgba(239,68,68,.12);
-
-  border: 1px solid rgba(239,68,68,.35);
-
-  box-shadow:
-    0 0 18px rgba(239,68,68,.15);
+  color: var(--danger-text);
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  box-shadow: var(--danger-shadow);
 }
 
 /* Botão */
@@ -141,32 +105,22 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-
   align-self: center;
-
   width: 260px;
   height: 52px;
-
   border: none;
   border-radius: 18px;
-
-  background: linear-gradient(90deg,#7c3aed,#2563eb);
-
-  color: #fff;
-
+  background: var(--gradient-accent);
+  color: var(--text-primary);
   font-size: .95rem;
   font-weight: 700;
-
   cursor: pointer;
-
   transition: .35s;
 }
 
 .time-menu-send-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 35px rgba(80,110,255,.45);
+  box-shadow: var(--confirm-shadow);
 }
 
 .time-menu-send-btn:disabled {
@@ -178,11 +132,8 @@
 
 .src {
   padding: 2px;
-
   border: none;
   border-radius: 20px;
-
   background: transparent;
-
   font-size: 16px;
 }

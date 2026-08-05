@@ -51,7 +51,7 @@ export function useTheme(options = {}) {
     setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
   }, []);
 
-  const isDark = theme === "dark";
+  const isDark = theme === "light";
 
   return {
     theme,      

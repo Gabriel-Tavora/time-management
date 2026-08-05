@@ -5,7 +5,6 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import MenagerTable from "../../components/Tables/MenagerTable/MenagerTable.jsx"
 // CSS
 import "./Menager.css";
-import "../../styles/global.css"
 //Context
 import { useAuthValue } from "../../context/TokenContext.jsx";
 // Services

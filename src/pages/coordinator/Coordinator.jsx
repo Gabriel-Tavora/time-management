@@ -5,7 +5,6 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import CoordinatorTable from "../../components/Tables/CoordinatorTable/CoordinatorTable.jsx";
 // CSS
 import "./Coordinator.css";
-import "../../styles/global.css"
 //Context
 import { useAuthValue } from "../../context/TokenContext";
 // Services

@@ -5,7 +5,6 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import UserTable from "../../components/Tables/UserTable/UserTable.jsx";
 // CSS
 import "./UserScreen.css";
-import "../../styles/global.css"
 // services
 import { getCurrentUser } from "../../services/userData.js";
 import { getUserHours } from "../../services/overtimeData.js";

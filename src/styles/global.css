@@ -1,21 +1,539 @@
+:root,
+[data-theme="dark"] {
+  /* ==========================
+     BACKGROUND
+  ========================== */
+  --bg-primary: #050816;
+  --bg-secondary: #0b1023;
+  --bg-tertiary: #141b3a;
+
+  --bg-page: #050816;
+  --bg-card: rgba(12, 18, 45, 0.65);
+  --bg-card-strong: rgba(12, 18, 45, 0.85);
+
+  --bg-glass: rgba(255, 255, 255, 0.015);
+  --bg-glass-hover: rgba(124, 92, 255, 0.08);
+
+  /* ==========================
+     RADIAL BACKGROUND
+  ========================== */
+
+  --bg-radial-purple: rgba(124, 92, 255, 0.18);
+  --bg-radial-blue: rgba(37, 99, 235, 0.18);
+  --bg-radial-cyan: rgba(96, 165, 250, 0.12);
+
+  --bg-radial-purple-soft: rgba(139, 92, 246, 0.12);
+  --bg-radial-blue-soft: rgba(59, 130, 246, 0.12);
+
+  /* ==========================
+     TEXT
+  ========================== */
+
+  --text-primary: #ffffff;
+  --text-secondary: #e7ebff;
+  --text-muted: #bfc7e6;
+
+  --text-link: #7c8fff;
+  --text-link-hover: #9f88ff;
+
+  /* ==========================
+     ACCENT
+  ========================== */
+
+  --accent: #7c5cff;
+  --accent-hover: #6d4cff;
+
+  --accent-purple: #7c3aed;
+  --accent-blue: #2563eb;
+
+  /* ==========================
+     STATUS
+  ========================== */
+
+  --success: #22c55e;
+  --success-dark: #16a34a;
+  --success-text: #9dffc4;
+
+  --danger: #ef4444;
+  --danger-dark: #dc2626;
+
+  --warning: #ffd93d;
+  --warning-text: #ffe98f;
+
+  /* ==========================
+     BORDERS
+  ========================== */
+
+  --border-card: rgba(124, 92, 255, 0.45);
+  --border-card-soft: rgba(124, 92, 255, 0.25);
+
+  --border-table: rgba(255, 255, 255, 0.06);
+
+  --border-success: rgba(34, 197, 94, 0.45);
+  --border-warning: rgba(255, 217, 61, 0.45);
+  --border-danger: rgba(239, 68, 68, 0.5);
+
+  --border-white-soft: rgba(255, 255, 255, 0.04);
+  --border-icon-stats: rgba(103, 80, 164, .2);
+  /* ==========================
+     BACKGROUNDS STATUS
+  ========================== */
+
+  --bg-success: rgba(34, 197, 94, 0.12);
+  --bg-warning: rgba(255, 217, 61, 0.12);
+  --bg-danger: rgba(239, 68, 68, 0.12);
+
+  /* ==========================
+     SHADOWS
+  ========================== */
+
+  --shadow-card:
+    0 20px 45px rgba(0, 0, 0, 0.35), 0 0 30px rgba(124, 92, 255, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  --shadow-table:
+    0 20px 60px rgba(0, 0, 0, 0.35), 0 0 30px rgba(124, 92, 255, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  --shadow-header: 0 10px 25px rgba(80, 110, 255, 0.25);
+
+  --shadow-success: 0 0 18px rgba(34, 197, 94, 0.18);
+
+  --shadow-warning: 0 0 18px rgba(255, 217, 61, 0.18);
+
+  --shadow-link: 0 0 12px rgba(124, 92, 255, 0.45);
+
+  /* ==========================
+     GRADIENTS
+  ========================== */
+
+  --gradient-page: linear-gradient(
+    135deg,
+    #050816 0%,
+    #0b1023 35%,
+    #141b3a 100%
+  );
+
+  --gradient-accent: linear-gradient(90deg, #7c3aed, #2563eb);
+
+  --gradient-success: linear-gradient(90deg, #16a34a, #22c55e);
+
+  --gradient-danger: linear-gradient(90deg, #ef4444, #dc2626);
+
+  --gradient-scroll: linear-gradient(#7c3aed, #2563eb);
+
+  --gradient-table-header: linear-gradient(0deg, #7c3aed, #2563eb);
+
+  --radius-sm: 16px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  /* ==========================
+     TABLE
+  ========================== */
+
+  --table-bg: var(--bg-card);
+  --table-row: var(--bg-glass);
+  --table-row-hover: var(--bg-glass-hover);
+  --table-text: var(--text-secondary);
+  --table-divider: var(--border-table);
+
+  /* ==========================
+     LINKS
+  ========================== */
+
+  --link-color: var(--text-link);
+  --link-hover: var(--text-link-hover);
+  --link-glow: var(--shadow-link);
+
+  /* ==========================
+     STATUS
+  ========================== */
+
+  --pending-bg: var(--bg-warning);
+  --pending-border: var(--border-warning);
+  --pending-shadow: var(--shadow-warning);
+
+  --success-bg: var(--bg-success);
+  --success-border: var(--border-success);
+  --success-shadow: var(--shadow-success);
+  --danger-text: #ffb3b3;
+  --danger-bg: var(--bg-danger);
+  --danger-border: var(--border-danger);
+  --danger-shadow: 0 0 18px rgba(239, 68, 68, 0.15);
+
+  /* ==========================
+     SCROLLBAR
+  ========================== */
+
+  --scroll-track: rgba(255, 255, 255, 0.03);
+  --scroll-thumb: var(--gradient-scroll);
+
+  /* ==========================
+     DIALOG
+  ========================== */
+
+  --dialog-backdrop: rgba(0, 0, 0, 0.65);
+
+  /* ==========================
+     MENU INFO
+  ========================== */
+
+  --accent-soft: rgb(85, 130, 255);
+  --success-color: rgb(0, 164, 0);
+  --night-color: rgb(178, 0, 178);
+
+  /* ==========================
+     EFFECTS
+  ========================== */
+
+  --text-glow: 0 0 20px rgba(124, 92, 255, 0.2);
+  --success-glow-soft: rgba(34, 197, 94, 0.2);
+  --success-glow: rgba(34, 197, 94, 0.45);
+  --success-glow-strong: rgba(34, 197, 94, 0.25);
+
+  --danger-glow-soft: rgba(239, 68, 68, 0.2);
+  --danger-glow: rgba(239, 68, 68, 0.45);
+  --danger-glow-strong: rgba(239, 68, 68, 0.25);
+
+  /* ==========================
+     INPUTS
+  ========================== */
+
+  --input-text: #ffffff;
+  --input-label: #bfc7e6;
+  --input-placeholder: #7d89b5;
+
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-bg-focus: rgba(255, 255, 255, 0.08);
+
+  --input-border: rgba(255, 255, 255, 0.08);
+  --input-border-focus: #5c8eff;
+
+  --input-focus-shadow: 0 0 20px rgba(92, 142, 255, 0.25);
+
+  /* ==========================
+   SIDEBAR
+========================== */
+  --button-text: #1f2937;
+  --sidebar-shadow: 8px 0 40px rgba(0, 0, 0, 0.35);
+  --sidebar-inner-border: inset -1px 0 0 rgba(255, 255, 255, 0.03);
+
+  --toggle-bg: rgba(255, 255, 255, 0.04);
+  --toggle-border: rgba(255, 255, 255, 0.08);
+  --toggle-shadow: 0 0 20px rgba(124, 92, 255, 0.35);
+
+  --menu-active-bg: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.22),
+    rgba(37, 99, 235, 0.22)
+  );
+  --menu-active-border: rgba(124, 92, 255, 0.3);
+  --menu-active-shadow: 0 0 20px rgba(124, 92, 255, 0.15);
+
+  --menu-hover-bg: rgba(255, 255, 255, 0.05);
+
+  --profile-active-bg: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.2),
+    rgba(37, 99, 235, 0.2)
+  );
+  --profile-active-border: rgba(124, 92, 255, 0.25);
+
+  --logout-color: #ff6c6c;
+  --logout-hover-bg: rgba(255, 0, 0, 0.15);
+  --logout-shadow: 0 0 20px rgba(220, 38, 38, 0.15);
+
+  --dialog-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45), 0 0 30px rgba(124, 92, 255, 0.18);
+
+  --confirm-shadow: 0 10px 30px rgba(80, 110, 255, 0.45);
+
+  --cancel-bg: rgba(255, 255, 255, 0.06);
+  --cancel-bg-hover: rgba(255, 255, 255, 0.1);
+  --cancel-border: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================
+     LIGHT THEME
+  ========================== */
+
+[data-theme="light"] {
+  /* ==========================
+     BACKGROUND
+  ========================== */
+
+  --bg-primary: #eef2f8;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #ffffff;
+
+  --bg-page: #eef2f8;
+  --bg-card: rgba(255, 255, 255, 0.78);
+  --bg-card-strong: rgba(255, 255, 255, 0.92);
+
+  --bg-glass: rgba(248, 250, 252, 0.85);
+  --bg-glass-hover: rgba(99, 102, 241, 0.06);
+
+  /* ==========================
+     RADIAL BACKGROUND
+  ========================== */
+
+  --bg-radial-purple: rgba(124, 92, 255, 0.12);
+  --bg-radial-blue: rgba(37, 99, 235, 0.1);
+  --bg-radial-cyan: rgba(96, 165, 250, 0.1);
+
+  --bg-radial-purple-soft: rgba(139, 92, 246, 0.08);
+  --bg-radial-blue-soft: rgba(59, 130, 246, 0.08);
+
+  /* ==========================
+     TEXT
+  ========================== */
+
+  --text-primary: #1f2937;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+
+  --text-link: #4f46e5;
+  --text-link-hover: #4338ca;
+
+  /* ==========================
+     ACCENT
+  ========================== */
+
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+
+  --accent-purple: #7c3aed;
+  --accent-blue: #2563eb;
+
+  /* ==========================
+     STATUS
+  ========================== */
+
+  --success: #22c55e;
+  --success-dark: #15803d;
+  --success-text: #166534;
+
+  --danger: #ef4444;
+  --danger-dark: #dc2626;
+
+  --warning: #f59e0b;
+  --warning-text: #92400e;
+
+  /* ==========================
+     BORDERS
+  ========================== */
+
+  --border-card: rgba(99, 102, 241, 0.18);
+  --border-card-soft: rgba(99, 102, 241, 0.1);
+
+  --border-table: rgba(148, 163, 184, 0.18);
+
+  --border-success: rgba(34, 197, 94, 0.3);
+  --border-warning: rgba(245, 158, 11, 0.3);
+  --border-danger: rgba(239, 68, 68, 0.3);
+
+  --border-white-soft: rgba(255, 255, 255, 0.75);
+  --border-icon-stats: #f57f17;
+  /* ==========================
+     BACKGROUNDS STATUS
+  ========================== */
+
+  --bg-success: rgba(34, 197, 94, 0.1);
+  --bg-warning: rgba(245, 158, 11, 0.12);
+  --bg-danger: rgba(239, 68, 68, 0.1);
+
+  /* ==========================
+     SHADOWS
+  ========================== */
+
+  --shadow-card:
+    0 12px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(124, 92, 255, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+
+  --shadow-table:
+    0 15px 35px rgba(15, 23, 42, 0.08), 0 0 15px rgba(124, 92, 255, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+
+  --shadow-header: 0 8px 18px rgba(59, 130, 246, 0.12);
+
+  --shadow-success: 0 0 12px rgba(34, 197, 94, 0.18);
+
+  --shadow-warning: 0 0 12px rgba(245, 158, 11, 0.18);
+
+  --shadow-link: 0 0 8px rgba(79, 70, 229, 0.2);
+
+  /* ==========================
+     GRADIENTS
+  ========================== */
+
+  --gradient-page: linear-gradient(
+    135deg,
+    #eef2f8 0%,
+    #f8fafc 40%,
+    #ffffff 100%
+  );
+
+  --gradient-accent: linear-gradient(90deg, #6366f1, #3b82f6);
+
+  --gradient-success: linear-gradient(90deg, #16a34a, #22c55e);
+
+  --gradient-danger: linear-gradient(90deg, #ef4444, #dc2626);
+
+  --gradient-scroll: linear-gradient(#6366f1, #3b82f6);
+
+  --gradient-table-header: linear-gradient(0deg, #6366f1, #3b82f6);
+
+  /* ==========================
+     RADIUS
+  ========================== */
+
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  /* ==========================
+     TABLE
+  ========================== */
+
+  --table-bg: var(--bg-card);
+  --table-row: var(--bg-glass);
+  --table-row-hover: var(--bg-glass-hover);
+  --table-text: var(--text-secondary);
+  --table-divider: var(--border-table);
+
+  /* ==========================
+     LINKS
+  ========================== */
+
+  --link-color: var(--text-link);
+  --link-hover: var(--text-link-hover);
+  --link-glow: var(--shadow-link);
+
+  /* ==========================
+     STATUS
+  ========================== */
+
+  --pending-bg: var(--bg-warning);
+  --pending-border: var(--border-warning);
+  --pending-shadow: var(--shadow-warning);
+
+  --success-bg: var(--bg-success);
+  --success-border: var(--border-success);
+  --success-shadow: var(--shadow-success);
+
+  --danger-text: #991b1b;
+  --danger-bg: var(--bg-danger);
+  --danger-border: var(--border-danger);
+  --danger-shadow: 0 0 12px rgba(239, 68, 68, 0.12);
+  /* ==========================
+     SCROLLBAR
+  ========================== */
+
+  --scroll-track: rgba(203, 213, 225, 0.45);
+  --scroll-thumb: var(--gradient-scroll);
+
+  /* ==========================
+     DIALOG
+  ========================== */
+
+  --dialog-backdrop: rgba(15, 23, 42, 0.35);
+
+  /* ==========================
+     MENU INFO
+  ========================== */
+
+  --accent-soft: #3b82f6;
+  --success-color: #16a34a;
+  --night-color: #7c3aed;
+
+  /* ==========================
+     EFFECTS
+  ========================== */
+
+  --text-glow: 0 0 10px rgba(79, 70, 229, 0.18);
+  --success-glow-soft: rgba(34, 197, 94, 0.12);
+  --success-glow: rgba(34, 197, 94, 0.25);
+  --success-glow-strong: rgba(34, 197, 94, 0.16);
+
+  --danger-glow-soft: rgba(239, 68, 68, 0.12);
+  --danger-glow: rgba(239, 68, 68, 0.25);
+  --danger-glow-strong: rgba(239, 68, 68, 0.16);
+
+  /* ==========================
+     INPUTS
+  ========================== */
+
+  --input-text: #1f2937;
+  --input-label: #4b5563;
+  --input-placeholder: #94a3b8;
+
+  --input-bg: rgba(255, 255, 255, 0.85);
+  --input-bg-focus: rgba(255, 255, 255, 0.98);
+
+  --input-border: rgba(148, 163, 184, 0.25);
+  --input-border-focus: #5c8eff;
+
+  --input-focus-shadow: 0 0 20px rgba(92, 142, 255, 0.18);
+
+  /* ==========================
+   SIDEBAR
+========================== */
+  --button-text: #fff;
+  --sidebar-shadow: 8px 0 40px rgba(15, 23, 42, 0.1);
+  --sidebar-inner-border: inset -1px 0 0 rgba(255, 255, 255, 0.7);
+
+  --toggle-bg: rgba(255, 255, 255, 0.8);
+  --toggle-border: rgba(148, 163, 184, 0.2);
+
+  --menu-active-bg: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.16),
+    rgba(59, 130, 246, 0.16)
+  );
+  --menu-active-border: rgba(99, 102, 241, 0.18);
+  --menu-active-shadow: 0 0 16px rgba(99, 102, 241, 0.1);
+
+  --menu-hover-bg: rgba(99, 102, 241, 0.06);
+
+  --profile-active-bg: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.15),
+    rgba(59, 130, 246, 0.15)
+  );
+  --profile-active-border: rgba(99, 102, 241, 0.18);
+
+  --logout-color: #dc2626;
+  --logout-hover-bg: rgba(223, 64, 64, 0.12);
+  --logout-shadow: 0 0 14px rgba(239, 68, 68, 0.12);
+
+  --dialog-shadow:
+    0 15px 35px rgba(15, 23, 42, 0.1), 0 0 18px rgba(99, 102, 241, 0.08);
+
+  --confirm-shadow: 0 10px 25px rgba(59, 130, 246, 0.22);
+
+  --cancel-bg: rgba(255, 255, 255, 0.75);
+  --cancel-bg-hover: rgba(255, 255, 255, 0.95);
+  --cancel-border: rgba(148, 163, 184, 0.2);
+}
+
+/* ==================================================== */
+
 .dashboard-screen {
   display: flex;
   min-height: 100vh;
 
   background:
-    radial-gradient(circle at 15% 15%,
-      rgba(124, 92, 255, .18),
-      transparent 35%),
-    radial-gradient(circle at 85% 10%,
-      rgba(37, 99, 235, .18),
-      transparent 30%),
-    radial-gradient(circle at 50% 100%,
-      rgba(96, 165, 250, .12),
-      transparent 45%),
-    linear-gradient(135deg,
-      #050816 0%,
-      #0b1023 35%,
-      #141b3a 100%);
+    radial-gradient(
+      circle at 15% 15%,
+      var(--bg-radial-purple),
+      transparent 35%
+    ),
+    radial-gradient(circle at 85% 10%, var(--bg-radial-blue), transparent 30%),
+    radial-gradient(circle at 50% 100%, var(--bg-radial-cyan), transparent 45%),
+    var(--gradient-page);
 }
 
 .main-informations {
@@ -31,12 +549,16 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 30% 80%,
-      rgba(139, 92, 246, .12),
-      transparent 40%),
-    radial-gradient(circle at 80% 30%,
-      rgba(59, 130, 246, .12),
-      transparent 30%);
+    radial-gradient(
+      circle at 30% 80%,
+      var(--bg-radial-purple-soft),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      var(--bg-radial-blue-soft),
+      transparent 30%
+    );
 }
 
 .main-menu {
@@ -54,15 +576,18 @@
   align-items: center;
   justify-content: center;
   width: 260px;
-  color: #fff;
   min-height: 10px;
   padding: 14px 22px;
-  border-radius: 18px;
-  background: rgba(12, 18, 45, .65);
+
+  color: var(--text-primary);
+
+  border-radius: var(--radius-md);
+
+  background: var(--bg-card);
+
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(124, 92, 255, .45);
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, .35),
-    0 0 30px rgba(124, 92, 255, .2),
-    inset 0 0 0 1px rgba(255, 255, 255, .04);
+
+  border: 1px solid var(--border-card);
+
+  box-shadow: var(--shadow-card);
 }

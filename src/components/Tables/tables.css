@@ -5,17 +5,20 @@
   max-width: 65rem;
   margin: 50px auto 0;
   padding: 30px;
-  border-radius: 28px;
-  background: rgba(12, 18, 45, 0.65);
+
+  border-radius: var(--radius-xl);
+
+  background: var(--table-bg);
+
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(124, 92, 255, 0.25);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.35),
-    0 0 30px rgba(124, 92, 255, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  border: 1px solid var(--border-card-soft);
+
+  box-shadow: var(--shadow-table);
 }
 
 /* Header */
+
 .table-header {
   display: flex;
   justify-content: space-between;
@@ -26,17 +29,22 @@
   margin: 0;
   font-size: 1.7rem;
   font-weight: 700;
-  color: #7c5cff;
-  text-shadow:
-    0 0 20px rgba(124, 92, 255, .2);
+
+  color: var(--accent);
+
+  text-shadow: var(--text-glow);
 }
 
+/* ==========================
+   TABLE CONTAINER
+========================== */
 
 .table-container {
   max-height: 460px;
   overflow-y: auto;
   overflow-x: hidden;
-  border-radius: 18px;
+
+  border-radius: var(--radius-md);
 }
 
 .table-container::-webkit-scrollbar {
@@ -44,14 +52,20 @@
 }
 
 .table-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, .03);
+  background: var(--scroll-track);
+
   border-radius: 20px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(#7c3aed, #2563eb);
+  background: var(--scroll-thumb);
+
   border-radius: 20px;
 }
+
+/* ==========================
+   TABLE
+========================== */
 
 .app-table {
   width: 100%;
@@ -65,35 +79,43 @@
   position: sticky;
   top: 0;
   z-index: 10;
+
   padding: 18px;
-  background: linear-gradient(0deg, #7c3aed, #2563eb);
-  color: #fff;
+
+  background: var(--gradient-table-header);
+
+  color: var(--text-primary);
+
   text-align: center;
   font-size: .95rem;
   font-weight: 700;
+
   backdrop-filter: blur(20px);
-  box-shadow:
-    0 10px 25px rgba(80, 110, 255, .25);
+
+  box-shadow: var(--shadow-header);
 }
 
 .app-table thead th:first-child {
-  border-top-left-radius: 16px;
+  border-top-left-radius: var(--radius-sm);
 }
 
 .app-table thead th:last-child {
-  border-top-right-radius: 16px;
+  border-top-right-radius: var(--radius-sm);
 }
 
 /* Corpo */
 
 .app-table td {
   padding: 18px 24px;
-  color: #e7ebff;
+
+  color: var(--table-text);
+
   text-align: center;
   font-size: .95rem;
-  border-bottom: 1px solid rgba(255, 255, 255, .06);
 
-  background: rgba(255, 255, 255, .015);
+  border-bottom: 1px solid var(--table-divider);
+
+  background: var(--table-row);
 
   transition:
     background .3s,
@@ -109,10 +131,10 @@
 .app-table tbody tr:hover {
   transform: scale(1.01);
 
-  background: rgba(124, 92, 255, .08);
+  background: var(--table-row-hover);
 
   box-shadow:
-    inset 0 0 0 1px rgba(124, 92, 255, .15);
+    inset 0 0 0 1px var(--border-card-soft);
 }
 
 .app-table tbody tr:hover td {
@@ -123,9 +145,12 @@
   border-bottom: none;
 }
 
+/* ==========================
+   LINKS
+========================== */
 
 .table-page a {
-  color: #7c8fff;
+  color: var(--link-color);
 
   font-weight: 600;
   text-decoration: none;
@@ -134,85 +159,97 @@
 }
 
 .table-page a:hover {
-  color: #9f88ff;
+  color: var(--link-hover);
 
-  text-shadow: 0 0 12px rgba(124, 92, 255, .45);
+  text-shadow: var(--link-glow);
 }
+
+/* ==========================
+   STATUS
+========================== */
 
 .status {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+
   min-width: 120px;
+
   padding: 8px 18px;
-  border-radius: 999px;
+
+  border-radius: var(--radius-pill);
+
   font-size: .9rem;
   font-weight: 700;
+
   border: 1px solid;
+
   backdrop-filter: blur(10px);
+
   transition:
     transform .3s,
     box-shadow .3s;
 }
 
-:root {
-  --danger-rgb: 239, 68, 68;
-  --danger-gradient: linear-gradient(90deg, #ef4444, #dc2626);
-  --glass-tint: 12, 18, 45;     /* fundo escuro dos painéis de vidro */
-  --accent-rgb: 124, 92, 255;   /* roxo de destaque — bordas e glows */
-  --glow-rgb: 80, 110, 255;     /* azul do brilho de hover nos botões */
-  --success-rgb: 34, 197, 94;   /* verde de sucesso/aprovado */
-  --pending-rgb: 255, 217, 61;  /* amarelo saturado — fundo/borda/glow */
-  --pending-text: #ffe98f;      /* amarelo claro — texto */
-  --success-text: #9dffc4;      /* verde claro — texto */
-
-  /* Gradientes de botão */
-  --gradient-accent: linear-gradient(90deg, #7c3aed, #2563eb);
-  --gradient-success: linear-gradient(90deg, #16a34a, #22c55e);
-
-  --radius-sm: 16px;    /* botões dentro de dialogs */
-  --radius-md: 18px;    /* botões principais, cards de menu */
-  --radius-lg: 24px;    /* dialogs */
-  --radius-xl: 28px;    /* container de página */
-  --radius-pill: 999px; /* status/badges */
-}
-
-dialog::backdrop {
-  background: rgba(0, 0, 0, .65);
-  backdrop-filter: blur(4px);
-}
-
 .pending {
-  color: var(--pending-text);
-  background: rgba(var(--pending-rgb), .12);
-  border-color: rgba(var(--pending-rgb), .45);
-  box-shadow: 0 0 18px rgba(var(--pending-rgb), .18);
+  color: var(--warning-text);
+
+  background: var(--pending-bg);
+
+  border-color: var(--pending-border);
+
+  box-shadow: var(--pending-shadow);
 }
 
 .approved {
   color: var(--success-text);
-  background: rgba(var(--success-rgb), .12);
-  border-color: rgba(var(--success-rgb), .45);
-  box-shadow: 0 0 18px rgba(var(--success-rgb), .18);
+
+  background: var(--success-bg);
+
+  border-color: var(--success-border);
+
+  box-shadow: var(--success-shadow);
 }
+
+/* ==========================
+   DIALOG
+========================== */
+
+dialog::backdrop {
+  background: var(--dialog-backdrop);
+
+  backdrop-filter: blur(4px);
+}
+
+/* ==========================
+   INFO CARDS
+========================== */
+
 .menu-information li {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   width: 260px;
   max-height: 90px;
   min-height: 10px;
+
   gap: 5px;
-  padding: 10px 0; 
-  color: rgb(85, 130, 255);
+
+  padding: 10px 0;
+
+  color: var(--accent-soft);
+
   border-radius: var(--radius-md);
-  background: rgba(var(--glass-tint), 0.65);
+
+  background: var(--bg-card);
+
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(var(--accent-rgb), 0.45); 
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.35),
-    0 0 30px rgba(var(--accent-rgb), 0.2);
+
+  border: 1px solid var(--border-card);
+
+  box-shadow: var(--shadow-card);
 }
 
 .menu-information li h1 {
@@ -220,13 +257,13 @@ dialog::backdrop {
 }
 
 .time {
-  color: rgb(0, 164, 0);
+  color: var(--success-color);
 }
 
 .night {
-  color: rgb(178, 0, 178);
+  color: var(--night-color);
 }
 
 .sts {
-  color: var(--pending-text); 
+  color: var(--warning-text);
 }

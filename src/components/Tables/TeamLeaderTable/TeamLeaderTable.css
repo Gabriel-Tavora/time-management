@@ -8,83 +8,109 @@
 }
 
 /* Botão */
+
 .Leader-title button {
   display: flex;
   justify-content: center;
   align-items: center;
+
   width: 200px;
   padding: 12px;
   gap: 12px;
-  border: 1px solid rgba(var(--accent-rgb), .45);
+
+  border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
+
   background: var(--gradient-accent);
-  color: #fff;
+
+  color: var(--text-primary);
+
   font-weight: 700;
+
   cursor: pointer;
+
   transition:
-    transform .35s ease,
-    box-shadow .35s ease,
-    filter .35s ease;
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
 }
 
 .Leader-title button:hover:not(:disabled) {
   transform: translateY(-3px);
+
   filter: brightness(1.05);
+
   box-shadow:
-    0 12px 35px rgba(var(--glow-rgb), .45),
-    0 0 20px rgba(var(--accent-rgb), .25);
+    0 12px 35px rgba(80, 110, 255, 0.45),
+    0 0 20px rgba(124, 92, 255, 0.25);
 }
 
 .Leader-title button:disabled {
-  opacity: .6;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 /* Dialog */
+
 .close-dialog {
-  border: 1px solid rgba(var(--accent-rgb), .25);
-  border-radius: var(--radius-lg);
-  padding: 25px;
-  background: rgba(var(--glass-tint), .85);
-  backdrop-filter: blur(25px);
-  color: #fff;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, .45),
-    0 0 30px rgba(var(--accent-rgb), .2);
   align-self: center;
   justify-self: center;
+
+  padding: 25px;
+
+  border: 1px solid var(--border-card-soft);
+  border-radius: var(--radius-lg);
+
+  background: var(--bg-card-strong);
+
+  backdrop-filter: blur(25px);
+
+  color: var(--text-primary);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(124, 92, 255, 0.2);
 }
 
 .close-dialog h2 {
   margin: 12px 0 20px;
-  color: #fff;
+
+  color: var(--text-primary);
+
   font-size: 1.1rem;
 }
 
-
 /* Botão interno do dialog */
+
 .close-dialog button {
   width: 100%;
   margin-top: 20px;
   padding: 12px;
+
   border: none;
   border-radius: var(--radius-sm);
+
   cursor: pointer;
+
   background: var(--gradient-accent);
-  color: #fff;
+
+  color: var(--text-primary);
+
   font-size: 1rem;
   font-weight: 700;
-  transition: .35s;
+
+  transition: 0.35s;
 }
 
 .close-dialog button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(var(--glow-rgb), .4);
+
+  box-shadow: 0 10px 30px rgba(80, 110, 255, 0.4);
 }
 
-
 /* Ações */
+
 .dialog-actions {
   display: flex;
   gap: 12px;
@@ -93,22 +119,30 @@
 
 .dialog-actions button {
   flex: 1;
+
   padding: 12px;
+
   border: none;
   border-radius: var(--radius-sm);
+
   cursor: pointer;
-  color: #fff;
+
+  color: var(--text-primary);
+
   font-size: 1rem;
   font-weight: 700;
-  transition: .35s;
+
+  transition: 0.35s;
 }
 
 .dialog-cancel-btn {
-  background: rgba(255, 255, 255, .08);
-  color: #bfc7e6;
+  background: rgba(255, 255, 255, 0.08);
+
+  color: var(--text-muted);
 }
 
 .dialog-cancel-btn:hover {
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, .15);
+
+  background: rgba(255, 255, 255, 0.15);
 }

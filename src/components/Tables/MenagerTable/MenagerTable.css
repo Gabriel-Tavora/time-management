@@ -3,93 +3,74 @@
 ============================ */
 
 .Manager-title div{
-  display: flex;
-  gap: 25px;
+  display:flex;
+  gap:25px;
 }
-
 
 /* ============================
    BOTÕES DE AÇÃO
 ============================ */
 
 .approved-btn,
-.rejected-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 200px;
-  height: 40px;
-
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-
-  color: #fff;
-
-  font-size: .95rem;
-  font-weight: 700;
-
-  cursor: pointer;
-
+.rejected-btn{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:200px;
+  height:40px;
+  border:1px solid transparent;
+  border-radius:var(--radius-md);
+  color:var(--text-primary);
+  font-size:.95rem;
+  font-weight:700;
+  cursor:pointer;
   transition:
     transform .35s ease,
     box-shadow .35s ease,
     filter .35s ease;
 }
 
-
 /* ============================
    APROVAR
 ============================ */
 
-.approved-btn {
-  background: var(--gradient-success);
-
-  border-color: rgba(var(--success-rgb), .35);
-
+.approved-btn{
+  background:var(--gradient-success);
+  border-color:var(--success-border);
   box-shadow:
-    0 8px 25px rgba(var(--success-rgb), .2),
+    0 8px 25px rgba(34,197,94,.2),
     inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
-
-.approved-btn:hover {
-  transform: translateY(-3px);
-
-  filter: brightness(1.05);
-
+.approved-btn:hover{
+  transform:translateY(-3px);
+  filter:brightness(1.05);
   box-shadow:
-    0 12px 35px rgba(var(--success-rgb), .45),
-    0 0 20px rgba(var(--success-rgb), .25);
+    0 12px 35px rgba(34,197,94,.45),
+    0 0 20px rgba(34,197,94,.25);
 }
-
 
 /* ============================
    REJEITAR
 ============================ */
 
-.rejected-btn {
-  background: var(--danger-gradient);
-
-  border-color: rgba(var(--danger-rgb), .45);
-
+.rejected-btn{
+  background:var(--gradient-danger);
+  border-color:var(--border-danger);
   box-shadow:
-    0 8px 25px rgba(var(--danger-rgb), .2),
+    0 8px 25px rgba(239,68,68,.2),
     inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
-
-.rejected-btn:hover {
-  transform: translateY(-3px);
-
-  filter: brightness(1.05);
-
+.rejected-btn:hover{
+  transform:translateY(-3px);
+  filter:brightness(1.05);
   box-shadow:
-    0 12px 35px rgba(var(--danger-rgb), .45),
-    0 0 20px rgba(var(--danger-rgb), .25);
+    0 12px 35px rgba(239,68,68,.45),
+    0 0 20px rgba(239,68,68,.25);
 }
 
 .approved-btn:active,
-.rejected-btn:active {
-  transform: scale(.97);
+.rejected-btn:active{
+  transform:scale(.97);
 }

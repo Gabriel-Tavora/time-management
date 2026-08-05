@@ -6,93 +6,58 @@
   gap: 25px;
 }
 
-
 /* ============================
    BOTÕES DE AÇÃO
 ============================ */
-
 .approved-btn,
 .rejected-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 200px;
   height: 40px;
-
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-
-  color: #fff;
-
+  color: var(--text-primary);
   font-size: .95rem;
   font-weight: 700;
-
   cursor: pointer;
-
-  transition:
-    transform .35s ease,
-    box-shadow .35s ease,
-    filter .35s ease;
+  transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
 }
-
 
 /* ============================
    APROVAR
 ============================ */
-
 .approved-btn {
   background: var(--gradient-success);
-
-  border-color: rgba(var(--success-rgb), .35);
-
-  box-shadow:
-    0 8px 25px rgba(var(--success-rgb), .2),
-    inset 0 0 0 1px rgba(255,255,255,.06);
+  border-color: var(--success-border);
+  box-shadow: 0 8px 25px var(--success-glow-soft), inset 0 0 0 1px var(--border-white-soft);
 }
-
 
 .approved-btn:hover {
   transform: translateY(-3px);
-
   filter: brightness(1.05);
-
-  box-shadow:
-    0 12px 35px rgba(var(--success-rgb), .45),
-    0 0 20px rgba(var(--success-rgb), .25);
+  box-shadow: 0 12px 35px var(--success-glow), 0 0 20px var(--success-glow-strong);
 }
-
 
 /* ============================
    REJEITAR
 ============================ */
-
 .rejected-btn {
-  background: var(--danger-gradient);
-
-  border-color: rgba(var(--danger-rgb), .45);
-
-  box-shadow:
-    0 8px 25px rgba(var(--danger-rgb), .2),
-    inset 0 0 0 1px rgba(255,255,255,.06);
+  background: var(--gradient-danger);
+  border-color: var(--border-danger);
+  box-shadow: 0 8px 25px var(--danger-glow-soft), inset 0 0 0 1px var(--border-white-soft);
 }
-
 
 .rejected-btn:hover {
   transform: translateY(-3px);
-
   filter: brightness(1.05);
-
-  box-shadow:
-    0 12px 35px rgba(var(--danger-rgb), .45),
-    0 0 20px rgba(var(--danger-rgb), .25);
+  box-shadow: 0 12px 35px var(--danger-glow), 0 0 20px var(--danger-glow-strong);
 }
-
 
 /* ============================
    CLIQUE
 ============================ */
-
 .approved-btn:active,
 .rejected-btn:active {
   transform: scale(.97);

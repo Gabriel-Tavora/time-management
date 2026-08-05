@@ -5,7 +5,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 // CSS
 import "./index.css";
-
+import "../src/styles/global.css"
 // Router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Auth
