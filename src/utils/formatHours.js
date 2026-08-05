@@ -30,16 +30,29 @@ export function getCurrentDate() {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Primeiro dia do mês
+  const firstDate = `${year}-${month}-01`;
+
+  // Último dia do mês
+  const lastDayNumber = new Date(year, date.getMonth() + 1, 0).getDate();
+  const lastDate = `${year}-${month}-${String(lastDayNumber).padStart(2, "0")}`;
+
+  const firstDay = new Date(year, date.getMonth(), 1).getDay();
+  const daysInMonth = lastDayNumber;
 
   return {
     day,
     month,
     year,
+
     firstDay,
     daysInMonth,
+
     formatted: `${day}/${month}/${year}`,
     formattedPost: `${year}-${month}-${day}`,
+
+    monthStart: firstDate,
+    monthEnd: lastDate,
   };
 }

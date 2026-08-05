@@ -23,7 +23,7 @@
 
   background: var(--gradient-accent);
 
-  color: var(--text-primary);
+  color: var(--bg-primary);
 
   font-weight: 700;
 
@@ -75,9 +75,7 @@
 
 .close-dialog h2 {
   margin: 12px 0 20px;
-
   color: var(--text-primary);
-
   font-size: 1.1rem;
 }
 
@@ -92,11 +90,8 @@
   border-radius: var(--radius-sm);
 
   cursor: pointer;
-
   background: var(--gradient-accent);
-
   color: var(--text-primary);
-
   font-size: 1rem;
   font-weight: 700;
 
@@ -121,14 +116,10 @@
   flex: 1;
 
   padding: 12px;
-
   border: none;
   border-radius: var(--radius-sm);
-
   cursor: pointer;
-
-  color: var(--text-primary);
-
+  color: white;
   font-size: 1rem;
   font-weight: 700;
 
@@ -137,12 +128,11 @@
 
 .dialog-cancel-btn {
   background: rgba(255, 255, 255, 0.08);
-
   color: var(--text-muted);
 }
 
 .dialog-cancel-btn:hover {
   transform: translateY(-2px);
 
-  background: rgba(255, 255, 255, 0.15);
+  background: grey;
 }

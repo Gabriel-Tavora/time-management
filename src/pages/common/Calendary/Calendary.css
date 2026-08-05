@@ -5,10 +5,22 @@
   min-height: 100vh;
 
   background:
-    radial-gradient(circle at 15% 15%, rgba(124, 92, 255, .18), transparent 35%),
-    radial-gradient(circle at 85% 10%, rgba(37, 99, 235, .18), transparent 30%),
-    radial-gradient(circle at 50% 100%, rgba(96, 165, 250, .12), transparent 45%),
-    linear-gradient(135deg, #050816 0%, #0b1023 35%, #141b3a 100%);
+    radial-gradient(
+      circle at 15% 15%,
+      var(--bg-radial-purple),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      var(--bg-radial-blue),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      var(--bg-radial-cyan),
+      transparent 45%
+    ),
+    var(--gradient-page);
 }
 
 .calendary-page {
@@ -21,7 +33,9 @@
   padding: 35px 70px;
 }
 
-/* Header */
+/* ===========================
+   HEADER
+=========================== */
 
 .calendar-header {
   display: flex;
@@ -32,21 +46,24 @@
 .calendar-header h1 {
   margin: 0;
 
-  color: #fff;
+  color: var(--text-primary);
+
   font-size: 2.2rem;
 
-  text-shadow: 0 0 20px rgba(124, 92, 255, .2);
+  text-shadow: var(--text-glow);
 }
 
 .calendar-header h2 {
   margin-top: 5px;
 
-  color: #bfc7e6;
+  color: var(--text-muted);
 
   text-transform: capitalize;
 }
 
-/* Botão */
+/* ===========================
+   BOTÃO
+=========================== */
 
 .month-btn {
   width: 48px;
@@ -55,9 +72,9 @@
   border: none;
   border-radius: 50%;
 
-  background: linear-gradient(90deg, #7c3aed, #2563eb);
+  background: var(--gradient-accent);
 
-  color: #fff;
+  color: var(--button-text);
 
   cursor: pointer;
 
@@ -69,11 +86,12 @@
 .month-btn:hover {
   transform: translateY(-2px);
 
-  box-shadow:
-    0 10px 30px rgba(80, 110, 255, .4);
+  box-shadow: var(--confirm-shadow);
 }
 
-/* Semana */
+/* ===========================
+   SEMANA
+=========================== */
 
 .week-days {
   display: grid;
@@ -88,17 +106,18 @@
 
   text-align: center;
 
-  color: #fff;
+  color: var(--button-text);
 
-  border-radius: 16px;
+  border-radius: var(--radius-sm);
 
-  background: linear-gradient(90deg, #7c3aed, #2563eb);
+  background: var(--gradient-accent);
 
-  box-shadow:
-    0 8px 20px rgba(80, 110, 255, .2);
+  box-shadow: var(--shadow-header);
 }
 
-/* Calendário */
+/* ===========================
+   CALENDÁRIO
+=========================== */
 
 .calendar-grid {
   display: grid;
@@ -108,7 +127,9 @@
   gap: 15px;
 }
 
-/* Dia */
+/* ===========================
+   DIA
+=========================== */
 
 .day {
   display: flex;
@@ -117,13 +138,14 @@
 
   padding: 14px;
 
-  border: 1px solid rgba(124, 92, 255, .18);
+  border: 1px solid var(--border-card-soft);
   border-radius: 20px;
 
-  background: rgba(12, 18, 45, .65);
+  background: var(--bg-card);
+
   backdrop-filter: blur(20px);
 
-  color: #fff;
+  color: var(--text-primary);
 
   font-size: 1.05rem;
   font-weight: 700;
@@ -132,35 +154,36 @@
 
   transition: .35s;
 
-  box-shadow:
-    0 15px 35px rgba(0, 0, 0, .25),
-    inset 0 0 0 1px rgba(255, 255, 255, .03);
+  box-shadow: var(--shadow-card);
 }
 
 .day:hover {
   transform: translateY(-4px);
 
-  border-color: rgba(124, 92, 255, .45);
+  border-color: var(--border-card);
 
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, .35),
-    0 0 20px rgba(124, 92, 255, .15);
+  box-shadow: var(--shadow-table);
 }
 
-/* Hoje */
+/* ===========================
+   HOJE
+=========================== */
 
 .today {
-  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  background: var(--gradient-accent);
 
   border-color: transparent;
+
+  color: var(--button-text);
 }
 
 .today:hover {
-  box-shadow:
-    0 15px 35px rgba(80, 110, 255, .45);
+  box-shadow: var(--confirm-shadow);
 }
 
-/* Vazio */
+/* ===========================
+   VAZIO
+=========================== */
 
 .empty {
   background: transparent;
@@ -180,22 +203,25 @@
   box-shadow: none;
 }
 
-/* Hora Extra */
+/* ===========================
+   HORA EXTRA
+=========================== */
 
 .overtime-day {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
+  background: var(--gradient-success);
 
   border-color: transparent;
 
-  color: #fff;
+  color: var(--button-text);
 }
 
 .overtime-day:hover {
-  box-shadow:
-    0 15px 35px rgba(34, 197, 94, .35);
+  box-shadow: var(--shadow-success);
 }
 
-/* Responsivo */
+/* ===========================
+   RESPONSIVO
+=========================== */
 
 @media (max-width: 900px) {
   .calendary-page {

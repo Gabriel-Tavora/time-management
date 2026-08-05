@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
@@ -7,70 +6,24 @@ import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderT
 
 // CSS
 import "./Teamleader.css";
-//Context
-import { useAuthValue } from "../../context/TokenContext";
 
-// Services
-import { getCurrentUser } from "../../services/userData.js";
-import { employeeDataAll, employeeDataMonth, closeMonth } from '../../services/exerciceData.js';
-import { employeeDataRecord, getUserHours } from '../../services/overtimeData.js';
-
-//Utils
-import { getCurrentDate } from "../../utils/formatHours.js";
-
+//hooks
+import { useTeamLeader } from '../../hooks/useTeamLeaderInfo.js';
 const Teamleader = () => {
-  const [user, setUser] = useState(null);
-  const [dataTime, setDataTime] = useState([]);
-  const [colaboratorData, setColaboratorData] = useState([]);
-  const [message, setMessage] = useState(null);
-  const [idMonth, setIdMonth] = useState([]);
-  const { formatted } = getCurrentDate();
-  const { token } = useAuthValue();
+  const {
+    handleCloseMonth,
+    loadData,
+    formatted,
+    monthStart,
+    monthEnd,
+    idMonth,
+    monthPerf,
+    message,
+    colaboratorData,
+    dataTime,
+    user,
+  } = useTeamLeader();
 
-  const loadData = async () => {
-    try {
-      const infoMonth = await employeeDataMonth(token);
-      setIdMonth(infoMonth);
-      console.log(infoMonth)
-      const responseData = await employeeDataRecord(token, infoMonth?.id);
-      setColaboratorData(responseData);
-
-      const userInformations = await getCurrentUser(token);
-      setUser(userInformations);
-      console.log(userInformations)
-      const dataUserTime = await getUserHours(token);
-      setDataTime(dataUserTime);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      loadData();
-    }
-  }, [token]);
-
-  const handleCloseMonth = async () => {
-    setMessage(null);
-    try {
-      await closeMonth(token, idMonth?.id);
-      await loadData();
-      setMessage({
-        type: "success",
-        text: "Mês fechado com sucesso.",
-      });
-      return true;
-    } catch (error) {
-      console.error(error);
-      setMessage({
-        type: "error",
-        text: error.message || "Erro ao fechar o mês.",
-      });
-
-      return false;
-    }
-  };
   return (
     <div className="dashboard-screen">
       <Sidebar />
@@ -92,8 +45,9 @@ const Teamleader = () => {
         <div className="Leader-tables">
           <TeamLeaderTable
             data={colaboratorData}
-            handleCloseMoth={handleCloseMonth}
+            handleCloseMonth={handleCloseMonth}
             reloadData={loadData}
+            monthPerf={monthPerf}
           />
         </div>
       </main>

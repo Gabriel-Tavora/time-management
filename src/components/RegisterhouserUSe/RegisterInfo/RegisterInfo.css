@@ -31,7 +31,7 @@
   height: 2.9rem;
   padding: 0 18px;
   font-size: .95rem;
-  color: var(--input-text);
+  color: black;
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: 16px;
@@ -39,7 +39,7 @@
 }
 
 .time-menu-send-obs input::placeholder {
-  color: var(--input-placeholder);
+  color: var(--text-primary);
 }
 
 .time-menu-send-obs input:focus {
@@ -63,7 +63,7 @@
 }
 
 .time-menu-send-obs textarea::placeholder {
-  color: var(--input-placeholder);
+  color: var(--text-primary);
 }
 
 .time-menu-send-obs textarea:focus {
@@ -111,7 +111,7 @@
   border: none;
   border-radius: 18px;
   background: var(--gradient-accent);
-  color: var(--text-primary);
+  color: #fff;
   font-size: .95rem;
   font-weight: 700;
   cursor: pointer;

@@ -25,6 +25,35 @@ export async function employeeDataRecord(token, id) {
   return await response.json();
 }
 
+export async function getUserPerformance(token, monthStart, monthEnd) {
+  const response = await fetch(
+    `${API_URL}/overtime/userPerformance?periodStart=${monthStart}&periodEnd=${monthEnd}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    let data = null;
+
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+
+    throw {
+      status: response.status,
+      message: data?.message || data?.error || "Erro ao buscar desempenho",
+    };
+  }
+
+  return await response.json();
+}
+
 export async function getUserHours(token) {
   const response = await fetch(`${API_URL}/overtime/employee`, {
     headers: {

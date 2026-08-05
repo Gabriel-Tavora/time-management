@@ -12,15 +12,20 @@
 
 .main-header-title h1 {
   margin: 0;
+
   font-size: 2.4rem;
   font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 0 25px rgba(124, 92, 255, 0.18);
+
+  color: var(--text-primary);
+
+  text-shadow: var(--text-glow);
 }
 
 .main-header-title p {
   margin-top: 10px;
-  color: #bfc7e6;
+
+  color: var(--text-muted);
+
   font-size: 1rem;
   font-weight: 400;
 }
@@ -29,18 +34,21 @@
   display: inline-flex;
   align-items: center;
   gap: 14px;
+
   width: fit-content;
+
   margin: 0 0 25px 50px;
   padding: 14px 22px;
-  border-radius: 18px;
-  background: rgba(12, 18, 45, 0.65);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(124, 92, 255, 0.25);
 
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.25),
-    0 0 25px rgba(124, 92, 255, 0.12),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+
+  background: var(--bg-card);
+
+  backdrop-filter: blur(18px);
+
+  border: 1px solid var(--border-card-soft);
+
+  box-shadow: var(--shadow-card);
 
   transition:
     border-color .35s ease,
@@ -49,17 +57,17 @@
 }
 
 .main-header-time:hover {
-  border-color: rgba(124, 92, 255, 0.45);
+  border-color: var(--border-card);
 
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.35),
-    0 0 30px rgba(124, 92, 255, 0.2);
+  box-shadow: var(--shadow-table);
+
+  transform: translateY(-2px);
 }
 
 .main-header-time h2 {
   margin: 0;
 
-  color: #ffffff;
+  color: var(--text-primary);
 
   font-size: 1.1rem;
   font-weight: 600;
@@ -69,11 +77,13 @@
 
 .main-header-time p,
 .main-header-time span {
-  color: #bfc7e6;
+  color: var(--text-muted);
 }
 
 .main-header-time svg {
   font-size: 22px;
-  color: #7c5cff;
-  filter: drop-shadow(0 0 10px rgba(124, 92, 255, 0.4));
+
+  color: var(--accent);
+
+  filter: drop-shadow(var(--shadow-link));
 }

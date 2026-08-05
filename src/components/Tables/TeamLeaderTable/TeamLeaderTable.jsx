@@ -6,7 +6,7 @@ import "../tables.css";
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
 import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 
-const TeamLeaderTable = ({ data, handleCloseMonth }) => {
+const TeamLeaderTable = ({ data, handleCloseMonth,monthPerf }) => {
   const dialogRef = useRef(null);
   const dialogAlert = useRef(null)
   const [loading, setLoading] = useState(false);
@@ -50,9 +50,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
         <li>
           <h1>Status do Fechamento</h1>
           {data ? (
-            <h3 className="status pending">Pending</h3>
+            <h3 className="status pending">Pendente</h3>
           ) : (
-            <h3 className="status approved">Approved</h3>
+            <h3 className="status approved">Aprovado</h3>
           )}
         </li>
       </ul>

@@ -9,14 +9,13 @@ import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 //router-dom
 import { useNavigate } from "react-router-dom";
 
-const UserTable = ({ data, closureStatus }) => {
+const UserTable = ({ data, closureStatus, monthPerf }) => {
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
   };
 
   const summary = useMemo(() => getOvertimeSummary(data), [data]);
-
   return (
     <>
       <ul className="menu-information">
@@ -31,9 +30,9 @@ const UserTable = ({ data, closureStatus }) => {
         <li>
           <h1>Status do Fechamento</h1>
           {data ? (
-            <h3 className="status pending">Pending</h3>
+            <h3 className="status pending">Pendente</h3>
           ) : (
-            <h3 className="status approved">Approved</h3>
+            <h3 className="status approved">Aprovado</h3>
           )}
         </li>
       </ul>

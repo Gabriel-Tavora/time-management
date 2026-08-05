@@ -7,7 +7,7 @@ import UserTable from "../../components/Tables/UserTable/UserTable.jsx";
 import "./UserScreen.css";
 // services
 import { getCurrentUser } from "../../services/userData.js";
-import { getUserHours } from "../../services/overtimeData.js";
+import { getUserHours, getUserPerformance } from "../../services/overtimeData.js";
 
 //context
 import { useAuthValue } from "../../context/TokenContext.jsx";
@@ -18,22 +18,26 @@ import { getCurrentDate } from "../../utils/formatHours.js";
 const UserScreen = () => {
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
-  const { formatted } = getCurrentDate();
+  const [monthPerf, setMonthPerf] = useState([]);
+  const { formatted, monthStart, monthEnd } = getCurrentDate();
   const { token } = useAuthValue();
 
-  useEffect(() => {
-    async function loadingData() {
-      try {
-        const userInformations = await getCurrentUser(token);
-        setUser(userInformations);
+  async function loadingData() {
+    try {
+      const userInformations = await getCurrentUser(token);
+      setUser(userInformations);
 
-        const dataUserTime = await getUserHours(token);
-        setDataTime(dataUserTime);
-      } catch (error) {
-        console.error(error);
-      }
+      const dataUserTime = await getUserHours(token);
+      setDataTime(dataUserTime);
+
+      const monthPerformace = await getUserPerformance(token, monthStart, monthEnd)
+      setMonthPerf(monthPerformace);
+    } catch (error) {
+      console.error(error);
     }
+  }
 
+  useEffect(() => {
     if (token) {
       loadingData();
     }
@@ -52,7 +56,7 @@ const UserScreen = () => {
           </ul>
         </div>
 
-        <UserTable data={dataTime} />
+        <UserTable data={dataTime} monthPerf={monthPerf} />
       </main>
     </div>
   );
