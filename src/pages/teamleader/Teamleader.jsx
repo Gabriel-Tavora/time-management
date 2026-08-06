@@ -29,20 +29,13 @@ const Teamleader = () => {
       <Sidebar />
 
       <main className="main-informations">
-        <div>
-          <DashboardHeader
-            user={user}
-            formatted={formatted}
-          />
+        <DashboardHeader
+          user={user}
+          formatted={formatted}
+        />
 
-          <ul className="main-menu">
-            <li>
-              <h2>Team-Leader</h2>
-            </li>
-          </ul>
-        </div>
 
-        <div className="Leader-tables">
+        <div className="Leader-tables main-menu">
           <TeamLeaderTable
             data={colaboratorData}
             handleCloseMonth={handleCloseMonth}

@@ -7,6 +7,7 @@ import "./Menager.css";
 
 //hooks
 import { useMenager } from '../../hooks/useMenagerInfo.js';
+
 const Menager = () => {
   const {
     loadingData,
@@ -33,8 +34,8 @@ const Menager = () => {
         <div className="Manager-tables">
           <MenagerTable
             data={colaboratorData}
-            Approval={Approval}
-            Rejected={Rejected}
+            onApprove={Approval}
+            onReject={Rejected}
             disabled={!closedMonth?.exercice_id}
           />
         </div>

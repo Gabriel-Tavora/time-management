@@ -1,7 +1,12 @@
 // formatar hora extras
 export function formatHours(decimalHours) {
+  if (!decimalHours) {
+    return "00:00";
+  }
+
   const hours = Math.floor(decimalHours);
   const minutes = Math.round((decimalHours - hours) * 60);
+
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 export function formatHousDay(time) {
@@ -21,6 +26,15 @@ export function formatDataSend(workDate, time = null) {
   }
 
   return `${workDate}T00:00:00Z`;
+}
+
+//formatar data de registro
+export function getRowData(register) {
+  const record = register?.overtime_record;
+  const totalHours = record?.total_hours ?? 0;
+  const nightHours = record?.nigth_hours ?? 0;
+  const dayHours = Math.max(totalHours - nightHours, 0);
+  return { record, totalHours, nightHours, dayHours };
 }
 
 //buscar horas do pc do usuário

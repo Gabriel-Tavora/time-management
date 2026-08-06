@@ -1,3 +1,4 @@
+
 export function getOvertimeSummary(data = []) {
   return data.reduce(
     (summary, register) => {

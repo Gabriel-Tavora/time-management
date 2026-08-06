@@ -1,49 +1,116 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 //css
 import "./UserTable.css";
 import "../tables.css";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 //Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
 import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 //router-dom
 import { useNavigate } from "react-router-dom";
 
-const UserTable = ({ data, closureStatus, monthPerf }) => {
+const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
   };
+  
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  const summary = useMemo(() => getOvertimeSummary(data), [data]);
+  const isFilterActive = Boolean(startDate || endDate);
+
+  const filteredData = useMemo(() => {
+    if (!data) return data;
+    if (!isFilterActive) return data;
+
+    return data.filter((register) => {
+      const workDate = register.overtime_records?.work_date;
+      if (!workDate) return false;
+
+      const dateOnly = workDate.slice(0, 10);
+
+      if (startDate && dateOnly < startDate) return false;
+      if (endDate && dateOnly > endDate) return false;
+
+      return true;
+    });
+  }, [data, startDate, endDate, isFilterActive]);
+
+  const summary = useMemo(
+    () => getOvertimeSummary(filteredData),
+    [filteredData]
+  );
+
+  const handleClearFilter = () => {
+    setStartDate("");
+    setEndDate("");
+  };
+
   return (
     <>
       <ul className="menu-information">
         <li>
           <h1>Total de Horas Extras</h1>
-          <h3 className="time">{formatHours(summary.totalHours)}</h3>
+          <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
         </li>
         <li>
           <h1>Total de Horas Noturnas</h1>
-          <h3 className="night">{formatHours(summary.totalNightHours)}</h3>
+          <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
         </li>
         <li>
-          <h1>Status do Fechamento</h1>
-          {data ? (
-            <h3 className="status pending">Pendente</h3>
-          ) : (
-            <h3 className="status approved">Aprovado</h3>
-          )}
+          <h1>Quantidade no Mês</h1>
+          <h3>
+            {monthPerf?.total_overtimes_mouth > 0
+              ? monthPerf.total_overtimes_mouth
+              : "0"}
+          </h3>
         </li>
       </ul>
-
+      <h2 className="title-h2">Histórico de Horas Extras</h2>
       <div className="table-page main-register">
         <div className="table-header main-register-title">
-          <h2>Registros de Horas Extras</h2>
-          <button onClick={() => handleNavigate("/RegisterHours")}>
-            <FaPlus />
-            Registrar Hora Extra
-          </button>
+
+          <div className="date-filter">
+            <label htmlFor="filter-start-date">
+              De
+              <input
+                id="filter-start-date"
+                type="date"
+                value={startDate}
+                max={endDate || undefined}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </label>
+
+            <label htmlFor="filter-end-date">
+              Até
+              <input
+                id="filter-end-date"
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </label>
+
+            {isFilterActive && (
+              <button
+                type="button"
+                className="clear-filter-btn"
+                onClick={handleClearFilter}
+                aria-label="Limpar filtro de data"
+              >
+                <FaTimes />
+                Limpar
+              </button>
+            )}
+            <button className="register-btn" onClick={() => handleNavigate("/RegisterHours")}>
+              <FaPlus />
+              Registrar Hora Extra
+            </button>
+          </div>
+
         </div>
 
         <div className="table-container">
@@ -59,26 +126,36 @@ const UserTable = ({ data, closureStatus, monthPerf }) => {
             </thead>
 
             <tbody>
-              {data?.map((register) => {
-                const totalHours = register.overtime_records.total_hours ?? 0;
-                const nightHours = register.overtime_records.nigth_hours ?? 0;
-                const dayHours = totalHours - nightHours;
-                return (
-                  <tr key={register.overtime_records.id}>
-                    <td>{formatDate(register.overtime_records.work_date)}</td>
-                    <td>{formatHours(totalHours)}</td>
-                    <td>{dayHours ? formatHours(dayHours) : "0"}</td>
-                    <td>{nightHours ? formatHours(nightHours) : "0"}</td>
-                    <td>
-                      {register.overtime_records.overtime_type_id === 1 ? (
-                        <span className="status pending">50%</span>
-                      ) : (
-                        <span className="status approved">100%</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
+              {filteredData && filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="empty-state">
+                    {isFilterActive
+                      ? "Nenhum registro encontrado no período selecionado."
+                      : "Nenhum registro encontrado."}
+                  </td>
+                </tr>
+              ) : (
+                filteredData?.map((register) => {
+                  const totalHours = register.overtime_records.total_hours ?? 0;
+                  const nightHours = register.overtime_records.nigth_hours ?? 0;
+                  const dayHours = totalHours - nightHours;
+                  return (
+                    <tr key={register.overtime_records.id}>
+                      <td>{formatDate(register.overtime_records.work_date)}</td>
+                      <td>{formatHours(totalHours)}</td>
+                      <td>{dayHours ? formatHours(dayHours) : "0"}</td>
+                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                      <td>
+                        {register.overtime_records.overtime_type_id === 1 ? (
+                          <span className="status pending">50%</span>
+                        ) : (
+                          <span className="status approved">100%</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>

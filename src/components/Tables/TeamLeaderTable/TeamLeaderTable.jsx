@@ -1,89 +1,169 @@
-import React, { useRef, useState,useMemo } from "react";
-//css
+import React, { useRef, useState, useMemo } from "react";
+// css
 import "./TeamLeaderTable.css";
 import "../tables.css";
-//Utils
+// router-dom
+import { useNavigate } from "react-router-dom";
+// icons
+import { FaPlus, FaTimes } from "react-icons/fa";
+// Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
-import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 
-const TeamLeaderTable = ({ data, handleCloseMonth,monthPerf }) => {
-  const dialogRef = useRef(null);
-  const dialogAlert = useRef(null)
+const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
+  const navigate = useNavigate();
+  const successDialogRef = useRef(null);
+  const confirmDialogRef = useRef(null);
+
   const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const isFilterActive = Boolean(startDate || endDate);
+
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+    if (!isFilterActive) return data;
+
+    return data.filter((register) => {
+      const workDate = register.overtime_records?.work_date;
+      if (!workDate) return false;
+
+      const dateOnly = workDate.slice(0, 10);
+
+      if (startDate && dateOnly < startDate) return false;
+      if (endDate && dateOnly > endDate) return false;
+
+      return true;
+    });
+  }, [data, startDate, endDate, isFilterActive]);
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  const handleClearFilter = () => {
+    setStartDate("");
+    setEndDate("");
+  };
 
   async function handleApprove() {
     setLoading(true);
-    dialogAlert.current?.close();
-    
+    confirmDialogRef.current?.close();
+
     try {
       await handleCloseMonth();
-      dialogRef.current?.showModal();
+      successDialogRef.current?.showModal();
       setTimeout(() => {
-        dialogRef.current?.close();
+        successDialogRef.current?.close();
       }, 4000);
-
     } catch (error) {
       console.error(error);
       alert("Erro ao fechar o mês. Tente novamente.");
-
     } finally {
       setLoading(false);
     }
   }
-  const closeDialog = () => {
-    dialogAlert.current?.close();
-  };
 
-  const summary = useMemo(() => getOvertimeSummary(data), [data]);
+  const closeDialog = () => {
+    confirmDialogRef.current?.close();
+  };
 
   return (
     <div>
       <ul className="menu-information">
         <li>
           <h1>Total de Horas Extras</h1>
-          <h3 className="time">{formatHours(summary.totalHours)}</h3>
+          <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
         </li>
         <li>
           <h1>Total de Horas Noturnas</h1>
-          <h3 className="night">{formatHours(summary.totalNightHours)}</h3>
+          <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
         </li>
         <li>
-          <h1>Status do Fechamento</h1>
-          {data ? (
-            <h3 className="status pending">Pendente</h3>
-          ) : (
-            <h3 className="status approved">Aprovado</h3>
-          )}
+          <h1>Quantidade no Mês</h1>
+          <h3>
+            {monthPerf?.total_overtimes_mouth > 0
+              ? monthPerf.total_overtimes_mouth
+              : "0"}
+          </h3>
         </li>
       </ul>
-      
+
+      <h2 className="title-h2">Histórico de Horas Extras</h2>
+
       <div className="table-page Leader-main">
         <div className="table-header Leader-title">
-          <h2>Registros de Horas Extras do Mês</h2>
-          <button
-            className="btn"
-            onClick={() => dialogAlert.current?.showModal()}
-            disabled={loading}
-          >
-            {loading ? "Carregando..." : "Aprovar Fechamento"}
-          </button>
+          <div className="date-filter">
+            <label htmlFor="filter-start-date">
+              De
+              <input
+                id="filter-start-date"
+                type="date"
+                value={startDate}
+                max={endDate || undefined}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </label>
 
-          <dialog ref={dialogAlert} className="close-dialog">
+            <label htmlFor="filter-end-date">
+              Até
+              <input
+                id="filter-end-date"
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </label>
+
+            {isFilterActive && (
+              <button
+                type="button"
+                className="clear-filter-btn"
+                onClick={handleClearFilter}
+                aria-label="Limpar filtro de data"
+              >
+                <FaTimes />
+                Limpar
+              </button>
+            )}
+
+            <button
+              type="button"
+              className="register-btn"
+              onClick={() => handleNavigate("/RegisterHours")}
+            >
+              <FaPlus />
+              Registrar Hora Extra
+            </button>
+            
+            <button
+              type="button"
+              className="btn"
+              onClick={() => confirmDialogRef.current?.showModal()}
+              disabled={loading}
+            >
+              {loading ? "Carregando..." : "Aprovar Fechamento"}
+            </button>
+          </div>
+
+
+          <dialog ref={confirmDialogRef} className="close-dialog">
             <h2>Deseja aprovar o fechamento do mês?</h2>
             <p>Após confirmar, o período será enviado para aprovação.</p>
             <div className="dialog-actions">
-              <button onClick={closeDialog} className="dialog-cancel-btn">
+              <button type="button" onClick={closeDialog} className="dialog-cancel-btn">
                 Cancelar
               </button>
-              <button onClick={handleApprove} className="dialog-confirm-btn">
+              <button type="button" onClick={handleApprove} className="dialog-confirm-btn">
                 Aprovar
               </button>
             </div>
           </dialog>
 
-          <dialog ref={dialogRef}>
+          <dialog ref={successDialogRef}>
             <h2>Fechamento realizado com sucesso!</h2>
-            <button onClick={() => dialogRef.current.close()}>
+            <button type="button" onClick={() => successDialogRef.current?.close()}>
               Fechar
             </button>
           </dialog>
@@ -102,32 +182,47 @@ const TeamLeaderTable = ({ data, handleCloseMonth,monthPerf }) => {
               </tr>
             </thead>
 
-            <tbody >
-              {data?.map((register) => {
-                const record = register.overtime_records;
-                const totalHours = record?.total_hours ?? 0;
-                const nightHours = record?.nigth_hours ?? 0;
-                const dayHours = Math.max(totalHours - nightHours, 0);
+            <tbody>
+              {filteredData?.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="empty-state">
+                    {isFilterActive
+                      ? "Nenhum registro encontrado no período selecionado."
+                      : "Nenhum registro encontrado."}
+                  </td>
+                </tr>
+              ) : (
+                filteredData?.map((register) => {
+                  const record = register.overtime_records;
+                  const totalHours = record?.total_hours ?? 0;
+                  const nightHours = record?.nigth_hours ?? 0;
+                  const dayHours = Math.max(totalHours - nightHours, 0);
 
-                return (
-                  <tr key={record?.id}>
-                    <td>{register.users?.name}</td>
-                    <td>{record?.work_date ? formatDate(record.work_date) : "-"}</td>
-                    <td>{formatHours(totalHours)}</td>
-                    <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
-                    <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
-                    <td>
-                      {record?.overtime_type_id === 1
-                        ? <span className="status pending">50%</span>
-                        : <span className="status approved">100%</span>}
-                    </td>
-                  </tr>
-                );
-              })}
+                  return (
+                    <tr key={record?.id}>
+                      <td>{register.users?.name}</td>
+                      <td>
+                        {record?.work_date ? formatDate(record.work_date) : "-"}
+                      </td>
+                      <td>{formatHours(totalHours)}</td>
+                      <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
+                      <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
+                      <td>
+                        {record?.overtime_type_id === 1 ? (
+                          <span className="status pending">50%</span>
+                        ) : (
+                          <span className="status approved">100%</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
-      </div></div>
+      </div>
+    </div>
   );
 };
 
