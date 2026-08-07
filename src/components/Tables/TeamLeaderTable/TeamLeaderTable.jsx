@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTimes } from "react-icons/fa";
 // Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
-
+//hooks
+import { groupUsers } from '../../../hooks/useTeamLeaderTable';
 const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
   const navigate = useNavigate();
   const successDialogRef = useRef(null);
@@ -17,15 +18,45 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  //filter users and mix the data of them by id 
+  const {
+    items,
+    currentItem,
+    currentIndex,
+    total,
+    hasNext,
+    hasPrev,
+    goNext,
+    goPrev,
+    goToIndex,
+  } = groupUsers(data);
 
-  const isFilterActive = Boolean(startDate || endDate);
+  // const isFilterActive = Boolean(startDate || endDate);
+
+  // const filteredData = useMemo(() => {
+  //   if (!items) return [];
+  //   if (!isFilterActive) return items;
+
+  //   return items.filter((register) => {
+  //     const workDate = register.records?.work_date;
+  //     if (!workDate) return false;
+
+  //     const dateOnly = workDate.slice(0, 10);
+
+  //     if (startDate && dateOnly < startDate) return false;
+  //     if (endDate && dateOnly > endDate) return false;
+
+  //     return true;
+  //   });
+  // }, [items, startDate, endDate, isFilterActive]);
+const isFilterActive = Boolean(startDate || endDate);
 
   const filteredData = useMemo(() => {
-    if (!data) return [];
-    if (!isFilterActive) return data;
+    if (!items) return [];
+    if (!isFilterActive) return items;
 
-    return data.filter((register) => {
-      const workDate = register.overtime_records?.work_date;
+    return items.filter((register) => {
+      const workDate = register.records?.work_date;
       if (!workDate) return false;
 
       const dateOnly = workDate.slice(0, 10);
@@ -35,7 +66,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
 
       return true;
     });
-  }, [data, startDate, endDate, isFilterActive]);
+  }, [items, startDate, endDate, isFilterActive]);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -70,27 +101,35 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
 
   return (
     <div>
-      <ul className="menu-information">
-        <li>
-          <h1>Total de Horas Extras</h1>
-          <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
-        </li>
-        <li>
-          <h1>Total de Horas Noturnas</h1>
-          <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
-        </li>
-        <li>
-          <h1>Quantidade no Mês</h1>
-          <h3>
-            {monthPerf?.total_overtimes_mouth > 0
-              ? monthPerf.total_overtimes_mouth
-              : "0"}
-          </h3>
-        </li>
-      </ul>
-
-      <h2 className="title-h2">Histórico de Horas Extras</h2>
-
+      <div>
+        <h2 className="title-h2">Histórico de Horas Extras</h2>
+        <ul className="menu-information">
+          <li>
+            <h1>Total de Horas Extras</h1>
+            <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
+          </li>
+          <li>
+            <h1>Total de Horas Noturnas</h1>
+            <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
+          </li>
+          <li>
+            <h1>Quantidade no Mês</h1>
+            <h3>
+              {monthPerf?.total_overtimes_mouth > 0
+                ? monthPerf.total_overtimes_mouth
+                : "0"}
+            </h3>
+          </li>
+        </ul>
+        <div className="table-header-leader">
+          <button className="change-btn" >
+            ◀
+          </button>
+          <button className="change-btn" >
+            ▶
+          </button>
+        </div>
+      </div>
       <div className="table-page Leader-main">
         <div className="table-header Leader-title">
           <div className="date-filter">
@@ -136,7 +175,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
               <FaPlus />
               Registrar Hora Extra
             </button>
-            
+
             <button
               type="button"
               className="btn"
@@ -193,22 +232,22 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
                 </tr>
               ) : (
                 filteredData?.map((register) => {
-                  const record = register.overtime_records;
-                  const totalHours = record?.total_hours ?? 0;
-                  const nightHours = record?.nigth_hours ?? 0;
+                  const record = register.currentIndex.records.overtime_records;
+                  const totalHours = record?.currentIndex?.records.total_hours ?? 0;
+                  const nightHours = record?.currentIndex?.records.nigth_hours ?? 0;
                   const dayHours = Math.max(totalHours - nightHours, 0);
 
                   return (
-                    <tr key={record?.id}>
-                      <td>{register.users?.name}</td>
+                    <tr key={currentItem}>
+                      <td>{register.currentIndex?.name}</td>
                       <td>
-                        {record?.work_date ? formatDate(record.work_date) : "-"}
+                        {record?.currentIndex?.work_date ? formatDate(record.currentIndex?.work_date) : "-"}
                       </td>
                       <td>{formatHours(totalHours)}</td>
                       <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
                       <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
                       <td>
-                        {record?.overtime_type_id === 1 ? (
+                        {record?.currentIndex?.overtime_type_id === 1 ? (
                           <span className="status pending">50%</span>
                         ) : (
                           <span className="status approved">100%</span>

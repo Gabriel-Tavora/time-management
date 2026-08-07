@@ -29,7 +29,7 @@ export function useTeamLeader() {
 
       const responseData = await employeeDataRecord(token, infoMonth?.id);
       setColaboratorData(responseData);
-
+  
       const userInformations = await getCurrentUser(token);
       setUser(userInformations);
 

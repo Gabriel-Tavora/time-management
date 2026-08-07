@@ -86,6 +86,7 @@ export async function getEmployeePerformance(token, employee_id, id_period) {
 
   return await response.json();
 }
+
 // buscar horas do próprio usuário
 export async function getUserHours(token) {
   const response = await fetch(`${API_URL}/overtime/employee`, {
