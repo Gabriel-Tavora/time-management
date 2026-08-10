@@ -8,7 +8,7 @@ async function parseErrorMessage(response, fallback) {
     return fallback;
   }
 }
-
+/* team-leader e cordenador */
 export async function getClousedMonth(token) {
   const response = await fetch(`${API_URL}/cloused`, {
     method: "GET",
@@ -27,6 +27,16 @@ export async function getClousedMonth(token) {
 
   return await response.json();
 }
+
+/* 
+{
+  "id": 2,
+  "exercice_id": 1,
+  "state": "PENDING_COORDINATOR_APPROVAL",
+  "cloused_by": 7,
+  "cloused_at": "2026-07-22T16:44:28Z"
+}
+*/
 
 export async function getClousedMonthRecords(token, idCloused) {
   const response = await fetch(`${API_URL}/cloused/${idCloused}`, {
@@ -71,6 +81,7 @@ export const closeApprovedMonth = (token, id) =>
 
 export const closeRejectedMonth = (token, id) =>
   updateMonthStatus(token, id, "REJECTED");
+
 
 
 // manager

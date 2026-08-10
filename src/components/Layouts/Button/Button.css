@@ -1,0 +1,81 @@
+/* botão normal */
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 20px;
+  min-width: 150px;
+  padding: 12px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  background: var(--gradient-accent);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 12px 35px rgba(80, 110, 255, 0.45),
+    0 0 20px rgba(124, 92, 255, 0.25);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.change-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  max-width: 48px;
+  height: 48px;
+  border: 1px solid var(--border-card);
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.change-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 12px 35px rgba(80, 110, 255, 0.45),
+    0 0 20px rgba(124, 92, 255, 0.25);
+}
+
+.change-btn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.change-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:focus-visible,
+.clear-filter-btn:focus-visible,
+.change-btn:focus-visible {
+  outline: 2px solid var(--accent-color, #7c5cff);
+  outline-offset: 2px;
+}

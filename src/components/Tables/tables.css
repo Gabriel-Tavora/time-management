@@ -1,12 +1,13 @@
-.table{
+.table {
   margin-top: -20px;
 }
+
 .table-page {
   display: grid;
   gap: 3rem;
   width: 100%;
-  max-width: 90rem;
-  margin: 2rem auto ;
+  max-width: 70rem;
+  margin: 2rem auto;
   padding: 30px;
   padding-top: 20px;
   border-radius: var(--radius-xl);
@@ -152,9 +153,48 @@
   box-shadow: var(--shadow-success);
 }
 
+/* 
+Dialog
+*/
+.close-dialog {
+  align-self: center;
+  justify-self: center;
+  padding: 25px;
+  border: 1px solid var(--border-card-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-strong);
+  backdrop-filter: blur(25px);
+  color: var(--text-primary);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(124, 92, 255, 0.2);
+}
+
+.close-dialog h2 {
+  font-size: 1.6rem;
+}
+
+.dialog-actions {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
 dialog::backdrop {
   background: var(--dialog-backdrop);
   backdrop-filter: blur(4px);
+}
+
+/* 
+MENU - TABLE
+*/
+.menu-information {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  gap: 50px;
 }
 
 .menu-information li {
@@ -192,12 +232,9 @@ dialog::backdrop {
   color: var(--warning-text);
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(38%) sepia(90%) saturate(2500%) hue-rotate(195deg);
-  cursor: pointer;
-}
-
+/* 
+Filter
+*/
 .date-filter {
   display: flex;
   align-items: flex-end;
@@ -211,7 +248,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   font-size: 0.95rem;
   gap: 6px;
   cursor: pointer;
-  color: var(--white-color);
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -221,7 +258,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   height: 2.75rem;
   padding: 0 14px;
   font-size: 0.95rem;
-  color: var(--white-color);
+  color: var(--text-primary);
   background: var(--bg-tertiary);
   border: 1px solid var(--input-border);
   border-radius: 12px;
@@ -239,35 +276,3 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   border-color: var(--input-border-focus);
   box-shadow: var(--input-focus-shadow);
 }
-
-.clear-filter-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 2.75rem;
-  max-width: 120px;
-  padding: 0 16px;
-  border: 1px solid var(--input-border);
-  border-radius: 12px;
-  background: var(--input-bg);
-  color: var(--white-color);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-  white-space: nowrap;
-}
-
-.clear-filter-btn svg {
-  font-size: 0.85rem;
-}
-
-.change-btn {
-  max-width: 48px;
-  height: 48px;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.1rem;
-}
-

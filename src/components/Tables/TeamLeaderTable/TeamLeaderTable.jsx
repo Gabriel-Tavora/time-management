@@ -11,7 +11,10 @@ import { formatHours, formatDate } from "../../../utils/formatHours.js";
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
+//components
 import Input from "../../Layouts/Inputs/Inputs.jsx";
+import Button from '../../Layouts/Button/Button';
+
 const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
   const navigate = useNavigate();
   const successDialogRef = useRef(null);
@@ -85,9 +88,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
 
   return (
     <div className="table">
+      
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
-
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
@@ -107,12 +110,17 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
           </li>
         </ul>
       </div>
-      <div className="table-page Leader-main">
+
+      <div className="table-page">
         <div className="table-header Leader-title">
           <div className="date-filter">
-            <button className="change-btn" onClick={goPrev}> ◀ </button>
+            <Button
+              className="change-btn"
+              onClick={goPrev}
+              buttonText="◀"
+            />
             <Input
-              classNameIn="filter-start-date"
+              className="btn"
               labelText="Data Inicial"
               id="filter-start-date"
               type="date"
@@ -132,68 +140,61 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
               name="startDate"
             />
             {isFilterActive && (
-              <button
-                type="button"
-                className="clear-filter-btn"
+
+              <Button
+                buttonText="Limpar"
+                className="btn"
                 onClick={handleClearFilter}
                 aria-label="Limpar filtro de data"
-              >
-                <FaTimes />
-                Limpar
-              </button>
+                icon={FaTimes}
+              />
             )}
 
-            <button
-              type="button"
-              className="register-btn"
-              onClick={() => handleNavigate("/RegisterHours")}
-            >
-              <FaPlus />
-              Registrar Hora Extra
-            </button>
-
-            <button
-              type="button"
+            <Button
               className="btn"
+              buttonText="Registrar Hora Extra"
+              onClick={() => handleNavigate("/RegisterHours")}
+              aria-label="Limpar filtro de data"
+              icon={FaPlus}
+            />
+            <Button
+              className="btn"
+              buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
               onClick={() => confirmDialogRef.current?.showModal()}
               disabled={loading}
-            >
-              {loading ? "Carregando..." : "Aprovar Fechamento"}
-            </button>
-            <button className="change-btn" onClick={goNext}>
-              ▶
-            </button>
+              aria-label="Limpar filtro de data"
+            />
+            <Button
+              className="change-btn"
+              onClick={goNext}
+              buttonText="▶"
+            />
           </div>
 
           <dialog ref={confirmDialogRef} className="close-dialog">
             <h2>Deseja aprovar o fechamento do mês?</h2>
             <p>Após confirmar, o período será enviado para aprovação.</p>
             <div className="dialog-actions">
-              <button
-                type="button"
+              <Button
+                className="btn"
                 onClick={closeDialog}
-                className="dialog-cancel-btn"
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
+                buttonText="Cancelar"
+              />
+              <Button
                 onClick={handleApprove}
-                className="dialog-confirm-btn"
-              >
-                Aprovar
-              </button>
+                className="btn"
+                buttonText="Aprovar"
+              />
             </div>
           </dialog>
 
           <dialog ref={successDialogRef}>
             <h2>Fechamento realizado com sucesso!</h2>
-            <button
-              type="button"
+            <Button
+              className="btn"
               onClick={() => successDialogRef.current?.close()}
-            >
-              Fechar
-            </button>
+              buttonText="Fechar"
+            />
           </dialog>
         </div>
 

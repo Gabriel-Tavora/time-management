@@ -1,8 +1,8 @@
-.main-register {
-  margin-top: 0px;
+.user-register {
+  margin-top: 30px;
 }
 
-.main-register-title {
+.user-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,7 +10,7 @@
   gap: 20px;
 }
 
-.main-register-title button {
+.user-title button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +29,7 @@
   transition: 0.3s;
 }
 
-.main-register-title button:hover {
+.user-title button:hover {
   transform: translateY(-3px);
   filter: brightness(1.05);
   box-shadow:

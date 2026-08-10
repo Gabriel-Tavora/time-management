@@ -18,7 +18,7 @@ const DateCatch = ({
       <div className="date-time">
         <Input
           classNameIn="commun-input"
-          labelText="Dia Inicial"
+          labelText="Data Inicial"
           id="startDate"
           type="date"
           value={startDate}
@@ -38,7 +38,7 @@ const DateCatch = ({
       <div className="date-time">
         <Input
           classNameIn="commun-input"
-          labelText="Dia Final"
+          labelText="Data Final"
           id="endDate"
           type="date"
           value={endDate}

@@ -4,6 +4,9 @@ import "./CoordinatorTable.css";
 import "../tables.css";
 //Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
+//components
+import Input from "../../Layouts/Inputs/Inputs.jsx";
+import Button from '../../Layouts/Button/Button';
 
 const OVERTIME_TYPE_NORMAL = 1;
 const SUCCESS_DIALOG_TIMEOUT_MS = 4000;
@@ -100,114 +103,196 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   }, [dialogMode, loading, Approval, Rejected]);
 
   return (
-    <div className="table-page Coordinator-main">
-      <div className="table-header Coordinator-title">
-        <h2>Resumo dos Colaboradores</h2>
+    <div className="table">
 
-        <div>
-          <button
-            className="rejected-btn"
-            onClick={() => openDialog("rejected")}
-            disabled={disabled || loading}
-          >
-            Rejeitar
-          </button>
-          <button
-            className="approved-btn"
-            onClick={() => openDialog("approve")}
-            disabled={disabled || loading}
-          >
-            Aprovar
-          </button>
+      <div>
+        <h2 className="title-h2">Histórico de Horas Extras</h2>
+        <ul className="menu-information">
+          <li>
+            <h1>Total de Horas Extras</h1>
+            <h3 className="time"></h3>
+          </li>
+          <li>
+            <h1>Total de Horas Noturnas</h1>
+            <h3 className="night"></h3>
+          </li>
+          <li>
+            <h1>Quantidade no Mês</h1>
+            <h3>
 
-          <dialog
-            ref={confirmDialogRef}
-            className="close-dialog"
-            aria-labelledby="confirm-dialog-title"
-          >
-            <h2 id="confirm-dialog-title">
-              {dialogMode === "approve"
-                ? "Deseja aprovar o fechamento do mês?"
-                : "Deseja rejeitar o fechamento?"}
-            </h2>
-            <p>
-              {dialogMode === "approve"
-                ? "Após confirmar, o período será encerrado"
-                : "Os dados serão devolvidos para correção"}
-            </p>
-
-            {errorMessage && (
-              <p className="form-message error" role="alert">
-                {errorMessage}
-              </p>
-            )}
-
-            <div className="dialog-actions">
-              <button type="button" onClick={closeDialog} disabled={loading}>
-                Cancelar
-              </button>
-              <button
-                type="button"
-                onClick={handleConfirmAction}
-                disabled={loading}
-              >
-                {loading
-                  ? "Processando..."
-                  : dialogMode === "approve"
-                  ? "Aprovar"
-                  : "Rejeitar"}
-              </button>
-            </div>
-          </dialog>
-
-          {/* Dialog de sucesso */}
-          <dialog ref={successDialogRef} aria-labelledby="success-dialog-title">
-            <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
-            <button type="button" onClick={closeSuccessDialog}>
-              Fechar
-            </button>
-          </dialog>
-        </div>
+            </h3>
+          </li>
+        </ul>
       </div>
 
-      <div className="table-container Coordinator-table">
-        <table className="app-table Coordinator-stats">
-          <thead>
-            <tr>
-              <th>Colaborador</th>
-              <th>Data</th>
-              <th>Total de Horas Extras</th>
-              <th>Horas Diurnas</th>
-              <th>Horas Noturnas</th>
-              <th>Tipo</th>
-            </tr>
-          </thead>
+      <div className="table-page">
+        <div className="table-header ">
+          {/* <div className="date-filter">
+            <Button
+              className="change-btn"
+              onClick={goPrev}
+              buttonText="◀"
+            />
+            <Input
+              classNameIn="filter-start-date"
+              labelText="Data Inicial"
+              id="filter-start-date"
+              type="date"
+              value={startDate}
+              max={endDate || undefined}
+              onChange={(e) => setStartDate(e.target.value)}
+              name="startDate"
+            />
+            <Input
+              classNameIn="filter-start-date"
+              labelText="Data Final"
+              id="filter-end-date"
+              type="date"
+              value={endDate}
+              min={startDate || undefined}
+              onChange={(e) => setEndDate(e.target.value)}
+              name="startDate"
+            />
+            {isFilterActive && (
 
-          <tbody>
-            {data?.map((register) => {
-              const record = register.overtime_record;
+              <Button
+                buttonText="Limpar"
+                className="clear-filter-btn"
+                onClick={handleClearFilter}
+                aria-label="Limpar filtro de data"
+                icon={FaTimes}
+              />
+            )}
 
-              const totalHours = record?.total_hours ?? 0;
-              const nightHours = record?.nigth_hours ?? 0;
-              const dayHours = Math.max(totalHours - nightHours, 0);
+            <Button
+              classNameIn="register-btn"
+              buttonText="Registrar Hora Extra"
+              className="register-btn"
+              onClick={() => handleNavigate("/RegisterHours")}
+              aria-label="Limpar filtro de data"
+              icon={FaPlus}
+            />
+            <Button
+              classNameIn="register-btn"
+              buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
+              onClick={() => confirmDialogRef.current?.showModal()}
+              disabled={loading}
+              aria-label="Limpar filtro de data"
+            />
+            <Button
+              className="change-btn"
+              onClick={goNext}
+              buttonText="▶"
+            />
+          </div> */}
 
-              return (
-                <tr key={record?.id}>
-                  <td>{register.users?.name}</td>
-                  <td>{record?.work_date ? formatDate(record.work_date) : "-"}</td>
-                  <td>{formatHours(totalHours)}</td>
-                  <td>{dayHours ? formatHours(dayHours) : "0"}</td>
-                  <td>{nightHours ? formatHours(nightHours) : "0"}</td>
-                  <td>
-                    {record?.overtime_type_id === OVERTIME_TYPE_NORMAL
-                      ? <span className="status pending">50%</span>
-                      : <span className="status approved">100%</span>}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+          <div className="date-filter">
+            <Button
+              className="rejected-btn"
+              onClick={() => openDialog("rejected")}
+              disabled={disabled || loading}
+              buttonText="Rejeitar"
+            />
+            <Button
+              className="approved-btn"
+              onClick={() => openDialog("approve")}
+              disabled={disabled || loading}
+              buttonText="Aprovar"
+            />
+
+            <dialog
+              ref={confirmDialogRef}
+              className="close-dialog"
+              aria-labelledby="confirm-dialog-title"
+            >
+              <h2 id="confirm-dialog-title">
+                {dialogMode === "approve"
+                  ? "Deseja aprovar o fechamento do mês?"
+                  : "Deseja rejeitar o fechamento?"}
+              </h2>
+              <p>
+                {dialogMode === "approve"
+                  ? "Após confirmar, o período será encerrado"
+                  : "Os dados serão devolvidos para correção"}
+              </p>
+
+              {errorMessage && (
+                <p className="form-message error" role="alert">
+                  {errorMessage}
+                </p>
+              )}
+
+              <div className="dialog-actions">
+                <Button
+                  className="btn"
+                  onClick={closeDialog}
+                  disabled={loading}
+                  buttonText="Cancelar"
+                />
+                <Button
+                  className="btn"
+                  onClick={handleConfirmAction}
+                  disabled={loading}
+                  buttonText={loading
+                    ? "Processando..."
+                    : dialogMode === "approve"
+                      ? "Aprovar"
+                      : "Rejeitar"}
+                />
+              </div>
+            </dialog>
+
+            {/* Dialog de sucesso */}
+            <dialog ref={successDialogRef} aria-labelledby="success-dialog-title">
+              <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
+              <Button
+                className="btn"
+                className="btn"
+                onClick={closeSuccessDialog}
+                buttonText="Fechar"
+              />
+            </dialog>
+          </div>
+        </div>
+
+        <div className="table-container Coordinator-table">
+          <table className="app-table Coordinator-stats">
+            <thead>
+              <tr>
+                <th>Colaborador</th>
+                <th>Data</th>
+                <th>Total de Horas Extras</th>
+                <th>Horas Diurnas</th>
+                <th>Horas Noturnas</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {data?.map((register) => {
+                const record = register.overtime_record;
+                const totalHours = record?.total_hours ?? 0;
+                const nightHours = record?.nigth_hours ?? 0;
+                const dayHours = Math.max(totalHours - nightHours, 0);
+
+                return (
+                  <tr key={record?.id}>
+                    <td>{register.users?.name}</td>
+                    <td>{record?.work_date ? formatDate(record.work_date) : "-"}</td>
+                    <td>{formatHours(totalHours)}</td>
+                    <td>{dayHours ? formatHours(dayHours) : "0"}</td>
+                    <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                    <td>
+                      {record?.overtime_type_id === OVERTIME_TYPE_NORMAL
+                        ? <span className="status pending">50%</span>
+                        : <span className="status approved">100%</span>}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,4 @@
 /* ============================
-   AÇÕES
-============================ */
-.Coordinator-title div {
-  display: flex;
-  gap: 25px;
-}
-
-/* ============================
    BOTÕES DE AÇÃO
 ============================ */
 .approved-btn,
@@ -60,5 +52,5 @@
 ============================ */
 .approved-btn:active,
 .rejected-btn:active {
-  transform: scale(.97);
+  transform: scale(.95);
 }

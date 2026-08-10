@@ -8,13 +8,16 @@ import { formatHours, formatDate } from "../../../utils/formatHours.js";
 import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 //router-dom
 import { useNavigate } from "react-router-dom";
+//hooks
+import Input from "../../Layouts/Inputs/Inputs.jsx";
+import Button from '../../Layouts/Button/Button';
 
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
   };
-  
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -48,73 +51,77 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   };
 
   return (
-    <>
-      <ul className="menu-information">
-        <li>
-          <h1>Total de Horas Extras</h1>
-          <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
-        </li>
-        <li>
-          <h1>Total de Horas Noturnas</h1>
-          <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
-        </li>
-        <li>
-          <h1>Quantidade no Mês</h1>
-          <h3>
-            {monthPerf?.total_overtimes_mouth > 0
-              ? monthPerf.total_overtimes_mouth
-              : "0"}
-          </h3>
-        </li>
-      </ul>
-      <h2 className="title-h2">Histórico de Horas Extras</h2>
-      <div className="table-page main-register">
-        <div className="table-header main-register-title">
+    <div className="user-register">
+      <div>
+        <h2 className="title-h2">Histórico de Horas Extras</h2>
 
+        <ul className="menu-information">
+          <li>
+            <h1>Total de Horas Extras</h1>
+            <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
+          </li>
+          <li>
+            <h1>Total de Horas Noturnas</h1>
+            <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
+          </li>
+          <li>
+            <h1>Quantidade no Mês</h1>
+            <h3>
+              {monthPerf?.total_overtimes_mouth > 0
+                ? monthPerf.total_overtimes_mouth
+                : "0"}
+            </h3>
+          </li>
+        </ul>
+      </div>
+      <div className="table-page">
+        <div className="table-header user-title">
           <div className="date-filter">
-            <label htmlFor="filter-start-date">
-              De
-              <input
-                id="filter-start-date"
-                type="date"
-                value={startDate}
-                max={endDate || undefined}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </label>
-
-            <label htmlFor="filter-end-date">
-              Até
-              <input
-                id="filter-end-date"
-                type="date"
-                value={endDate}
-                min={startDate || undefined}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </label>
+            <Input
+              classNameIn="filter-start-date"
+              labelText="Data Inicial"
+              id="filter-start-date"
+              type="date"
+              value={startDate}
+              max={endDate || undefined}
+              onChange={(e) => setStartDate(e.target.value)}
+              name="startDate"
+            />
+            <Input
+              classNameIn="filter-start-date"
+              labelText="Data Final"
+              id="filter-end-date"
+              type="date"
+              value={endDate}
+              min={startDate || undefined}
+              onChange={(e) => setEndDate(e.target.value)}
+              name="startDate"
+            />
 
             {isFilterActive && (
-              <button
-                type="button"
+              <Button
+                buttonText="Limpar"
                 className="clear-filter-btn"
                 onClick={handleClearFilter}
                 aria-label="Limpar filtro de data"
-              >
-                <FaTimes />
-                Limpar
-              </button>
+                icon={FaTimes}
+              />
+
             )}
-            <button className="register-btn" onClick={() => handleNavigate("/RegisterHours")}>
-              <FaPlus />
-              Registrar Hora Extra
-            </button>
+            <Button
+              classNameIn="register-btn"
+              buttonText="Registrar Hora Extra"
+              className="register-btn"
+              onClick={() => handleNavigate("/RegisterHours")}
+              aria-label="Limpar filtro de data"
+              icon={FaPlus}
+            />
           </div>
 
         </div>
 
         <div className="table-container">
-          <table className="app-table main-register-stats">
+          <table className="app-table">
             <thead>
               <tr>
                 <th>Data</th>
@@ -160,7 +167,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
           </table>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
