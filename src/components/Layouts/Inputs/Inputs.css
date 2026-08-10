@@ -1,0 +1,55 @@
+/* registerTime*/
+.commun-input{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--white-color);
+  justify-content: center;
+  align-items: center;
+}
+
+.commun-input label {
+  align-self: flex-start;
+  cursor: pointer;
+  color: var(---white-color);
+  align-self: center;
+}
+
+.commun-input input {
+  width: 100%;
+  max-width: 250px;
+  height: 3.5rem;
+  padding: 0 18px;
+  font-size: 1rem;
+  color: var(---white-color);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 18px;
+  transition: 0.3s;
+  justify-items: center;
+  align-content: center;
+}
+
+.commun-input input::placeholder {
+  color: var(--placeholder-color);
+}
+
+.commun-input input:focus {
+  outline: none;
+  background: var(---white-color);
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-shadow-focus);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter:
+    invert(38%)
+    sepia(90%)
+    saturate(2500%)
+    hue-rotate(195deg);
+
+  cursor: pointer;
+}

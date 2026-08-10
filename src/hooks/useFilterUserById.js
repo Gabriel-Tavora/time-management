@@ -1,24 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-export function groupUsers(records) {
+export function useGroupUsers(records) {
+  const items = useMemo(() => {
+    const filterUserById = records.reduce((acc, data) => {
+      const userId = data.users.id;
 
-  const filterUserById = records.reduce((acc, data) => {
-    const userId = data.users.id;
+      if (!acc[userId]) {
+        acc[userId] = {
+          id: userId,
+          name: data.users.name,
+          records: [],
+        };
+      }
 
-    if (!acc[userId]) {
-      acc[userId] = {
-        id: userId,
-        name: data.users.name,
-        records: [],
-      };
-    }
+      acc[userId].records.push(data.overtime_records);
 
-    acc[userId].records.push(data.overtime_records);
+      return acc;
+    }, {});
 
-    return acc;
-  }, {});
-
-  const items = Object.values(filterUserById);
+    return Object.values(filterUserById);
+  }, [records]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = items.length;
@@ -28,7 +29,6 @@ export function groupUsers(records) {
       setCurrentIndex(0);
       return;
     }
-
     if (currentIndex > total - 1) {
       setCurrentIndex(total - 1);
     }
@@ -48,7 +48,6 @@ export function groupUsers(records) {
   const goToIndex = useCallback(
     (index) => {
       if (index < 0 || index > total - 1) return;
-
       setCurrentIndex(index);
     },
     [total]

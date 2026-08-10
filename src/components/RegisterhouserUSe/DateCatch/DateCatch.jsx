@@ -1,44 +1,58 @@
 import React from "react";
 //css
 import "./DateCatch.css";
+//components
+import Input from "../../Layouts/Inputs/Inputs.jsx";
 const DateCatch = ({
-  workDate,
-  setWorkDate,
+  endDate,
+  setEndDate,
+  startDate,
+  setStartDate,
   startTime,
   setStartTime,
   endTime,
   handleEndTimeChange,
 }) => {
   return (
-    <div className="time-menu-form-group">
-      <div className="time-menu-group">
-        <label htmlFor="workDate">Data do Trabalho</label>
-        <input
-          id="workDate"
+    <div className="input-time">
+      <div className="date-time">
+        <Input
+          classNameIn="commun-input"
+          labelText="Dia Inicial"
+          id="startDate"
           type="date"
-          value={workDate}
-          onChange={(e) => setWorkDate(e.target.value)}
-          name="workDate"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          name="startDate"
         />
-      </div>
-
-      <div className="time-menu-group">
-        <label htmlFor="startTime">Horário Inicial</label>
-        <input
+        <Input
+          classNameIn="commun-input"
+          labelText="Horário Inicial"
           id="startTime"
           type="time"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
+          name="startTime"
         />
       </div>
-
-      <div className="time-menu-group">
-        <label htmlFor="endTime">Horário de Saída</label>
-        <input
+      <div className="date-time">
+        <Input
+          classNameIn="commun-input"
+          labelText="Dia Final"
+          id="endDate"
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          name="endDate"
+        />
+        <Input
+          classNameIn="commun-input"
+          labelText="Horário de Saída"
           id="endTime"
           type="time"
           value={endTime}
           onChange={handleEndTimeChange}
+          name="endTime"
         />
       </div>
     </div>

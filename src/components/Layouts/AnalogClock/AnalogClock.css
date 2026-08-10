@@ -64,7 +64,7 @@
   z-index: 6;
   width: 6px;
   height: 250px;
-  background: white;
+  background: var(--white-color);
   left: 50%;
   top: 100px;
   margin-left: -3px;

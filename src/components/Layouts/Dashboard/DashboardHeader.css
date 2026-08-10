@@ -12,20 +12,15 @@
 
 .main-header-title h1 {
   margin: 0;
-
   font-size: 2.4rem;
   font-weight: 700;
-
-  color: var(--text-primary);
-
+  color: var(--white-color);
   text-shadow: var(--text-glow);
 }
 
 .main-header-title p {
   margin-top: 10px;
-
   color: var(--text-muted);
-
   font-size: 1rem;
   font-weight: 400;
 }
@@ -34,44 +29,32 @@
   display: inline-flex;
   align-items: center;
   gap: 14px;
-
   width: fit-content;
-
   margin: 0 0 25px 50px;
   padding: 14px 22px;
-
   border-radius: var(--radius-md);
-
   background: var(--bg-card);
-
   backdrop-filter: blur(18px);
-
   border: 1px solid var(--border-card-soft);
-
   box-shadow: var(--shadow-card);
 
   transition:
-    border-color .35s ease,
-    box-shadow .35s ease,
-    transform .35s ease;
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
 }
 
 .main-header-time:hover {
   border-color: var(--border-card);
-
   box-shadow: var(--shadow-table);
-
   transform: translateY(-2px);
 }
 
 .main-header-time h2 {
   margin: 0;
-
-  color: var(--text-primary);
-
+  color: var(--white-color);
   font-size: 1.1rem;
   font-weight: 600;
-
   text-transform: capitalize;
 }
 
@@ -82,8 +65,6 @@
 
 .main-header-time svg {
   font-size: 22px;
-
   color: var(--accent);
-
   filter: drop-shadow(var(--shadow-link));
 }

@@ -27,8 +27,10 @@ const RegisterHours = () => {
     setEndTime,
     nightTime,
     setNightTime,
-    workDate,
-    setWorkDate,
+    endDate,
+    setEndDate,
+    startDate,
+    setStartDate,
   } = useRegisterHours();
 
   const [jiraTask, setJiraTask] = useState("");
@@ -38,7 +40,8 @@ const RegisterHours = () => {
 
   const loadTodayDate = () => {
     const { formattedPost } = getCurrentDate();
-    setWorkDate(formattedPost);
+    setEndDate(formattedPost);
+    setStartDate(formattedPost);
   };
 
   useEffect(() => {
@@ -54,18 +57,15 @@ const RegisterHours = () => {
   };
 
   const form = {
-    workDate,
+    endDate,
+    startDate,
     startTime,
     endTime,
     jiraTask,
     observation,
   };
 
-  const {
-    handleSubmit,
-    message,
-    isSubmitting,
-  } = useOvertimeRegistration({
+  const { handleSubmit, message, isSubmitting } = useOvertimeRegistration({
     token,
     form,
     clearForm,
@@ -86,13 +86,12 @@ const RegisterHours = () => {
         <div className="time-menu-container">
           <h1>Registrar Hora Extra</h1>
 
-          <form
-            className="time-menu-form"
-            onSubmit={handleSubmit}
-          >
+          <form className="time-menu-form" onSubmit={handleSubmit}>
             <DateCatch
-              workDate={workDate}
-              setWorkDate={setWorkDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              startDate={startDate}
+              setStartDate={setStartDate}
               startTime={startTime}
               setStartTime={setStartTime}
               endTime={endTime}
@@ -108,12 +107,8 @@ const RegisterHours = () => {
             <RegisterInfo
               jiraTask={jiraTask}
               observation={observation}
-              onJiraTaskChange={(e) =>
-                setJiraTask(e.target.value)
-              }
-              onObservationChange={(e) =>
-                setObservation(e.target.value)
-              }
+              onJiraTaskChange={(e) => setJiraTask(e.target.value)}
+              onObservationChange={(e) => setObservation(e.target.value)}
               message={message}
               isSubmitting={isSubmitting}
             />

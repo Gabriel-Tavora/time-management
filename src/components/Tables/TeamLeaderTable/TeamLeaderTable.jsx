@@ -9,7 +9,9 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 // Utils
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
 //hooks
-import { groupUsers } from '../../../hooks/useTeamLeaderTable';
+import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
+import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
+import Input from "../../Layouts/Inputs/Inputs.jsx";
 const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
   const navigate = useNavigate();
   const successDialogRef = useRef(null);
@@ -18,7 +20,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  //filter users and mix the data of them by id 
+  //filtrar users em tabelas com id
   const {
     items,
     currentItem,
@@ -29,34 +31,16 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
     goNext,
     goPrev,
     goToIndex,
-  } = groupUsers(data);
+  } = useGroupUsers(data);
 
-  // const isFilterActive = Boolean(startDate || endDate);
+  const isFilterActive = Boolean(startDate || endDate);
 
-  // const filteredData = useMemo(() => {
-  //   if (!items) return [];
-  //   if (!isFilterActive) return items;
+  const filteredRecords = useMemo(() => {
+    const records = currentItem?.records ?? [];
+    if (!isFilterActive) return records;
 
-  //   return items.filter((register) => {
-  //     const workDate = register.records?.work_date;
-  //     if (!workDate) return false;
-
-  //     const dateOnly = workDate.slice(0, 10);
-
-  //     if (startDate && dateOnly < startDate) return false;
-  //     if (endDate && dateOnly > endDate) return false;
-
-  //     return true;
-  //   });
-  // }, [items, startDate, endDate, isFilterActive]);
-const isFilterActive = Boolean(startDate || endDate);
-
-  const filteredData = useMemo(() => {
-    if (!items) return [];
-    if (!isFilterActive) return items;
-
-    return items.filter((register) => {
-      const workDate = register.records?.work_date;
+    return records.filter((record) => {
+      const workDate = record?.work_date;
       if (!workDate) return false;
 
       const dateOnly = workDate.slice(0, 10);
@@ -66,7 +50,7 @@ const isFilterActive = Boolean(startDate || endDate);
 
       return true;
     });
-  }, [items, startDate, endDate, isFilterActive]);
+  }, [currentItem, startDate, endDate, isFilterActive]);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -100,9 +84,10 @@ const isFilterActive = Boolean(startDate || endDate);
   };
 
   return (
-    <div>
+    <div className="table">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
+
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
@@ -121,40 +106,31 @@ const isFilterActive = Boolean(startDate || endDate);
             </h3>
           </li>
         </ul>
-        <div className="table-header-leader">
-          <button className="change-btn" >
-            ◀
-          </button>
-          <button className="change-btn" >
-            ▶
-          </button>
-        </div>
       </div>
       <div className="table-page Leader-main">
         <div className="table-header Leader-title">
           <div className="date-filter">
-            <label htmlFor="filter-start-date">
-              De
-              <input
-                id="filter-start-date"
-                type="date"
-                value={startDate}
-                max={endDate || undefined}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </label>
-
-            <label htmlFor="filter-end-date">
-              Até
-              <input
-                id="filter-end-date"
-                type="date"
-                value={endDate}
-                min={startDate || undefined}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </label>
-
+            <button className="change-btn" onClick={goPrev}> ◀ </button>
+            <Input
+              classNameIn="filter-start-date"
+              labelText="Data Inicial"
+              id="filter-start-date"
+              type="date"
+              value={startDate}
+              max={endDate || undefined}
+              onChange={(e) => setStartDate(e.target.value)}
+              name="startDate"
+            />
+            <Input
+              classNameIn="filter-start-date"
+              labelText="Data Final"
+              id="filter-end-date"
+              type="date"
+              value={endDate}
+              min={startDate || undefined}
+              onChange={(e) => setEndDate(e.target.value)}
+              name="startDate"
+            />
             {isFilterActive && (
               <button
                 type="button"
@@ -184,17 +160,27 @@ const isFilterActive = Boolean(startDate || endDate);
             >
               {loading ? "Carregando..." : "Aprovar Fechamento"}
             </button>
+            <button className="change-btn" onClick={goNext}>
+              ▶
+            </button>
           </div>
-
 
           <dialog ref={confirmDialogRef} className="close-dialog">
             <h2>Deseja aprovar o fechamento do mês?</h2>
             <p>Após confirmar, o período será enviado para aprovação.</p>
             <div className="dialog-actions">
-              <button type="button" onClick={closeDialog} className="dialog-cancel-btn">
+              <button
+                type="button"
+                onClick={closeDialog}
+                className="dialog-cancel-btn"
+              >
                 Cancelar
               </button>
-              <button type="button" onClick={handleApprove} className="dialog-confirm-btn">
+              <button
+                type="button"
+                onClick={handleApprove}
+                className="dialog-confirm-btn"
+              >
                 Aprovar
               </button>
             </div>
@@ -202,7 +188,10 @@ const isFilterActive = Boolean(startDate || endDate);
 
           <dialog ref={successDialogRef}>
             <h2>Fechamento realizado com sucesso!</h2>
-            <button type="button" onClick={() => successDialogRef.current?.close()}>
+            <button
+              type="button"
+              onClick={() => successDialogRef.current?.close()}
+            >
               Fechar
             </button>
           </dialog>
@@ -222,7 +211,7 @@ const isFilterActive = Boolean(startDate || endDate);
             </thead>
 
             <tbody>
-              {filteredData?.length === 0 ? (
+              {filteredRecords.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="empty-state">
                     {isFilterActive
@@ -231,23 +220,24 @@ const isFilterActive = Boolean(startDate || endDate);
                   </td>
                 </tr>
               ) : (
-                filteredData?.map((register) => {
-                  const record = register.currentIndex.records.overtime_records;
-                  const totalHours = record?.currentIndex?.records.total_hours ?? 0;
-                  const nightHours = record?.currentIndex?.records.nigth_hours ?? 0;
+                filteredRecords.map((record) => {
+                  const totalHours = record?.total_hours ?? 0;
+                  const nightHours = record?.nigth_hours ?? 0;
                   const dayHours = Math.max(totalHours - nightHours, 0);
 
                   return (
-                    <tr key={currentItem}>
-                      <td>{register.currentIndex?.name}</td>
+                    <tr key={record.id}>
+                      <td>{currentItem?.name}</td>
                       <td>
-                        {record?.currentIndex?.work_date ? formatDate(record.currentIndex?.work_date) : "-"}
+                        {record?.work_date ? formatDate(record.work_date) : "-"}
                       </td>
                       <td>{formatHours(totalHours)}</td>
                       <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
-                      <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
                       <td>
-                        {record?.currentIndex?.overtime_type_id === 1 ? (
+                        {nightHours > 0 ? formatHours(nightHours) : "00:00"}
+                      </td>
+                      <td>
+                        {record?.overtime_type_id === 1 ? (
                           <span className="status pending">50%</span>
                         ) : (
                           <span className="status approved">100%</span>
