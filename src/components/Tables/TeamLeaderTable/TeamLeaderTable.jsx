@@ -114,7 +114,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
         <div className="table-header Leader-title">
           <div className="date-filter">
             <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-            <div>
+            <div className="table-header">
               <Input
               className="btn"
               labelText="Data Inicial"
@@ -146,8 +146,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
               />
             )}
             </div>
-            <Button
-              className="btn-medium btn"
+            <div className="table-header">
+              <Button
+              className="btn"
               buttonText="Registrar Hora Extra"
               onClick={() => handleNavigate("/RegisterHours")}
               icon={FaPlus}
@@ -158,6 +159,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
               onClick={() => confirmDialogRef.current?.showModal()}
               disabled={loading}
             />
+            </div>
             <Button className="change-btn" onClick={goNext} buttonText="▶" />
           </div>
 
