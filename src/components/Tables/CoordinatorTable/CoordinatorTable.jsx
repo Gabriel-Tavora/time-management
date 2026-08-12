@@ -113,7 +113,7 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   }, [dialogMode, loading, Approval, Rejected]);
 
   return (
-    <div className="table-page">
+    <div className="table-page table">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">

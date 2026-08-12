@@ -55,8 +55,8 @@ export async function getUserPerformance(token, monthStart, monthEnd) {
   return await response.json();
 }
 
-//rota que o gestor ou coordenador usa para buscar a performance de um funcionário
-export async function getEmployeePerformance(token, employee_id, id_period) {
+//rota que o gestor, coordenador ou teamLeader usa para buscar a performance de um funcionário
+export async function getEmployeePerformance(token, employee_id, period_id) {
   const response = await fetch(`${API_URL}/overtime/performance`, {
     method: "GET",
     headers: {
@@ -65,7 +65,7 @@ export async function getEmployeePerformance(token, employee_id, id_period) {
     },
     body: JSON.stringify({
       employee_id,
-      id_period,
+      period_id,
     }),
   });
 

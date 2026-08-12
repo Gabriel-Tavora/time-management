@@ -14,8 +14,6 @@ const Teamleader = () => {
     handleCloseMonth,
     loadData,
     formatted,
-    monthStart,
-    monthEnd,
     idMonth,
     message,
     colaboratorData,
@@ -39,6 +37,7 @@ const Teamleader = () => {
             data={colaboratorData}
             handleCloseMonth={handleCloseMonth}
             reloadData={loadData}
+            idMonth={idMonth}
           />
         </div>
       </main>

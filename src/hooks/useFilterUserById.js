@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-
-export function useGroupUsers(records) {
+//services
+import { getEmployeePerformance } from '../services/overtimeData';
+//context
+import { useAuthValue } from "../context/TokenContext.jsx";
+export function useGroupUsers(records, idMonth) {
   const items = useMemo(() => {
     const filterUserById = records.reduce((acc, data) => {
       const userId = data.users.id;
-
       if (!acc[userId]) {
         acc[userId] = {
           id: userId,
@@ -12,9 +14,11 @@ export function useGroupUsers(records) {
           records: [],
         };
       }
-
-      acc[userId].records.push(data.overtime_records);
-
+  
+      acc[userId].records.push({
+        ...data.overtime_records,
+        hours_by_type: data.hours_by_type,
+      });
       return acc;
     }, {});
 
@@ -54,7 +58,9 @@ export function useGroupUsers(records) {
   );
 
   const currentItem = total > 0 ? items[currentIndex] : null;
+  const idExercice = idMonth?.id;
 
+  console.log(currentItem)
   return {
     items,
     currentItem,

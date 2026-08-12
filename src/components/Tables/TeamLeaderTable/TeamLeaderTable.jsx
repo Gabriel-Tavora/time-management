@@ -1,13 +1,12 @@
-import React, { useRef, useState, useMemo,useEffect } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 // css
-import "./TeamLeaderTable.css";
 import "../tables.css";
 // router-dom
 import { useNavigate } from "react-router-dom";
 // icons
 import { FaPlus, FaTimes } from "react-icons/fa";
 // Utils
-import { formatHours, formatDate } from "../../../utils/formatHours.js";
+import { formatHours, formatDate,formatTime } from "../../../utils/formatHours.js";
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
@@ -15,7 +14,7 @@ import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from "../../Layouts/Button/Button";
 
-const TeamLeaderTable = ({ data, handleCloseMonth }) => {
+const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
   const navigate = useNavigate();
   const successDialogRef = useRef(null);
   const confirmDialogRef = useRef(null);
@@ -34,7 +33,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
     goNext,
     goPrev,
     goToIndex,
-  } = useGroupUsers(data);
+  } = useGroupUsers(data,idMonth);
 
   const isFilterActive = Boolean(startDate || endDate);
 
@@ -55,8 +54,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
     });
   }, [currentItem, startDate, endDate, isFilterActive]);
   useEffect(() => {
-    
-  },[currentItem])
+
+  }, [currentItem])
   const handleNavigate = (path) => {
     navigate(path);
   };
@@ -87,7 +86,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
   const closeDialog = () => {
     confirmDialogRef.current?.close();
   };
-
   return (
     <div className="table-page">
       <div>
@@ -95,7 +93,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-            <h3 className="time">{formatHours(currentItem?.total_hours)}</h3>
+            <h3 className="time">{formatHours(currentItem?.records.total_hours)}</h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
@@ -116,7 +114,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
         <div className="table-header Leader-title">
           <div className="date-filter">
             <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-            <Input
+            <div>
+              <Input
               className="btn"
               labelText="Data Inicial"
               id="filter-start-date"
@@ -136,7 +135,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
               onChange={(e) => setEndDate(e.target.value)}
               name="startDate"
             />
-            
+
             {isFilterActive && (
               <Button
                 buttonText="Limpar"
@@ -146,14 +145,15 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
                 icon={FaTimes}
               />
             )}
+            </div>
             <Button
-              className="btn"
+              className="btn-medium btn"
               buttonText="Registrar Hora Extra"
               onClick={() => handleNavigate("/RegisterHours")}
               icon={FaPlus}
             />
             <Button
-              className="btn"
+              className="btn-medium btn"
               buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
               onClick={() => confirmDialogRef.current?.showModal()}
               disabled={loading}
@@ -193,11 +193,14 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
             <thead>
               <tr>
                 <th>Colaboradores</th>
-                <th>Data</th>
-                <th>Horas Totais</th>
-                <th>Horas Diurnas</th>
+                 <th>Data Inicial</th>
+                <th>Data Final</th>
+                <th>Horário Inicial</th>
+                <th>Horário Final</th>
                 <th>Horas Noturnas</th>
-                <th>Tipo</th>
+                <th>Horas Totais</th>
+                <th>50%</th>
+                <th>100%</th>
               </tr>
             </thead>
 
@@ -211,28 +214,27 @@ const TeamLeaderTable = ({ data, handleCloseMonth }) => {
                   </td>
                 </tr>
               ) : (
-                filteredRecords.map((record) => {
-                  const totalHours = record?.total_hours ?? 0;
-                  const nightHours = record?.nigth_hours ?? 0;
-                  const dayHours = Math.max(totalHours - nightHours, 0);
-
+                filteredRecords.map((register) => {
+                  console.log(register)
+                  const totalHours = register.total_hours ?? 0;
+                  const nightHours = register.nigth_hours ?? 0;
+                  const startTime = register.start_time;
+                  const endTime = register.end_time;
+                  const type = register.hours_by_type;
                   return (
-                    <tr key={record.id}>
+                    <tr key={register.id}>
                       <td>{currentItem?.name}</td>
-                      <td>
-                        {record?.work_date ? formatDate(record.work_date) : "-"}
-                      </td>
+                      <td>{formatDate(startTime)}</td>
+                      <td>{formatDate(endTime)}</td>
+                      <td>{formatTime(startTime)}</td>
+                      <td>{formatTime(endTime)}</td>
+                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
                       <td>{formatHours(totalHours)}</td>
-                      <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
                       <td>
-                        {nightHours > 0 ? formatHours(nightHours) : "00:00"}
+                        <span className="status pending">{formatHours(type["1"])}</span>
                       </td>
                       <td>
-                        {record?.overtime_type_id === 1 ? (
-                          <span className="status pending">50%</span>
-                        ) : (
-                          <span className="status approved">100%</span>
-                        )}
+                        <span className="status approved">{formatHours(type["2"])}</span>
                       </td>
                     </tr>
                   );

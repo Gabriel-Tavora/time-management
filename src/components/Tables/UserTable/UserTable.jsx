@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from "react";
 //css
-import "./UserTable.css";
 import "../tables.css";
 import { FaPlus, FaTimes } from "react-icons/fa";
 //Utils
-import { formatHours, formatDate } from "../../../utils/formatHours.js";
+import { formatHours, formatDate, formatTime } from "../../../utils/formatHours.js";
 import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 //router-dom
 import { useNavigate } from "react-router-dom";
@@ -51,7 +50,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   };
 
   return (
-    <div className="user-register">
+    <div className="table-page table">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
 
@@ -74,46 +73,45 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
           </li>
         </ul>
       </div>
-      <div className="table-page">
+      <div className="table-page content">
         <div className="table-header user-title">
           <div className="date-filter">
-            <Input
-              classNameIn="filter-start-date"
-              labelText="Data Inicial"
-              id="filter-start-date"
-              type="date"
-              value={startDate}
-              max={endDate || undefined}
-              onChange={(e) => setStartDate(e.target.value)}
-              name="startDate"
-            />
-            <Input
-              classNameIn="filter-start-date"
-              labelText="Data Final"
-              id="filter-end-date"
-              type="date"
-              value={endDate}
-              min={startDate || undefined}
-              onChange={(e) => setEndDate(e.target.value)}
-              name="startDate"
-            />
-
-            {isFilterActive && (
+            <div className="table-header">
+              <Input
+                classNameIn="filter-start-date"
+                labelText="Data Inicial"
+                id="filter-start-date"
+                type="date"
+                value={startDate}
+                max={endDate || undefined}
+                onChange={(e) => setStartDate(e.target.value)}
+                name="startDate"
+              />
+              <Input
+                classNameIn="filter-start-date"
+                labelText="Data Final"
+                id="filter-end-date"
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(e) => setEndDate(e.target.value)}
+                name="startDate"
+              />
+              {isFilterActive && (
               <Button
                 buttonText="Limpar"
-                className="clear-filter-btn"
+                className="btn-medium btn"
                 onClick={handleClearFilter}
-                aria-label="Limpar filtro de data"
                 icon={FaTimes}
               />
 
             )}
+
+            </div>
             <Button
-              classNameIn="register-btn"
               buttonText="Registrar Hora Extra"
-              className="register-btn"
+              className="btn-medium btn"
               onClick={() => handleNavigate("/RegisterHours")}
-              aria-label="Limpar filtro de data"
               icon={FaPlus}
             />
           </div>
@@ -124,18 +122,21 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
           <table className="app-table">
             <thead>
               <tr>
-                <th>Data</th>
-                <th>Horas Totais</th>
-                <th>Horas Diurnas</th>
+                <th>Data Inicial</th>
+                <th>Data Final</th>
+                <th>Horário Inicial</th>
+                <th>Horário Final</th>
                 <th>Horas Noturnas</th>
-                <th>Tipo</th>
+                <th>Horas Totais</th>
+                <th>50%</th>
+                <th>100%</th>
               </tr>
             </thead>
 
             <tbody>
               {filteredData && filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="empty-state">
+                  <td colSpan={8} className="empty-state">
                     {isFilterActive
                       ? "Nenhum registro encontrado no período selecionado."
                       : "Nenhum registro encontrado."}
@@ -145,19 +146,22 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                 filteredData?.map((register) => {
                   const totalHours = register.overtime_records.total_hours ?? 0;
                   const nightHours = register.overtime_records.nigth_hours ?? 0;
-                  const dayHours = totalHours - nightHours;
+                  const startTime = register.overtime_records.start_time;
+                  const endTime = register.overtime_records.end_time;
+                  const type = register.hours_by_type;
                   return (
                     <tr key={register.overtime_records.id}>
-                      <td>{formatDate(register.overtime_records.work_date)}</td>
-                      <td>{formatHours(totalHours)}</td>
-                      <td>{dayHours ? formatHours(dayHours) : "0"}</td>
+                      <td>{formatDate(startTime)}</td>
+                      <td>{formatDate(endTime)}</td>
+                      <td>{formatTime(startTime)}</td>
+                      <td>{formatTime(endTime)}</td>
                       <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                      <td>{formatHours(totalHours)}</td>
                       <td>
-                        {register.overtime_records.overtime_type_id === 1 ? (
-                          <span className="status pending">50%</span>
-                        ) : (
-                          <span className="status approved">100%</span>
-                        )}
+                        <span className="status pending">{formatHours(type["1"])}</span>
+                      </td>
+                      <td>
+                        <span className="status approved">{formatHours(type["2"])}</span>
                       </td>
                     </tr>
                   );

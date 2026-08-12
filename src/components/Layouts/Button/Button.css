@@ -7,6 +7,7 @@
   width: 100%;
   margin-top: 20px;
   min-width: 195px;
+  max-width: 195;
   padding: 12px;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-sm);
@@ -41,6 +42,7 @@
 /* Botão médio */
 .btn-medium{
   min-width: 145px;
+  max-width: 195px;
 }
 
 /* Botão pequeno circular */

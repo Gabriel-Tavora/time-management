@@ -9,13 +9,19 @@ export function formatHours(decimalHours) {
 
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
-export function formatHousDay(time) {
-  return time.slice(11, 16);
-}
+
 // receber formatar hora extras UserScreen
 export function formatDate(date) {
   return new Date(date).toLocaleDateString("pt-BR", {
     timeZone: "UTC",
+  });
+}
+
+export function formatTime(date) {
+  return new Date(date).toLocaleTimeString("pt-BR", {
+    timeZone: "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 

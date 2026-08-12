@@ -53,7 +53,6 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
       setIsSubmitting(true);
 
       const records = await getUserHours(token);
-
       if (records) {
         const relevantRecords = records
           .map((record) => record.overtime_records)

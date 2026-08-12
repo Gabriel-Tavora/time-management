@@ -10,7 +10,6 @@ import { useAuthValue } from "../context/TokenContext.jsx";
 
 export function useTeamLeader() {
   const [user, setUser] = useState(null);
-  const [dataTime, setDataTime] = useState([]);
   const [colaboratorData, setColaboratorData] = useState([]);
   const [message, setMessage] = useState(null);
   const [idMonth, setIdMonth] = useState(null);
@@ -28,10 +27,6 @@ export function useTeamLeader() {
   
       const userInformations = await getCurrentUser(token);
       setUser(userInformations);
-
-      const dataUserTime = await getUserHours(token);
-      setDataTime(dataUserTime);
-
 
     } catch (error) {
       console.error(error);
@@ -74,12 +69,9 @@ export function useTeamLeader() {
     handleCloseMonth,
     loadData,
     formatted,
-    monthStart,
-    monthEnd,
     idMonth,
     message,
     colaboratorData,
-    dataTime,
     user,
   };
 }
