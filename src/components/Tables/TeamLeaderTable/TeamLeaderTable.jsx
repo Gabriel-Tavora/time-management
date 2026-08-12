@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo,useEffect } from "react";
 // css
 import "./TeamLeaderTable.css";
 import "../tables.css";
@@ -13,9 +13,9 @@ import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
 //components
 import Input from "../../Layouts/Inputs/Inputs.jsx";
-import Button from '../../Layouts/Button/Button';
+import Button from "../../Layouts/Button/Button";
 
-const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
+const TeamLeaderTable = ({ data, handleCloseMonth }) => {
   const navigate = useNavigate();
   const successDialogRef = useRef(null);
   const confirmDialogRef = useRef(null);
@@ -54,7 +54,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
       return true;
     });
   }, [currentItem, startDate, endDate, isFilterActive]);
-
+  useEffect(() => {
+    
+  },[currentItem])
   const handleNavigate = (path) => {
     navigate(path);
   };
@@ -87,24 +89,23 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
   };
 
   return (
-    <div className="table">
-      
+    <div className="table-page">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-            <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
+            <h3 className="time">{formatHours(currentItem?.total_hours)}</h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
+            <h3 className="night">{formatHours(currentItem?.nigth_hours)}</h3>
           </li>
           <li>
             <h1>Quantidade no Mês</h1>
             <h3>
-              {monthPerf?.total_overtimes_mouth > 0
-                ? monthPerf.total_overtimes_mouth
+              {currentItem?.total_overtimes_mouth > 0
+                ? currentItem.total_overtimes_mouth
                 : "0"}
             </h3>
           </li>
@@ -114,11 +115,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
       <div className="table-page">
         <div className="table-header Leader-title">
           <div className="date-filter">
-            <Button
-              className="change-btn"
-              onClick={goPrev}
-              buttonText="◀"
-            />
+            <Button className="change-btn" onClick={goPrev} buttonText="◀" />
             <Input
               className="btn"
               labelText="Data Inicial"
@@ -139,22 +136,20 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
               onChange={(e) => setEndDate(e.target.value)}
               name="startDate"
             />
+            
             {isFilterActive && (
-
               <Button
                 buttonText="Limpar"
-                className="btn"
+                className="btn btn-medium"
                 onClick={handleClearFilter}
                 aria-label="Limpar filtro de data"
                 icon={FaTimes}
               />
             )}
-
             <Button
               className="btn"
               buttonText="Registrar Hora Extra"
               onClick={() => handleNavigate("/RegisterHours")}
-              aria-label="Limpar filtro de data"
               icon={FaPlus}
             />
             <Button
@@ -162,13 +157,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth, monthPerf }) => {
               buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
               onClick={() => confirmDialogRef.current?.showModal()}
               disabled={loading}
-              aria-label="Limpar filtro de data"
             />
-            <Button
-              className="change-btn"
-              onClick={goNext}
-              buttonText="▶"
-            />
+            <Button className="change-btn" onClick={goNext} buttonText="▶" />
           </div>
 
           <dialog ref={confirmDialogRef} className="close-dialog">

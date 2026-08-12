@@ -6,12 +6,12 @@
   gap: 8px;
   width: 100%;
   margin-top: 20px;
-  min-width: 150px;
+  min-width: 195px;
   padding: 12px;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-sm);
   background: var(--gradient-accent);
-  color: var(--text-primary);
+  color: var(--white-color);
   cursor: pointer;
   font-size: 0.92rem;
   font-weight: 700;
@@ -38,21 +38,28 @@
 .btn:active:not(:disabled) {
   transform: scale(0.95);
 }
+/* Botão médio */
+.btn-medium{
+  min-width: 145px;
+}
 
+/* Botão pequeno circular */
 .change-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
-  max-width: 48px;
+  min-width: 48px;
   height: 48px;
   border: 1px solid var(--border-card);
   border-radius: 50%;
   background: var(--gradient-accent);
-  color: var(--text-primary);
+  color: var(--white-color);
   font-size: 1.1rem;
   cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
 }
 
 .change-btn:hover:not(:disabled) {
@@ -78,4 +85,49 @@
 .change-btn:focus-visible {
   outline: 2px solid var(--accent-color, #7c5cff);
   outline-offset: 2px;
+}
+/* Botão verde ou vermelho estilizado */
+.approved-btn,
+.rejected-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--white-color);
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
+}
+
+.approved-btn {
+  background: var(--gradient-success);
+  border-color: var(--white-color);
+  box-shadow: 0 8px 25px var(--success-glow-soft), inset 0 0 0 1px var(--border-white-soft);
+}
+
+.approved-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 35px var(--success-glow), 0 0 20px var(--success-glow-strong);
+}
+
+.rejected-btn {
+  background: var(--gradient-danger);
+  border-color: var(--white-color);
+  box-shadow: 0 8px 25px var(--danger-glow-soft), inset 0 0 0 1px var(--border-white-soft);
+}
+
+.rejected-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 35px var(--danger-glow), 0 0 20px var(--danger-glow-strong);
+}
+
+.approved-btn:active,
+.rejected-btn:active {
+  transform: scale(.95);
 }

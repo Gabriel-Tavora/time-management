@@ -57,10 +57,10 @@ const RegisterHours = () => {
   };
 
   const form = {
-    endDate,
-    startDate,
-    startTime,
     endTime,
+    endDate,
+    startTime,
+    startDate,
     jiraTask,
     observation,
   };

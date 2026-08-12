@@ -13,7 +13,6 @@ export function useTeamLeader() {
   const [dataTime, setDataTime] = useState([]);
   const [colaboratorData, setColaboratorData] = useState([]);
   const [message, setMessage] = useState(null);
-  const [monthPerf, setMonthPerf] = useState([]);
   const [idMonth, setIdMonth] = useState(null);
 
   const { token } = useAuthValue();
@@ -33,8 +32,6 @@ export function useTeamLeader() {
       const dataUserTime = await getUserHours(token);
       setDataTime(dataUserTime);
 
-      const monthPerformance = await getUserPerformance(token, monthStart, monthEnd);
-      setMonthPerf(monthPerformance);
 
     } catch (error) {
       console.error(error);
@@ -80,7 +77,6 @@ export function useTeamLeader() {
     monthStart,
     monthEnd,
     idMonth,
-    monthPerf,
     message,
     colaboratorData,
     dataTime,

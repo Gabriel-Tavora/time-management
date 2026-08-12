@@ -17,7 +17,6 @@ const Teamleader = () => {
     monthStart,
     monthEnd,
     idMonth,
-    monthPerf,
     message,
     colaboratorData,
     dataTime,
@@ -40,7 +39,6 @@ const Teamleader = () => {
             data={colaboratorData}
             handleCloseMonth={handleCloseMonth}
             reloadData={loadData}
-            monthPerf={monthPerf}
           />
         </div>
       </main>

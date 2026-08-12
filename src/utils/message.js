@@ -1,7 +1,7 @@
 export const Messages = {
   SUCCESS: "Hora extra registrada com sucesso!",
 
-  REQUIRED_DATE: "Informe uma data.",
+  REQUIRED_DATE: "Informe a data inicial e final.",
 
   FUTURE_DATE: "Não é permitido registrar horas em datas futuras.",
 
@@ -11,6 +11,12 @@ export const Messages = {
 
   INVALID_TIME:
     "O horário final deve ser maior que o horário inicial.",
+
+  INVALID_DATE_ORDER:
+    "A data final não pode ser anterior à data inicial.",
+
+  INVALID_DATE_RANGE:
+    "O intervalo entre a data inicial e a final não pode ultrapassar 1 dia.",
 
   MAX_HOURS:
     "Uma hora extra não pode ultrapassar 12 horas.",

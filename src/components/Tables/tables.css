@@ -91,7 +91,7 @@
 
 .app-table td {
   padding: 18px 24px;
-  color: var(--white-color);
+  color: var(--text-primary);
   text-align: center;
   font-size: .95rem;
   border: 1px solid var(--border-table);
@@ -237,7 +237,8 @@ Filter
 */
 .date-filter {
   display: flex;
-  align-items: flex-end;
+  justify-content: space-between;
+  align-items: center;
   gap: 16px;
   width: 100%;
 }

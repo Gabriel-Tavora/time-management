@@ -6,8 +6,9 @@ import "../tables.css";
 import { formatHours, formatDate } from "../../../utils/formatHours.js";
 //components
 import Input from "../../Layouts/Inputs/Inputs.jsx";
-import Button from '../../Layouts/Button/Button';
-
+import Button from "../../Layouts/Button/Button";
+//hooks
+import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 const OVERTIME_TYPE_NORMAL = 1;
 const SUCCESS_DIALOG_TIMEOUT_MS = 4000;
 
@@ -19,6 +20,17 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   const [loading, setLoading] = useState(false);
   const [dialogMode, setDialogMode] = useState(null); // "approve" | "rejected" | null
   const [errorMessage, setErrorMessage] = useState(null);
+  const {
+    items,
+    currentItem,
+    currentIndex,
+    total,
+    hasNext,
+    hasPrev,
+    goNext,
+    goPrev,
+    goToIndex,
+  } = useGroupUsers(data);
 
   useEffect(() => {
     return () => {
@@ -26,8 +38,6 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
     };
   }, []);
 
-  // Mantém o estado React sincronizado quando o <dialog> nativo fecha
-  // por conta própria (Esc, clique no backdrop, etc).
   useEffect(() => {
     const dialog = confirmDialogRef.current;
     if (!dialog) return;
@@ -95,7 +105,7 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
       setErrorMessage(
         dialogMode === "approve"
           ? "Erro ao aprovar. Tente novamente."
-          : "Erro ao rejeitar. Tente novamente."
+          : "Erro ao rejeitar. Tente novamente.",
       );
     } finally {
       setLoading(false);
@@ -103,23 +113,24 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   }, [dialogMode, loading, Approval, Rejected]);
 
   return (
-    <div className="table">
-
+    <div className="table-page">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-            <h3 className="time"></h3>
+            <h3 className="time">{formatHours(currentItem?.total_hours)}</h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
-            <h3 className="night"></h3>
+            <h3 className="night">{formatHours(currentItem?.nigth_hours)}</h3>
           </li>
           <li>
             <h1>Quantidade no Mês</h1>
             <h3>
-
+              {currentItem?.total_overtimes_mouth > 0
+                ? currentItem.total_overtimes_mouth
+                : "0"}
             </h3>
           </li>
         </ul>
@@ -127,78 +138,23 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
 
       <div className="table-page">
         <div className="table-header ">
-          {/* <div className="date-filter">
-            <Button
-              className="change-btn"
-              onClick={goPrev}
-              buttonText="◀"
-            />
-            <Input
-              classNameIn="filter-start-date"
-              labelText="Data Inicial"
-              id="filter-start-date"
-              type="date"
-              value={startDate}
-              max={endDate || undefined}
-              onChange={(e) => setStartDate(e.target.value)}
-              name="startDate"
-            />
-            <Input
-              classNameIn="filter-start-date"
-              labelText="Data Final"
-              id="filter-end-date"
-              type="date"
-              value={endDate}
-              min={startDate || undefined}
-              onChange={(e) => setEndDate(e.target.value)}
-              name="startDate"
-            />
-            {isFilterActive && (
-
-              <Button
-                buttonText="Limpar"
-                className="clear-filter-btn"
-                onClick={handleClearFilter}
-                aria-label="Limpar filtro de data"
-                icon={FaTimes}
-              />
-            )}
-
-            <Button
-              classNameIn="register-btn"
-              buttonText="Registrar Hora Extra"
-              className="register-btn"
-              onClick={() => handleNavigate("/RegisterHours")}
-              aria-label="Limpar filtro de data"
-              icon={FaPlus}
-            />
-            <Button
-              classNameIn="register-btn"
-              buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
-              onClick={() => confirmDialogRef.current?.showModal()}
-              disabled={loading}
-              aria-label="Limpar filtro de data"
-            />
-            <Button
-              className="change-btn"
-              onClick={goNext}
-              buttonText="▶"
-            />
-          </div> */}
-
           <div className="date-filter">
-            <Button
-              className="rejected-btn"
-              onClick={() => openDialog("rejected")}
-              disabled={disabled || loading}
-              buttonText="Rejeitar"
-            />
-            <Button
-              className="approved-btn"
-              onClick={() => openDialog("approve")}
-              disabled={disabled || loading}
-              buttonText="Aprovar"
-            />
+            <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+            <div className="dialog-actions">
+              <Button
+                className="rejected-btn"
+                onClick={() => openDialog("rejected")}
+                disabled={disabled || loading}
+                buttonText="Rejeitar"
+              />
+              <Button
+                className="approved-btn"
+                onClick={() => openDialog("approve")}
+                disabled={disabled || loading}
+                buttonText="Aprovar"
+              />
+            </div>
+            <Button className="change-btn" onClick={goNext} buttonText="▶" />
 
             <dialog
               ref={confirmDialogRef}
@@ -233,17 +189,22 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
                   className="btn"
                   onClick={handleConfirmAction}
                   disabled={loading}
-                  buttonText={loading
-                    ? "Processando..."
-                    : dialogMode === "approve"
-                      ? "Aprovar"
-                      : "Rejeitar"}
+                  buttonText={
+                    loading
+                      ? "Processando..."
+                      : dialogMode === "approve"
+                        ? "Aprovar"
+                        : "Rejeitar"
+                  }
                 />
               </div>
             </dialog>
 
             {/* Dialog de sucesso */}
-            <dialog ref={successDialogRef} aria-labelledby="success-dialog-title">
+            <dialog
+              ref={successDialogRef}
+              aria-labelledby="success-dialog-title"
+            >
               <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
               <Button
                 className="btn"
@@ -278,14 +239,18 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
                 return (
                   <tr key={record?.id}>
                     <td>{register.users?.name}</td>
-                    <td>{record?.work_date ? formatDate(record.work_date) : "-"}</td>
+                    <td>
+                      {record?.work_date ? formatDate(record.work_date) : "-"}
+                    </td>
                     <td>{formatHours(totalHours)}</td>
                     <td>{dayHours ? formatHours(dayHours) : "0"}</td>
                     <td>{nightHours ? formatHours(nightHours) : "0"}</td>
                     <td>
-                      {record?.overtime_type_id === OVERTIME_TYPE_NORMAL
-                        ? <span className="status pending">50%</span>
-                        : <span className="status approved">100%</span>}
+                      {record?.overtime_type_id === OVERTIME_TYPE_NORMAL ? (
+                        <span className="status pending">50%</span>
+                      ) : (
+                        <span className="status approved">100%</span>
+                      )}
                     </td>
                   </tr>
                 );

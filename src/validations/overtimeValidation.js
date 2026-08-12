@@ -1,19 +1,34 @@
 import { Messages } from "../utils/message.js";
 
-export function validateOvertime({ workDate, startTime, endTime, jiraTask }) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+const MS_IN_HOUR = 1000 * 60 * 60;
+const MS_IN_DAY = MS_IN_HOUR * 24;
 
-  if (!workDate) {
+export function buildIsoDateTime(date, time) {
+  if (!date || !time) return null;
+  return `${date}T${time}:00Z`;
+}
+
+export function combineDateTime(date, time) {
+  const iso = buildIsoDateTime(date, time);
+  return iso ? new Date(iso) : null;
+}
+
+function localDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function validateOvertime({
+  endTime,
+  endDate,
+  startTime,
+  startDate,
+  jiraTask,
+}) {
+  if (!startDate || !endDate) {
     return Messages.REQUIRED_DATE;
-  }
-
-  const selectedDate = new Date(workDate);
-
-  selectedDate.setHours(0, 0, 0, 0);
-
-  if (selectedDate > today) {
-    return Messages.FUTURE_DATE;
   }
 
   if (!startTime) {
@@ -24,8 +39,35 @@ export function validateOvertime({ workDate, startTime, endTime, jiraTask }) {
     return Messages.REQUIRED_END;
   }
 
-  if (endTime <= startTime) {
+  const todayUtc = combineDateTime(localDateString(), "00:00");
+  const startDateUtc = combineDateTime(startDate, "00:00");
+  const endDateUtc = combineDateTime(endDate, "00:00");
+
+  if (startDateUtc > todayUtc) {
+    return Messages.FUTURE_DATE;
+  }
+
+  const dayDiff = (endDateUtc - startDateUtc) / MS_IN_DAY;
+
+  if (dayDiff < 0) {
+    return Messages.INVALID_DATE_ORDER;
+  }
+
+  if (dayDiff > 1) {
+    return Messages.INVALID_DATE_RANGE;
+  }
+
+  const start = combineDateTime(startDate, startTime);
+  const end = combineDateTime(endDate, endTime);
+
+  if (end <= start) {
     return Messages.INVALID_TIME;
+  }
+
+  const totalHours = (end - start) / MS_IN_HOUR;
+
+  if (totalHours > 12) {
+    return Messages.MAX_HOURS;
   }
 
   if (!jiraTask.trim()) {
@@ -38,35 +80,41 @@ export function validateOvertime({ workDate, startTime, endTime, jiraTask }) {
     return Messages.INVALID_JIRA;
   }
 
-  const start = new Date(`2000-01-01T${startTime}`);
-  const end = new Date(`2000-01-01T${endTime}`);
-
-  const totalHours = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
-
-  if (totalHours > 12) {
-    return Messages.MAX_HOURS;
-  }
-
   return null;
 }
 
-export function getTimeOnly(dateTime) {
-  return dateTime?.slice(11, 16);
+export function calculateNightHours(start, end) {
+  let nightMs = 0;
+  const cursor = new Date(start);
+
+  while (cursor < end) {
+    const next = new Date(Math.min(cursor.getTime() + MS_IN_HOUR, end.getTime()));
+    const hour = cursor.getUTCHours();
+    const isNight = hour >= 22 || hour < 5;
+
+    if (isNight) {
+      nightMs += next.getTime() - cursor.getTime();
+    }
+
+    cursor.setTime(next.getTime());
+  }
+
+  return nightMs / MS_IN_HOUR;
 }
 
-export function isDuplicate(records, startTime, endTime) {
+export function isDuplicate(records, startDateTime, endDateTime) {
   return records.some(
     (record) =>
-      getTimeOnly(record.start_time) === startTime &&
-      getTimeOnly(record.end_time) === endTime
+      new Date(record.start_time).getTime() === startDateTime.getTime() &&
+      new Date(record.end_time).getTime() === endDateTime.getTime(),
   );
 }
 
-export function hasTimeConflict(records, startTime, endTime) {
+export function hasTimeConflict(records, startDateTime, endDateTime) {
   return records.some((record) => {
-    const recordStart = getTimeOnly(record.start_time);
-    const recordEnd = getTimeOnly(record.end_time);
+    const recordStart = new Date(record.start_time);
+    const recordEnd = new Date(record.end_time);
 
-    return startTime < recordEnd && endTime > recordStart;
+    return startDateTime < recordEnd && endDateTime > recordStart;
   });
 }

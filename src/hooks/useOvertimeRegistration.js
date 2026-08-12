@@ -1,31 +1,19 @@
 import { useState } from "react";
 
-import {
-  createOvertime,
-  getUserHours,
-} from "../services/overtimeData.js";
+import { createOvertime, getUserHours } from "../services/overtimeData.js";
 
 import {
   validateOvertime,
+  combineDateTime,
+  buildIsoDateTime,
   isDuplicate,
   hasTimeConflict,
 } from "../validations/overtimeValidation.js";
 
-import { formatDataSend } from "../utils/formatHours.js";
 import { Messages } from "../utils/message.js";
 
-export function useOvertimeRegistration({
-  token,
-  form,
-  clearForm,
-}) {
-  const {
-    workDate,
-    startTime,
-    endTime,
-    jiraTask,
-    observation,
-  } = form;
+export function useOvertimeRegistration({ token, form, clearForm }) {
+  const { endTime, endDate, startTime, startDate, jiraTask, observation } = form;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
@@ -46,9 +34,10 @@ export function useOvertimeRegistration({
     setMessage(null);
 
     const validationError = validateOvertime({
-      workDate,
-      startTime,
       endTime,
+      endDate,
+      startTime,
+      startDate,
       jiraTask,
     });
 
@@ -57,33 +46,37 @@ export function useOvertimeRegistration({
       return;
     }
 
+    const startDateTime = combineDateTime(startDate, startTime);
+    const endDateTime = combineDateTime(endDate, endTime);
+
     try {
       setIsSubmitting(true);
 
       const records = await getUserHours(token);
 
       if (records) {
-        const dayRecords = records
+        const relevantRecords = records
           .map((record) => record.overtime_records)
-          .filter(
-            (record) => record.work_date?.slice(0, 10) === workDate
-          );
-        if (isDuplicate(dayRecords, startTime, endTime)) {
+          .filter((record) => {
+            const workDate = record.work_date?.slice(0, 10);
+            return workDate === startDate || workDate === endDate;
+          });
+
+        if (isDuplicate(relevantRecords, startDateTime, endDateTime)) {
           showMessage("error", Messages.DUPLICATED);
           return;
         }
 
-        if (hasTimeConflict(dayRecords, startTime, endTime)) {
+        if (hasTimeConflict(relevantRecords, startDateTime, endDateTime)) {
           showMessage("error", Messages.OVERLAP);
           return;
         }
       }
 
-
       const overtimeData = {
-        work_date: formatDataSend(workDate),
-        start_time: formatDataSend(workDate, startTime),
-        end_time: formatDataSend(workDate, endTime),
+        work_date: startDate,
+        start_time: buildIsoDateTime(startDate, startTime),
+        end_time: buildIsoDateTime(endDate, endTime),
         jira_task_identifier: jiraTask.trim().toUpperCase(),
         observation,
       };
@@ -93,7 +86,6 @@ export function useOvertimeRegistration({
       showMessage("success", Messages.SUCCESS);
 
       clearForm();
-
     } catch (err) {
       console.error(err);
 
