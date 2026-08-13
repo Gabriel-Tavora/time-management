@@ -31,7 +31,7 @@
   height: 3rem;
   padding: 0 18px;
   font-size: .95rem;
-  color: black;
+  color: var(--white-color);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: 16px;
@@ -39,10 +39,11 @@
 }
 
 .time-menu-send-obs input::placeholder {
-  color: var(--text-primary);
+  color: var(--white-color);
 }
 
 .time-menu-send-obs input:focus {
+  color: var(--white-color);
   outline: none;
   background: var(--input-bg-focus);
   border-color: var(--input-border-focus);
@@ -86,16 +87,15 @@
 
 .time-menu-message-success {
   color: var(--success-text);
-  background: var(--success-bg);
+  background: var(--bg-success);
   border: 1px solid var(--success-border);
   box-shadow: var(--success-shadow);
 }
 
 .time-menu-message-error {
   color: var(--danger-text);
-  background: var(--danger-bg);
-  border: 1px solid var(--danger-border);
-  box-shadow: var(--danger-shadow);
+  background: var(--bg-danger);
+  border: 1px solid rgb(255, 39, 39);
 }
 
 /* Botão */

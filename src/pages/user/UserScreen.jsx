@@ -47,12 +47,12 @@ const UserScreen = () => {
     <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
-        
         <DashboardHeader user={user} formatted={formatted} />
 
         <div className="main-menu">
           <UserTable data={dataTime} monthPerf={monthPerf} token={token} />
         </div>
+
       </main>
     </div>
   );

@@ -10,12 +10,14 @@ import { formatDate } from '../../../utils/formatHours';
 import { getUserHours } from '../../../services/overtimeData.js';
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx"
+
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 const Calendary = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [userCurrentDate, setUserCurrentDate] = useState(null);
   const [workDates, setWorkDates] = useState(new Set());
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const { token } = useAuthValue();
 
@@ -31,23 +33,32 @@ const Calendary = () => {
 
   useEffect(() => {
     async function loadingData() {
-      const userData = await getUserHours(token);
-      setUserCurrentDate(userData);
+      setErrorMessage(null);
 
-      const dates = new Set(
-        userData.map(item => formatDate(item.overtime_records.work_date))
-      );
+      try {
+        const userData = await getUserHours(token);
+        setUserCurrentDate(userData);
 
-      setWorkDates(dates);
+        const dates = new Set(
+          userData.map((item) => formatDate(item.overtime_records.work_date))
+        );
+
+        setWorkDates(dates);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage(error?.message || "Erro ao carregar horas extras.");
+      }
     }
 
     if (token) {
       loadingData();
     }
   }, [token]);
+
   const previousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
   };
+
   const nextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
@@ -70,7 +81,7 @@ const Calendary = () => {
 
       <div className="calendary-page">
         <header className="calendar-header">
-          <button className="month-btn" onClick={previousMonth}>
+          <button type="button" className="month-btn" onClick={previousMonth}>
             ◀
           </button>
 
@@ -84,10 +95,17 @@ const Calendary = () => {
               })}
             </h2>
           </div>
-          <button className="month-btn" onClick={nextMonth}>
+
+          <button type="button" className="month-btn" onClick={nextMonth}>
             ▶
           </button>
         </header>
+
+        {errorMessage && (
+          <p className="form-message error" role="alert">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="week-days">
           {weekDays.map((day) => (
@@ -97,32 +115,43 @@ const Calendary = () => {
 
         <div className="calendar-grid">
           {calendarDays.map((day, index) => {
+            if (!day) {
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  className="day empty"
+                  disabled
+                />
+              );
+            }
+
             const isToday =
-              day &&
               today.getDate() === day &&
               today.getMonth() === month &&
               today.getFullYear() === year;
+
             const currentDay = String(day).padStart(2, "0");
             const currentMonth = String(month + 1).padStart(2, "0");
-            const currentYear = year;
-
-            const buttonDate = `${currentDay}/${currentMonth}/${currentYear}`;
+            const buttonDate = `${currentDay}/${currentMonth}/${year}`;
 
             const hasOvertime = workDates.has(buttonDate);
+
+            const classNames = [
+              "day",
+              isToday && "today",
+              hasOvertime && "overtime-day",
+            ]
+              .filter(Boolean)
+              .join(" ");
+
             return (
-              <button
-                key={index}
-                className={`day
-                  ${!day ? "empty" : ""}
-                  ${isToday ? "today" : ""}
-                  ${hasOvertime ? "overtime-day" : ""}
-                  `}>
+              <button key={index} type="button" className={classNames}>
                 {day}
               </button>
             );
           })}
         </div>
-
       </div>
     </div>
   );

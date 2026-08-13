@@ -9,7 +9,6 @@ import "./Login.css";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 //components
 import AnalogClock from "../../../components/Layouts/AnalogClock/AnalogClock.jsx";
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

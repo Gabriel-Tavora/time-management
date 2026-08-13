@@ -55,19 +55,17 @@ export async function getUserPerformance(token, monthStart, monthEnd) {
   return await response.json();
 }
 
-//rota que o gestor, coordenador ou teamLeader usa para buscar a performance de um funcionário
+//rota que o gestor, coordenador e team-leader usa para buscar a performance de um funcionário
 export async function getEmployeePerformance(token, employee_id, period_id) {
-  const response = await fetch(`${API_URL}/overtime/performance`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      employee_id,
-      period_id,
-    }),
-  });
+  const response = await fetch(
+    `${API_URL}/overtime/performance?employee_id=${employee_id}&period_id=${period_id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     let data = null;
@@ -111,10 +109,8 @@ export async function getUserHours(token) {
 
   return await response.json();
 }
-
 // -------------------------
-
-// cria hora extra no registerHours
+// criar hora extra para dar post no registerHours
 export async function createOvertime(token, overtimeData) {
   if (!token) {
     throw {
@@ -122,7 +118,6 @@ export async function createOvertime(token, overtimeData) {
       message: "Usuário não autenticado.",
     };
   };
-  console.log(overtimeData);
   const response = await fetch(`${API_URL}/overtime`, {
     method: "POST",
     headers: {

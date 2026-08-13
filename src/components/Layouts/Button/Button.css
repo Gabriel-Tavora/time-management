@@ -52,6 +52,7 @@
   justify-content: center;
   width: 48px;
   min-width: 48px;
+  margin-top: 20px;
   height: 48px;
   border: 1px solid var(--border-card);
   border-radius: 50%;
@@ -96,6 +97,7 @@
   align-items: center;
   width: 200px;
   height: 40px;
+  margin-top: 20px;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   color: var(--white-color);

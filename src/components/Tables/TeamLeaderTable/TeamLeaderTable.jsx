@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 // icons
 import { FaPlus, FaTimes } from "react-icons/fa";
 // Utils
-import { formatHours, formatDate,formatTime } from "../../../utils/formatHours.js";
+import { formatHours, formatDate, formatTime } from "../../../utils/formatHours.js";
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
@@ -14,7 +14,7 @@ import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from "../../Layouts/Button/Button";
 
-const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
+const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const navigate = useNavigate();
   const successDialogRef = useRef(null);
   const confirmDialogRef = useRef(null);
@@ -30,10 +30,11 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
     total,
     hasNext,
     hasPrev,
+    currentEmployeePerformace,
     goNext,
     goPrev,
     goToIndex,
-  } = useGroupUsers(data,idMonth);
+  } = useGroupUsers(data, idMonth);
 
   const isFilterActive = Boolean(startDate || endDate);
 
@@ -65,6 +66,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
     setEndDate("");
   };
 
+  const closeDialog = () => {
+    confirmDialogRef.current?.close();
+  };
   async function handleApprove() {
     setLoading(true);
     confirmDialogRef.current?.close();
@@ -83,9 +87,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
     }
   }
 
-  const closeDialog = () => {
-    confirmDialogRef.current?.close();
-  };
   return (
     <div className="table-page">
       <div>
@@ -93,74 +94,73 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-            <h3 className="time">{formatHours(currentItem?.records.total_hours)}</h3>
+            <h3 className="time">{formatHours(currentEmployeePerformace?.total_hours)}</h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">{formatHours(currentItem?.nigth_hours)}</h3>
+            <h3 className="night">{formatHours(currentEmployeePerformace?.nigth_hours)}</h3>
           </li>
           <li>
             <h1>Quantidade no Mês</h1>
             <h3>
-              {currentItem?.total_overtimes_mouth > 0
-                ? currentItem.total_overtimes_mouth
+              {currentEmployeePerformace?.total_overtimes_mouth > 0
+                ? currentEmployeePerformace.total_overtimes_mouth
                 : "0"}
             </h3>
           </li>
         </ul>
       </div>
-
       <div className="table-page">
         <div className="table-header Leader-title">
           <div className="date-filter">
-            <Button className="change-btn" onClick={goPrev} buttonText="◀" />
             <div className="table-header">
               <Input
-              className="btn"
-              labelText="Data Inicial"
-              id="filter-start-date"
-              type="date"
-              value={startDate}
-              max={endDate || undefined}
-              onChange={(e) => setStartDate(e.target.value)}
-              name="startDate"
-            />
-            <Input
-              classNameIn="filter-start-date"
-              labelText="Data Final"
-              id="filter-end-date"
-              type="date"
-              value={endDate}
-              min={startDate || undefined}
-              onChange={(e) => setEndDate(e.target.value)}
-              name="startDate"
-            />
-
-            {isFilterActive && (
-              <Button
-                buttonText="Limpar"
-                className="btn btn-medium"
-                onClick={handleClearFilter}
-                aria-label="Limpar filtro de data"
-                icon={FaTimes}
+                className="btn"
+                labelText="Data Inicial"
+                id="filter-start-date"
+                type="date"
+                value={startDate}
+                max={endDate || undefined}
+                onChange={(e) => setStartDate(e.target.value)}
+                name="startDate"
               />
-            )}
+              <Input
+                classNameIn="filter-start-date"
+                labelText="Data Final"
+                id="filter-end-date"
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(e) => setEndDate(e.target.value)}
+                name="startDate"
+              />
+
+              {isFilterActive && (
+                <Button
+                  buttonText="Limpar"
+                  className="btn btn-medium"
+                  onClick={handleClearFilter}
+                  aria-label="Limpar filtro de data"
+                  icon={FaTimes}
+                />
+              )}
             </div>
-            <div className="table-header">
+            <div className="table-header-end">
               <Button
-              className="btn"
-              buttonText="Registrar Hora Extra"
-              onClick={() => handleNavigate("/RegisterHours")}
-              icon={FaPlus}
-            />
-            <Button
-              className="btn-medium btn"
-              buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
-              onClick={() => confirmDialogRef.current?.showModal()}
-              disabled={loading}
-            />
+                className="btn"
+                buttonText="Registrar Hora Extra"
+                onClick={() => handleNavigate("/RegisterHours")}
+                icon={FaPlus}
+              />
+              <Button
+                className="btn-medium btn"
+                buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
+                onClick={() => confirmDialogRef.current?.showModal()}
+                disabled={loading}
+              />
+              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+              <Button className="change-btn" onClick={goNext} buttonText="▶" />
             </div>
-            <Button className="change-btn" onClick={goNext} buttonText="▶" />
           </div>
 
           <dialog ref={confirmDialogRef} className="close-dialog">
@@ -190,12 +190,12 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
           </dialog>
         </div>
 
-        <div className="table-container Leader-table">
-          <table className="app-table Leader-stats">
+        <div className="table-container ">
+          <table className="app-table">
             <thead>
               <tr>
                 <th>Colaboradores</th>
-                 <th>Data Inicial</th>
+                <th>Data Inicial</th>
                 <th>Data Final</th>
                 <th>Horário Inicial</th>
                 <th>Horário Final</th>
@@ -209,7 +209,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
             <tbody>
               {filteredRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="empty-state">
+                  <td colSpan={9} className="empty-state">
                     {isFilterActive
                       ? "Nenhum registro encontrado no período selecionado."
                       : "Nenhum registro encontrado."}
@@ -217,7 +217,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth,idMonth }) => {
                 </tr>
               ) : (
                 filteredRecords.map((register) => {
-                  console.log(register)
                   const totalHours = register.total_hours ?? 0;
                   const nightHours = register.nigth_hours ?? 0;
                   const startTime = register.start_time;

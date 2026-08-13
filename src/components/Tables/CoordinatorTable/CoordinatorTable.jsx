@@ -139,8 +139,7 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
       <div className="table-page">
         <div className="table-header ">
           <div className="date-filter">
-            <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-            <div className="dialog-actions">
+            <div className="table-header">
               <Button
                 className="rejected-btn"
                 onClick={() => openDialog("rejected")}
@@ -153,8 +152,9 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
                 disabled={disabled || loading}
                 buttonText="Aprovar"
               />
+              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+              <Button className="change-btn" onClick={goNext} buttonText="▶" />
             </div>
-            <Button className="change-btn" onClick={goNext} buttonText="▶" />
 
             <dialog
               ref={confirmDialogRef}
@@ -229,8 +229,11 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
               </tr>
             </thead>
 
-            <tbody>
-              {data?.map((register) => {
+            <tbody>{data ?
+              <tr>
+                <td colSpan={9} className="empty-state">"Nenhum registro encontrado."</td>
+              </tr>
+              : (data?.map((register) => {
                 const record = register.overtime_record;
                 const totalHours = record?.total_hours ?? 0;
                 const nightHours = record?.nigth_hours ?? 0;
@@ -254,7 +257,7 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
                     </td>
                   </tr>
                 );
-              })}
+              }))}
             </tbody>
           </table>
         </div>

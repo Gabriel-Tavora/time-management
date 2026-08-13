@@ -14,7 +14,7 @@ export function useGroupUsers(records, idMonth) {
           records: [],
         };
       }
-  
+
       acc[userId].records.push({
         ...data.overtime_records,
         hours_by_type: data.hours_by_type,
@@ -24,10 +24,16 @@ export function useGroupUsers(records, idMonth) {
 
     return Object.values(filterUserById);
   }, [records]);
-
+  const { token } = useAuthValue();
+  const [currentEmployeePerformace, setCurrentEmployeePerformace] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = items.length;
+  const hasNext = currentIndex < total - 1;
+  const hasPrev = currentIndex > 0;
+  const currentItem = total > 0 ? items[currentIndex] : null;
+  const idExercice = idMonth?.id;
 
+  console.log(currentEmployeePerformace)
   useEffect(() => {
     if (total === 0) {
       setCurrentIndex(0);
@@ -36,10 +42,13 @@ export function useGroupUsers(records, idMonth) {
     if (currentIndex > total - 1) {
       setCurrentIndex(total - 1);
     }
+    getPerformace();
   }, [total, currentIndex]);
 
-  const hasNext = currentIndex < total - 1;
-  const hasPrev = currentIndex > 0;
+  const getPerformace = async () => {
+    const performace = await getEmployeePerformance(token, currentItem.id, idExercice);
+    setCurrentEmployeePerformace(performace);
+  }
 
   const goNext = useCallback(() => {
     setCurrentIndex((index) => Math.min(index + 1, total - 1));
@@ -57,10 +66,6 @@ export function useGroupUsers(records, idMonth) {
     [total]
   );
 
-  const currentItem = total > 0 ? items[currentIndex] : null;
-  const idExercice = idMonth?.id;
-
-  console.log(currentItem)
   return {
     items,
     currentItem,
@@ -68,6 +73,7 @@ export function useGroupUsers(records, idMonth) {
     total,
     hasNext,
     hasPrev,
+    currentEmployeePerformace,
     goNext,
     goPrev,
     goToIndex,

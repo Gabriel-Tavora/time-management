@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 //hooks
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from '../../Layouts/Button/Button';
-
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   const navigate = useNavigate();
   const handleNavigate = (path) => {
@@ -48,7 +47,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     setStartDate("");
     setEndDate("");
   };
-
+console.log(monthPerf)
   return (
     <div className="table-page table">
       <div>

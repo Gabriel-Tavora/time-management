@@ -9,11 +9,12 @@ const Input = ({
   name,
   max,
   min,
+  icon: Icon,
 }) => {
   return (
     <div className={classNameIn}>
       <label htmlFor={id}>{labelText}</label>
-
+      {Icon && <Icon />}
       <input
         id={id}
         type={type}
