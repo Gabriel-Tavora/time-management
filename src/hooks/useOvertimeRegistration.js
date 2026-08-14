@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { createOvertime, getUserHours } from "../services/overtimeData.js";
+import { getCurrentDate } from "../utils/formatHours.js";
 
 import {
   validateOvertime,
@@ -17,6 +18,7 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
+  const submittingRef = useRef(false);
 
   const showMessage = (type, text) => {
     setMessage({ type, text });
@@ -29,30 +31,34 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isSubmitting) return;
-
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setIsSubmitting(true);
     setMessage(null);
 
-    const validationError = validateOvertime({
-      endTime,
-      endDate,
-      startTime,
-      startDate,
-      jiraTask,
-    });
-
-    if (validationError) {
-      showMessage("error", validationError);
-      return;
-    }
-
-    const startDateTime = combineDateTime(startDate, startTime);
-    const endDateTime = combineDateTime(endDate, endTime);
-
     try {
-      setIsSubmitting(true);
+      const { monthStart, monthEnd } = getCurrentDate();
+
+      const validationError = validateOvertime({
+        endTime,
+        endDate,
+        startTime,
+        startDate,
+        jiraTask,
+        monthStart,
+        monthEnd,
+      });
+
+      if (validationError) {
+        showMessage("error", validationError);
+        return;
+      }
+
+      const startDateTime = combineDateTime(startDate, startTime);
+      const endDateTime = combineDateTime(endDate, endTime);
 
       const records = await getUserHours(token);
+
       if (records) {
         const relevantRecords = records
           .map((record) => record.overtime_records)
@@ -121,6 +127,7 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
           showMessage("error", Messages.UNKNOWN);
       }
     } finally {
+      submittingRef.current = false;
       setIsSubmitting(false);
     }
   };

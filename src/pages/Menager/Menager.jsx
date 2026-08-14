@@ -2,8 +2,6 @@
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import MenagerTable from "../../components/Tables/MenagerTable/MenagerTable.jsx"
-// CSS
-import "./Menager.css";
 
 //hooks
 import { useMenager } from '../../hooks/useMenagerInfo.js';
@@ -24,12 +22,6 @@ const Menager = () => {
       <Sidebar />
       <main className="main-informations">
         <DashboardHeader user={user} formatted={formatted} />
-
-        <ul className="main-menu">
-          <li>
-            <h2>Manager</h2>
-          </li>
-        </ul>
 
         <div className="Manager-tables">
           <MenagerTable

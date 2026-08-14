@@ -1,21 +1,21 @@
-import React from "react";
 // css
-import "./MenagerTable.css";
 import "../tables.css";
+
 // Utils
-import { formatHours, formatDate } from "../../../utils/formatHours.js";
-import { getRowData } from "../../../utils/tableHelpers";
+import {
+  formatHours,
+  formatDate,
+  formatTime,
+} from "../../../utils/formatHours.js";
+
 // Hook
 import { useMenagerTable } from "../../../hooks/useMenagerTable";
-//services
-const OVERTIME_TYPE_NORMAL = 1;
+import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 
-const MenagerTable = ({ 
-  data,
-  onApprove = async () => { },
-  onReject = async () => { },
-  disabled
-}) => {
+// Components
+import Button from "../../Layouts/Button/Button";
+
+const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
   const {
     confirmDialogRef,
     successDialogRef,
@@ -26,31 +26,74 @@ const MenagerTable = ({
     closeDialog,
     closeSuccessDialog,
     handleConfirmAction,
-  } = useMenagerTable({ onApprove, onReject });
+  } = useMenagerTable({
+    onApprove,
+    onReject,
+  });
+
+  const { 
+    currentItem, 
+    currentEmployeePerformace, 
+    goNext, 
+    goPrev 
+  } = useGroupUsers(data);
+  const records = currentItem?.records ?? [];
 
   return (
-    <div className="table-page Manager-main">
-      <div className="table-header Manager-title">
-        <h2>Resumo dos Colaboradores</h2>
+    <div className="table-page table">
+      <div>
+        <h2 className="title-h2">Histórico de Horas Extras</h2>
+        <ul className="menu-information">
+          <li>
+            <h1>Total de Horas Extras</h1>
+            <h3 className="time">
+              {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
+            </h3>
+          </li>
+          <li>
+            <h1>Total de Horas Noturnas</h1>
+            <h3 className="night">
+              {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
+            </h3>
+          </li>
+          <li>
+            <h1>Quantidade no Mês</h1>
+            <h3>
+              {currentEmployeePerformace?.total_overtimes_mouth > 0
+                ? currentEmployeePerformace.total_overtimes_mouth
+                : "0"}
+            </h3>
+          </li>
+        </ul>
+      </div>
 
-        <div>
-          <button
-            type="button"
-            className="rejected-btn"
-            onClick={() => openDialog("rejected")}
-            disabled={disabled || loading}
-          >
-            Rejeitar
-          </button>
-          <button
-            type="button"
-            className="approved-btn"
-            onClick={() => openDialog("approve")}
-            disabled={disabled || loading}
-          >
-            Aprovar
-          </button>
+      <div className="table-page">
+        <div className="table-header">
+          <div className="date-filter">
+            <div className="table-header">
+              <Button
+                className="approved-btn"
+                onClick={() => openDialog("approve")}
+                disabled={disabled || loading}
+                buttonText="Aprovar"
+              />
 
+              <Button
+                className="rejected-btn"
+                onClick={() => openDialog("rejected")}
+                disabled={disabled || loading}
+                buttonText="Rejeitar"
+              />
+            </div>
+
+            <div className="table-header">
+              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+
+              <Button className="change-btn" onClick={goNext} buttonText="▶" />
+            </div>
+          </div>
+
+          {/* Dialog de confirmação */}
           <dialog
             ref={confirmDialogRef}
             className="close-dialog"
@@ -61,10 +104,11 @@ const MenagerTable = ({
                 ? "Deseja aprovar o fechamento do mês?"
                 : "Deseja rejeitar o fechamento?"}
             </h2>
+
             <p>
               {dialogMode === "approve"
-                ? "Após confirmar, o período será encerrado"
-                : "Os dados serão devolvidos para correção"}
+                ? "Após confirmar, o período será encerrado."
+                : "Os dados serão devolvidos para correção."}
             </p>
 
             {errorMessage && (
@@ -74,83 +118,90 @@ const MenagerTable = ({
             )}
 
             <div className="dialog-actions">
-              <button type="button" onClick={closeDialog} disabled={loading}>
-                Cancelar
-              </button>
-              <button
+              <Button
+                onClick={closeDialog}
+                disabled={loading}
+                buttonText="Cancelar"
+              />
+              <Button
                 type="button"
                 onClick={handleConfirmAction}
                 disabled={loading}
-              >
-                {loading
-                  ? "Processando..."
-                  : dialogMode === "approve"
-                    ? "Aprovar"
-                    : "Rejeitar"}
-              </button>
+                buttonText={
+                  loading
+                    ? "Processando..."
+                    : dialogMode === "approve"
+                      ? "Aprovar"
+                      : "Rejeitar"
+                }
+              />
             </div>
           </dialog>
 
+          {/* Dialog de sucesso */}
           <dialog ref={successDialogRef} aria-labelledby="success-dialog-title">
             <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
-            <button type="button" onClick={closeSuccessDialog}>
-              Fechar
-            </button>
+
+            <Button onClick={closeSuccessDialog} buttonText="Fechar" />
           </dialog>
         </div>
-      </div>
 
-      <div className="table-container Manager-table">
-        <table className="app-table Manager-stats">
-          <thead>
-            <tr>
-              <th>Colaborador</th>
-              <th>Data</th>
-              <th>Total de Horas Extras</th>
-              <th>Horas Diurnas</th>
-              <th>Horas Noturnas</th>
-              <th>Tipo</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {!data || data.length === 0 ? (
+        <div className="table-container">
+          <table className="app-table">
+            <thead>
               <tr>
-                <td colSpan={6} className="empty-state">
-                  Nenhum registro encontrado.
-                </td>
+                <th>Colaboradores</th>
+                <th>Data Inicial</th>
+                <th>Data Final</th>
+                <th>Horário Inicial</th>
+                <th>Horário Final</th>
+                <th>Horas Noturnas</th>
+                <th>Horas Totais</th>
+                <th>50%</th>
+                <th>100%</th>
               </tr>
-            ) : (
-              data.map((register, index) => {
-                const { record, totalHours, nightHours, dayHours } =
-                  getRowData(register);
+            </thead>
 
-                return (
-                  <tr key={register?.id ?? record?.id ?? index}>
-                    <td>{register.users?.name}</td>
-                    <td>
-                      {record?.work_date ? formatDate(record.work_date) : "-"}
-                    </td>
-                    <td>{formatHours(totalHours)}</td>
-                    <td>{formatHours(dayHours)}</td>
-                    <td>{formatHours(nightHours)}</td>
-                    <td>
-                      {record ? (
-                        record.overtime_type_id === OVERTIME_TYPE_NORMAL ? (
-                          <span className="status pending">50%</span>
-                        ) : (
-                          <span className="status approved">100%</span>
-                        )
-                      ) : (
-                        "-"
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+            <tbody>
+              {records.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="empty-state">
+                    Nenhum registro encontrado.
+                  </td>
+                </tr>
+              ) : (
+                records.map((record) => {
+                  const totalHours = record.total_hours ?? 0;
+                  const nightHours = record.nigth_hours ?? 0;
+                  const startTime = record.start_time;
+                  const endTime = record.end_time;
+                  const type = record.hours_by_type ?? {};
+                  return (
+                    <tr key={record.id}>
+                      <td>{currentItem?.name}</td>
+                      <td>{formatDate(startTime)}</td>
+                      <td>{formatDate(endTime)}</td>
+                      <td>{formatTime(startTime)}</td>
+                      <td>{formatTime(endTime)}</td>
+                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                      <td>{formatHours(totalHours)}</td>
+                      <td>
+                        <span className="status pending">
+                          {formatHours(type["1"] ?? 0)}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="status approved">
+                          {formatHours(type["2"] ?? 0)}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

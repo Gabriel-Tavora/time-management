@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // Services
 import { employeeDataAll, employeeDataMonth, closeMonth } from '../services/exerciceData.js';
-import { employeeDataRecord, getUserHours, getUserPerformance } from '../services/overtimeData.js';
+import { employeeDataRecord } from '../services/overtimeData.js';
 import { getCurrentUser } from "../services/userData.js";
 //utils
 import { getCurrentDate } from "../utils/formatHours.js";

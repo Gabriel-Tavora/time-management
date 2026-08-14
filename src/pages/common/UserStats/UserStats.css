@@ -51,12 +51,9 @@
 .profile-avatar img {
   width: 130px;
   height: 130px;
-
   object-fit: cover;
-
   border: 3px solid var(--border-card);
   border-radius: 50%;
-
   box-shadow: var(--link-glow);
 }
 

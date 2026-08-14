@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
-import { useTheme } from "../../../hooks/useTheme";
+import { useTheme } from "../../../context/themeContext.jsx";
+import { getRandomAvatar } from "../../../utils/avatarUtils";
 import "./UserStats.css";
 import "../../../styles/global.css";
 import { FaKey, FaLock } from "react-icons/fa";
@@ -14,6 +15,7 @@ const UserStats = () => {
   const confirmDialogRef = useRef(null);
   const formDialogRef = useRef(null);
   const { theme, toggle, isDark } = useTheme();
+  const [avatarUrl] = useState(() => getRandomAvatar({ seed: "user-session" }));
 
   const {
     email,
@@ -35,7 +37,7 @@ const UserStats = () => {
     onSuccess: () => navigate("/"),
   });
 
-  React.useEffect(() => cleanup, [cleanup]);
+  useEffect(() => cleanup, [cleanup]);
 
   const handleOpenConfirm = () => {
     confirmDialogRef.current?.showModal();
@@ -71,8 +73,12 @@ const UserStats = () => {
           <header className="profile-header">
             <div className="profile-avatar">
               <img
-                src="https://ui-avatars.com/api/?name=Cid&background=0D8ABC&color=fff&size=200"
-                alt="Avatar"
+                src={avatarUrl}
+                alt="Avatar do usuário"
+                onError={(e) => {
+                  e.target.src =
+                    "https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff&size=200";
+                }}
               />
             </div>
             <div className="profile-info">
@@ -82,14 +88,14 @@ const UserStats = () => {
             <div className="Change-theme">
               <button
                 type="button"
-                className={isDark ? "sun-button" : "moon-button"}
+                className={isDark ? "moon-button" : "sun-button"}
                 onClick={toggle}
                 aria-label="Alternar tema"
               >
                 {isDark ? (
-                  <FiSun className="sun-icon" />
-                ) : (
                   <FiMoon className="moon-icon" />
+                ) : (
+                  <FiSun className="sun-icon" />
                 )}
               </button>
             </div>

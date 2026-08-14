@@ -4,9 +4,6 @@ import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderTable.jsx';
 
-// CSS
-import "./Teamleader.css";
-
 //hooks
 import { useTeamLeader } from '../../hooks/useTeamLeaderInfo.js';
 const Teamleader = () => {

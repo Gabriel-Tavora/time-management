@@ -3,6 +3,8 @@ import { Messages } from "../utils/message.js";
 const MS_IN_HOUR = 1000 * 60 * 60;
 const MS_IN_DAY = MS_IN_HOUR * 24;
 
+export const FUTURE_TOLERANCE_HOURS = 36;
+
 export function buildIsoDateTime(date, time) {
   if (!date || !time) return null;
   return `${date}T${time}:00Z`;
@@ -13,11 +15,15 @@ export function combineDateTime(date, time) {
   return iso ? new Date(iso) : null;
 }
 
-function localDateString(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+function normalizeToDate(value, fallbackTime = "00:00") {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  if (typeof value === "string") {
+    return value.includes("T")
+      ? new Date(value)
+      : combineDateTime(value, fallbackTime);
+  }
+  return null;
 }
 
 export function validateOvertime({
@@ -26,6 +32,8 @@ export function validateOvertime({
   startTime,
   startDate,
   jiraTask,
+  monthStart,
+  monthEnd,
 }) {
   if (!startDate || !endDate) {
     return Messages.REQUIRED_DATE;
@@ -39,15 +47,12 @@ export function validateOvertime({
     return Messages.REQUIRED_END;
   }
 
-  const todayUtc = combineDateTime(localDateString(), "00:00");
-  const startDateUtc = combineDateTime(startDate, "00:00");
-  const endDateUtc = combineDateTime(endDate, "00:00");
+  const start = combineDateTime(startDate, startTime);
+  const end = combineDateTime(endDate, endTime);
 
-  if (startDateUtc > todayUtc) {
-    return Messages.FUTURE_DATE;
-  }
-
-  const dayDiff = (endDateUtc - startDateUtc) / MS_IN_DAY;
+  const startDay = combineDateTime(startDate, "00:00");
+  const endDay = combineDateTime(endDate, "00:00");
+  const dayDiff = (endDay - startDay) / MS_IN_DAY;
 
   if (dayDiff < 0) {
     return Messages.INVALID_DATE_ORDER;
@@ -57,17 +62,27 @@ export function validateOvertime({
     return Messages.INVALID_DATE_RANGE;
   }
 
-  const start = combineDateTime(startDate, startTime);
-  const end = combineDateTime(endDate, endTime);
-
   if (end <= start) {
     return Messages.INVALID_TIME;
   }
 
-  const totalHours = (end - start) / MS_IN_HOUR;
+  const maxAllowedStart = new Date(
+    Date.now() + FUTURE_TOLERANCE_HOURS * MS_IN_HOUR,
+  );
 
-  if (totalHours > 12) {
-    return Messages.MAX_HOURS;
+  if (start > maxAllowedStart) {
+    return Messages.FUTURE_DATE;
+  }
+
+  if (!monthStart || !monthEnd) {
+    return Messages.PERIOD_UNAVAILABLE;
+  }
+
+  const periodStart = normalizeToDate(monthStart, "00:00");
+  const periodEnd = normalizeToDate(monthEnd, "23:59");
+
+  if (!periodStart || !periodEnd || start < periodStart || end > periodEnd) {
+    return Messages.OUTSIDE_PERIOD;
   }
 
   if (!jiraTask.trim()) {
@@ -88,7 +103,9 @@ export function calculateNightHours(start, end) {
   const cursor = new Date(start);
 
   while (cursor < end) {
-    const next = new Date(Math.min(cursor.getTime() + MS_IN_HOUR, end.getTime()));
+    const next = new Date(
+      Math.min(cursor.getTime() + MS_IN_HOUR, end.getTime()),
+    );
     const hour = cursor.getUTCHours();
     const isNight = hour >= 22 || hour < 5;
 

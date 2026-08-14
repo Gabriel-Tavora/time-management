@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import UserTable from "../../components/Tables/UserTable/UserTable.jsx";
-// CSS
-import "./UserScreen.css";
 // services
 import { getCurrentUser } from "../../services/userData.js";
 import { getUserHours, getUserPerformance } from "../../services/overtimeData.js";

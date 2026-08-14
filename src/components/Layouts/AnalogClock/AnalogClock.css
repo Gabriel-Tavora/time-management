@@ -9,6 +9,18 @@
   box-shadow: 0 2vw 4vw -1vw rgba(0, 0, 0, 0.8);
 }
 
+.hour {
+  position: absolute;
+  z-index: 4;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1;
+  color: #eee;
+  font-family: inherit;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
 .dot {
   width: 22px;
   height: 22px;
@@ -18,9 +30,8 @@
   inset: 0;
   margin: auto;
   z-index: 10;
-  box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
-
 
 .clock::before,
 .clock::after {
@@ -33,9 +44,24 @@
 
 .clock::before {
   z-index: 1;
-  background: repeating-conic-gradient(#999 0deg 0.5deg, transparent 0.2deg 6deg);
-  -webkit-mask: radial-gradient(circle closest-side at center, transparent 91%, #000 91.4%, #000 96%, transparent 96.4%);
-  mask: radial-gradient(circle closest-side at center, transparent 91%, #000 91.4%, #000 96%, transparent 96.4%);
+  background: repeating-conic-gradient(
+    #999 0deg 0.5deg,
+    transparent 0.2deg 6deg
+  );
+  -webkit-mask: radial-gradient(
+    circle closest-side at center,
+    transparent 91%,
+    #000 91.4%,
+    #000 96%,
+    transparent 96.4%
+  );
+  mask: radial-gradient(
+    circle closest-side at center,
+    transparent 91%,
+    #000 91.4%,
+    #000 96%,
+    transparent 96.4%
+  );
 }
 
 .hour {

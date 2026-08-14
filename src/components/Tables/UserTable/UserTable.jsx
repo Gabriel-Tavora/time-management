@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from '../../Layouts/Button/Button';
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
+  
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
@@ -72,8 +73,8 @@ console.log(monthPerf)
           </li>
         </ul>
       </div>
-      <div className="table-page content">
-        <div className="table-header user-title">
+      <div className="table-page">
+        <div className="table-header">
           <div className="date-filter">
             <div className="table-header">
               <Input
@@ -105,7 +106,6 @@ console.log(monthPerf)
               />
 
             )}
-
             </div>
             <Button
               buttonText="Registrar Hora Extra"
@@ -114,7 +114,6 @@ console.log(monthPerf)
               icon={FaPlus}
             />
           </div>
-
         </div>
 
         <div className="table-container">

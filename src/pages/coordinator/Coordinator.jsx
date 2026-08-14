@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import CoordinatorTable from "../../components/Tables/CoordinatorTable/CoordinatorTable.jsx";
-// CSS
-import "./Coordinator.css";
+
 //hooks
 import { useCoordinator } from '../../hooks/useCoordinatorInfo.js';
 const Coordinator = () => {

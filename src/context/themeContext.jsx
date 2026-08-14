@@ -81,7 +81,10 @@ export function ThemeProvider({ children, options = {} }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
-
+/**
+ * Hook para acessar o tema em qualquer componente.
+ * Deve ser usado dentro de um <ThemeProvider>.
+ */
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {

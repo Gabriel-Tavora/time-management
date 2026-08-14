@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useEffect } from "react";
+import React, { useRef, useState, useMemo } from "react";
 // css
 import "../tables.css";
 // router-dom
@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 // icons
 import { FaPlus, FaTimes } from "react-icons/fa";
 // Utils
-import { formatHours, formatDate, formatTime } from "../../../utils/formatHours.js";
+import {
+  formatHours,
+  formatDate,
+  formatTime,
+} from "../../../utils/formatHours.js";
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
@@ -22,19 +26,10 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+
   //filtrar users em tabelas com id
-  const {
-    items,
-    currentItem,
-    currentIndex,
-    total,
-    hasNext,
-    hasPrev,
-    currentEmployeePerformace,
-    goNext,
-    goPrev,
-    goToIndex,
-  } = useGroupUsers(data, idMonth);
+  const { currentItem, currentEmployeePerformace, goNext, goPrev } =
+    useGroupUsers(data, idMonth);
 
   const isFilterActive = Boolean(startDate || endDate);
 
@@ -54,9 +49,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
       return true;
     });
   }, [currentItem, startDate, endDate, isFilterActive]);
-  useEffect(() => {
 
-  }, [currentItem])
   const handleNavigate = (path) => {
     navigate(path);
   };
@@ -88,17 +81,21 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   }
 
   return (
-    <div className="table-page">
+    <div className="table-page table">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-            <h3 className="time">{formatHours(currentEmployeePerformace?.total_hours)}</h3>
+            <h3 className="time">
+              {formatHours(currentEmployeePerformace?.total_hours)}
+            </h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">{formatHours(currentEmployeePerformace?.nigth_hours)}</h3>
+            <h3 className="night">
+              {formatHours(currentEmployeePerformace?.nigth_hours)}
+            </h3>
           </li>
           <li>
             <h1>Quantidade no Mês</h1>
@@ -111,7 +108,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
         </ul>
       </div>
       <div className="table-page">
-        <div className="table-header Leader-title">
+        <div className="table-header">
           <div className="date-filter">
             <div className="table-header">
               <Input
@@ -145,7 +142,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 />
               )}
             </div>
-            <div className="table-header-end">
+            <div className="table-header">
               <Button
                 className="btn"
                 buttonText="Registrar Hora Extra"
@@ -205,7 +202,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 <th>100%</th>
               </tr>
             </thead>
-
             <tbody>
               {filteredRecords.length === 0 ? (
                 <tr>
@@ -232,10 +228,14 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                       <td>{nightHours ? formatHours(nightHours) : "0"}</td>
                       <td>{formatHours(totalHours)}</td>
                       <td>
-                        <span className="status pending">{formatHours(type["1"])}</span>
+                        <span className="status pending">
+                          {formatHours(type["1"])}
+                        </span>
                       </td>
                       <td>
-                        <span className="status approved">{formatHours(type["2"])}</span>
+                        <span className="status approved">
+                          {formatHours(type["2"])}
+                        </span>
                       </td>
                     </tr>
                   );

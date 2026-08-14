@@ -20,7 +20,6 @@ export function useCoordinator() {
   const [colaboratorData, setColaboratorData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [idMonth, setIdMonth] = useState(null);
-
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
 

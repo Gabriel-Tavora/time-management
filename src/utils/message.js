@@ -3,7 +3,7 @@ export const Messages = {
 
   REQUIRED_DATE: "Informe a data inicial e final.",
 
-  FUTURE_DATE: "Não é permitido registrar horas em datas futuras.",
+  FUTURE_DATE: "Não é permitido registrar horas com mais de 1 dia e meio de antecedência.",
 
   REQUIRED_START: "Informe o horário inicial.",
 
@@ -18,8 +18,11 @@ export const Messages = {
   INVALID_DATE_RANGE:
     "O intervalo entre a data inicial e a final não pode ultrapassar 1 dia.",
 
-  MAX_HOURS:
-    "Uma hora extra não pode ultrapassar 12 horas.",
+  OUTSIDE_PERIOD:
+    "A data informada está fora do período do mês atual.",
+
+  PERIOD_UNAVAILABLE:
+    "Não foi possível confirmar o período vigente. Recarregue a página e tente novamente.",
 
   REQUIRED_JIRA:
     "Informe o código da tarefa Jira.",

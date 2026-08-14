@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 //css
-import "./CoordinatorTable.css";
 import "../tables.css";
 //Utils
-import { formatHours, formatDate } from "../../../utils/formatHours.js";
+import {
+  formatHours,
+  formatDate,
+  formatTime,
+} from "../../../utils/formatHours.js";
 //components
-import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from "../../Layouts/Button/Button";
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
-const OVERTIME_TYPE_NORMAL = 1;
+
 const SUCCESS_DIALOG_TIMEOUT_MS = 4000;
 
 const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
@@ -20,17 +22,9 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   const [loading, setLoading] = useState(false);
   const [dialogMode, setDialogMode] = useState(null); // "approve" | "rejected" | null
   const [errorMessage, setErrorMessage] = useState(null);
-  const {
-    items,
-    currentItem,
-    currentIndex,
-    total,
-    hasNext,
-    hasPrev,
-    goNext,
-    goPrev,
-    goToIndex,
-  } = useGroupUsers(data);
+
+  const { currentItem, currentEmployeePerformace, goNext, goPrev } =
+    useGroupUsers(data);
 
   useEffect(() => {
     return () => {
@@ -119,17 +113,21 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-            <h3 className="time">{formatHours(currentItem?.total_hours)}</h3>
+            <h3 className="time">
+              {formatHours(currentEmployeePerformace?.total_hours)}
+            </h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">{formatHours(currentItem?.nigth_hours)}</h3>
+            <h3 className="night">
+              {formatHours(currentEmployeePerformace?.nigth_hours)}
+            </h3>
           </li>
           <li>
             <h1>Quantidade no Mês</h1>
             <h3>
-              {currentItem?.total_overtimes_mouth > 0
-                ? currentItem.total_overtimes_mouth
+              {currentEmployeePerformace?.total_overtimes_mouth > 0
+                ? currentEmployeePerformace?.total_overtimes_mouth
                 : "0"}
             </h3>
           </li>
@@ -141,21 +139,22 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
           <div className="date-filter">
             <div className="table-header">
               <Button
-                className="rejected-btn"
-                onClick={() => openDialog("rejected")}
-                disabled={disabled || loading}
-                buttonText="Rejeitar"
-              />
-              <Button
                 className="approved-btn"
                 onClick={() => openDialog("approve")}
                 disabled={disabled || loading}
                 buttonText="Aprovar"
               />
+              <Button
+                className="rejected-btn"
+                onClick={() => openDialog("rejected")}
+                disabled={disabled || loading}
+                buttonText="Rejeitar"
+              />
+            </div>
+            <div className="table-header">
               <Button className="change-btn" onClick={goPrev} buttonText="◀" />
               <Button className="change-btn" onClick={goNext} buttonText="▶" />
             </div>
-
             <dialog
               ref={confirmDialogRef}
               className="close-dialog"
@@ -208,7 +207,6 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
               <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
               <Button
                 className="btn"
-                className="btn"
                 onClick={closeSuccessDialog}
                 buttonText="Fechar"
               />
@@ -216,48 +214,60 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
           </div>
         </div>
 
-        <div className="table-container Coordinator-table">
-          <table className="app-table Coordinator-stats">
+        <div className="table-container">
+          <table className="app-table">
             <thead>
               <tr>
-                <th>Colaborador</th>
-                <th>Data</th>
-                <th>Total de Horas Extras</th>
-                <th>Horas Diurnas</th>
+                <th>Colaboradores</th>
+                <th>Data Inicial</th>
+                <th>Data Final</th>
+                <th>Horário Inicial</th>
+                <th>Horário Final</th>
                 <th>Horas Noturnas</th>
-                <th>Tipo</th>
+                <th>Horas Totais</th>
+                <th>50%</th>
+                <th>100%</th>
               </tr>
             </thead>
 
-            <tbody>{data ?
-              <tr>
-                <td colSpan={9} className="empty-state">"Nenhum registro encontrado."</td>
-              </tr>
-              : (data?.map((register) => {
-                const record = register.overtime_record;
-                const totalHours = record?.total_hours ?? 0;
-                const nightHours = record?.nigth_hours ?? 0;
-                const dayHours = Math.max(totalHours - nightHours, 0);
+            <tbody>
+              {!currentItem?.records?.length ? (
+                <tr>
+                  <td colSpan={9} className="empty-state">
+                    Nenhum registro encontrado.
+                  </td>
+                </tr>
+              ) : (
+                currentItem.records.map((record) => {
+                  const totalHours = record.total_hours ?? 0;
+                  const nightHours = record.nigth_hours ?? 0;
+                  const startTime = record.start_time;
+                  const endTime = record.end_time;
+                  const type = record.hours_by_type ?? {};
 
-                return (
-                  <tr key={record?.id}>
-                    <td>{register.users?.name}</td>
-                    <td>
-                      {record?.work_date ? formatDate(record.work_date) : "-"}
-                    </td>
-                    <td>{formatHours(totalHours)}</td>
-                    <td>{dayHours ? formatHours(dayHours) : "0"}</td>
-                    <td>{nightHours ? formatHours(nightHours) : "0"}</td>
-                    <td>
-                      {record?.overtime_type_id === OVERTIME_TYPE_NORMAL ? (
-                        <span className="status pending">50%</span>
-                      ) : (
-                        <span className="status approved">100%</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              }))}
+                  return (
+                    <tr key={record.id}>
+                      <td>{currentItem.name}</td>
+                      <td>{formatDate(startTime)}</td>
+                      <td>{formatDate(endTime)}</td>
+                      <td>{formatTime(startTime)}</td>
+                      <td>{formatTime(endTime)}</td>
+                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                      <td>{formatHours(totalHours)}</td>
+                      <td>
+                        <span className="status pending">
+                          {formatHours(type["1"] ?? 0)}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="status approved">
+                          {formatHours(type["2"] ?? 0)}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
