@@ -13,8 +13,7 @@
   gap: 3rem;
   width: 100%;
   min-width: 73rem;
-  margin: 2rem auto;
-  margin-top: 30px;
+  margin-top: 0;
   padding: 30px;
   padding-top: 20px;
   border-radius: var(--radius-xl);
@@ -53,7 +52,7 @@
 }
 
 .table-container {
-  max-height: 460px;
+  max-height: 410px;
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: var(--radius-md);
@@ -64,14 +63,14 @@
 }
 
 .table-container::-webkit-scrollbar-track {
-  background: var(--scroll-track);
-  border-radius: 20px;
+  margin-top: 50px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
   background: var(--gradient-scroll);
   border-radius: 20px;
 }
+
 
 .app-table {
   width: 100%;
@@ -166,37 +165,6 @@
   box-shadow: var(--shadow-success);
 }
 
-/* 
-Dialog
-*/
-.close-dialog {
-  align-self: center;
-  justify-self: center;
-  padding: 25px;
-  border: 1px solid var(--border-card-soft);
-  border-radius: var(--radius-lg);
-  background: var(--bg-card-strong);
-  backdrop-filter: blur(25px);
-  color: var(--text-primary);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.45),
-    0 0 30px rgba(124, 92, 255, 0.2);
-}
-
-.close-dialog h2 {
-  font-size: 1.6rem;
-}
-
-.dialog-actions {
-  display: flex;
-  margin: auto;
-  justify-content: center;
-}
-
-dialog::backdrop {
-  background: var(--dialog-backdrop);
-  backdrop-filter: blur(4px);
-}
 
 /* 
 MENU - TABLE

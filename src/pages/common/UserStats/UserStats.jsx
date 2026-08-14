@@ -1,13 +1,23 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+//components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
+import Button from '../../../components/Layouts/Button/Button';
+//hooks
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
+
+//context
 import { useTheme } from "../../../context/themeContext.jsx";
+
+//utils
 import { getRandomAvatar } from "../../../utils/avatarUtils";
+
+//css
 import "./UserStats.css";
 import "../../../styles/global.css";
-import { FaKey, FaLock } from "react-icons/fa";
+import { FaKey, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FiSun, FiMoon } from "react-icons/fi";
 
 const UserStats = () => {
@@ -16,6 +26,7 @@ const UserStats = () => {
   const formDialogRef = useRef(null);
   const { theme, toggle, isDark } = useTheme();
   const [avatarUrl] = useState(() => getRandomAvatar({ seed: "user-session" }));
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     email,
@@ -86,64 +97,65 @@ const UserStats = () => {
               <p>Visualize suas informações pessoais.</p>
             </div>
             <div className="Change-theme">
-              <button
+              <Button
                 type="button"
                 className={isDark ? "moon-button" : "sun-button"}
                 onClick={toggle}
                 aria-label="Alternar tema"
-              >
-                {isDark ? (
+                buttonText={isDark ? (
                   <FiMoon className="moon-icon" />
                 ) : (
                   <FiSun className="sun-icon" />
                 )}
-              </button>
+              />
             </div>
           </header>
 
           <InfoCards onEmailLoaded={setEmail} />
 
           <div className="profile-buttons">
-            <button
-              type="button"
-              className="btn-primary"
+            <Button
+              className="btn btn-medium"
               onClick={handleOpenConfirm}
               disabled={!email}
-            >
-              Alterar Senha
-            </button>
+              buttonText="Alterar Dados"
+            />
+            <Button
+              className="btn btn-medium"
+              onClick={handleOpenConfirm}
+              disabled={!email}
+              buttonText="Alterar Senha"
+            />
           </div>
 
           {/* Dialog 1: confirmação */}
-          <dialog ref={confirmDialogRef} className="dialog-confirm">
+          <dialog ref={confirmDialogRef} className="close-dialog">
             <h2>Alterar senha</h2>
             <p>
-              Um código será enviado para <strong>{email}</strong>. Deseja
+              Um código será enviado para <strong>{email}</strong> Deseja
               continuar?
             </p>
             {message && (
               <p className={`form-message ${message.type}`}>{message.text}</p>
             )}
             <div className="dialog-actions">
-              <button
-                className="cancel-btn"
+              <Button
+                className="rejected-btn"
                 onClick={handleCancelConfirm}
                 disabled={loading}
-              >
-                Cancelar
-              </button>
-              <button
-                className="confirm-btn"
+                buttonText="Cancelar"
+              />
+              <Button
+                className="approved-btn"
                 onClick={handleConfirmSendCode}
                 disabled={loading}
-              >
-                {loading ? "Enviando..." : "Enviar código"}
-              </button>
+                buttonText={loading ? "Enviando..." : "Enviar código"}
+              />
             </div>
           </dialog>
 
           {/* Dialog 2: código + nova senha */}
-          <dialog ref={formDialogRef} className="dialog-form">
+          <dialog ref={formDialogRef} className="close-dialog">
             <h2>Confirme o código e defina a nova senha</h2>
             <form onSubmit={handleSubmit}>
               <div className="input-group">
@@ -168,6 +180,12 @@ const UserStats = () => {
                   required
                   minLength={8}
                 />
+                <span
+                  className="password-toggle"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
               <div className="input-group">
                 <FaLock className="input-icon" />
@@ -180,26 +198,30 @@ const UserStats = () => {
                   required
                   minLength={8}
                 />
+                <span
+                  className="password-toggle"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
               {message && (
                 <p className={`form-message ${message.type}`}>{message.text}</p>
               )}
               <div className="dialog-actions">
-                <button
+                <Button
                   type="button"
-                  className="cancel-btn"
+                  className="rejected-btn"
                   onClick={handleCancelForm}
                   disabled={loading}
-                >
-                  Cancelar
-                </button>
-                <button
+                  buttonText="Cancelar"
+                />
+                <Button
                   type="submit"
-                  className="confirm-btn"
+                  className="approved-btn"
                   disabled={loading}
-                >
-                  {loading ? "Enviando..." : "Confirmar"}
-                </button>
+                  buttonText={loading ? "Enviando..." : "Confirmar"}
+                />
               </div>
             </form>
           </dialog>

@@ -29,14 +29,6 @@ const AVATAR_SERVICES = {
   },
 };
 
-/**
- * Retorna uma URL de avatar aleatória.
- * @param {Object} options
- * @param {string} options.seed - Seed para gerar avatar consistente (ex: userId, email)
- * @param {string} options.service - Serviço: "dicebear" | "dicebearNotionists" | "uiAvatars" | "pravatar" | "picsum"
- * @param {string} options.style - Estilo do DiceBear (apenas para service="dicebear")
- * @returns {string} URL do avatar
- */
 export function getRandomAvatar(options = {}) {
   const {
     seed = "user",
@@ -54,20 +46,13 @@ export function getRandomAvatar(options = {}) {
   return selectedService.url(seed, style);
 }
 
-/**
- * Retorna um avatar baseado no email do usuário (seed consistente).
- * @param {string} email
- * @param {string} service
- * @returns {string}
- */
-export function getAvatarByEmail(email, service = "dicebear") {
-  return getRandomAvatar({ seed: email, service });
+export function getAvatarByUser(user) {
+  return getRandomAvatar({
+    seed: user?.id || user?.email || user?.name || "user",
+    service: "dicebear",
+  });
 }
 
-/**
- * Lista todos os serviços de avatar disponíveis.
- * @returns {Array}
- */
 export function listAvatarServices() {
   return Object.entries(AVATAR_SERVICES).map(([key, value]) => ({
     key,
@@ -77,11 +62,6 @@ export function listAvatarServices() {
   }));
 }
 
-/**
- * Gera múltiplas opções de avatar para o usuário escolher.
- * @param {string} seed
- * @returns {Array<{name: string, url: string}>}
- */
 export function generateAvatarOptions(seed = "user") {
   return [
     { name: "DiceBear Avataaars", url: AVATAR_SERVICES.dicebear.url(seed, "avataaars") },

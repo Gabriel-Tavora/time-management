@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 // css
 import "../tables.css";
 
@@ -17,47 +19,77 @@ import Button from "../../Layouts/Button/Button";
 
 const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
   const {
-    confirmDialogRef,
-    successDialogRef,
     loading,
-    dialogMode,
-    errorMessage,
-    openDialog,
-    closeDialog,
-    closeSuccessDialog,
     handleConfirmAction,
   } = useMenagerTable({
     onApprove,
     onReject,
   });
 
-  const { 
-    currentItem, 
-    currentEmployeePerformace, 
-    goNext, 
-    goPrev 
+  const {
+    currentItem,
+    currentEmployeePerformace,
+    goNext,
+    goPrev,
   } = useGroupUsers(data);
+
   const records = currentItem?.records ?? [];
+
+  const handleOpenConfirm = async (mode) => {
+    const isApprove = mode === "approve";
+
+    const result = await Swal.fire({
+      title: isApprove
+        ? "Deseja aprovar o fechamento do mês?"
+        : "Deseja rejeitar o fechamento?",
+
+      text: isApprove
+        ? "Após confirmar, o período será encerrado."
+        : "Os dados serão devolvidos para correção.",
+
+      icon: isApprove ? "warning" : "question",
+
+      showCancelButton: true,
+
+      confirmButtonText: isApprove
+        ? "Aprovar"
+        : "Rejeitar",
+
+      cancelButtonText: "Cancelar",
+
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      await handleConfirmAction(mode);
+    }
+  };
 
   return (
     <div className="table-page table">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
+
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
+
             <h3 className="time">
               {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
             </h3>
           </li>
+
           <li>
             <h1>Total de Horas Noturnas</h1>
+
             <h3 className="night">
               {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
             </h3>
           </li>
+
           <li>
             <h1>Quantidade no Mês</h1>
+
             <h3>
               {currentEmployeePerformace?.total_overtimes_mouth > 0
                 ? currentEmployeePerformace.total_overtimes_mouth
@@ -70,80 +102,38 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
       <div className="table-page">
         <div className="table-header">
           <div className="date-filter">
+
             <div className="table-header">
               <Button
                 className="approved-btn"
-                onClick={() => openDialog("approve")}
+                onClick={() => handleOpenConfirm("approve")}
                 disabled={disabled || loading}
-                buttonText="Aprovar"
+                buttonText={loading ? "Processando..." : "Aprovar"}
               />
 
               <Button
                 className="rejected-btn"
-                onClick={() => openDialog("rejected")}
+                onClick={() => handleOpenConfirm("reject")}
                 disabled={disabled || loading}
-                buttonText="Rejeitar"
+                buttonText={loading ? "Processando..." : "Rejeitar"}
               />
             </div>
 
             <div className="table-header">
-              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+              <Button
+                className="change-btn"
+                onClick={goPrev}
+                buttonText="◀"
+              />
 
-              <Button className="change-btn" onClick={goNext} buttonText="▶" />
+              <Button
+                className="change-btn"
+                onClick={goNext}
+                buttonText="▶"
+              />
             </div>
+
           </div>
-
-          {/* Dialog de confirmação */}
-          <dialog
-            ref={confirmDialogRef}
-            className="close-dialog"
-            aria-labelledby="confirm-dialog-title"
-          >
-            <h2 id="confirm-dialog-title">
-              {dialogMode === "approve"
-                ? "Deseja aprovar o fechamento do mês?"
-                : "Deseja rejeitar o fechamento?"}
-            </h2>
-
-            <p>
-              {dialogMode === "approve"
-                ? "Após confirmar, o período será encerrado."
-                : "Os dados serão devolvidos para correção."}
-            </p>
-
-            {errorMessage && (
-              <p className="form-message error" role="alert">
-                {errorMessage}
-              </p>
-            )}
-
-            <div className="dialog-actions">
-              <Button
-                onClick={closeDialog}
-                disabled={loading}
-                buttonText="Cancelar"
-              />
-              <Button
-                type="button"
-                onClick={handleConfirmAction}
-                disabled={loading}
-                buttonText={
-                  loading
-                    ? "Processando..."
-                    : dialogMode === "approve"
-                      ? "Aprovar"
-                      : "Rejeitar"
-                }
-              />
-            </div>
-          </dialog>
-
-          {/* Dialog de sucesso */}
-          <dialog ref={successDialogRef} aria-labelledby="success-dialog-title">
-            <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
-
-            <Button onClick={closeSuccessDialog} buttonText="Fechar" />
-          </dialog>
         </div>
 
         <div className="table-container">
@@ -173,23 +163,38 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
                 records.map((record) => {
                   const totalHours = record.total_hours ?? 0;
                   const nightHours = record.nigth_hours ?? 0;
+
                   const startTime = record.start_time;
                   const endTime = record.end_time;
+
                   const type = record.hours_by_type ?? {};
+
                   return (
                     <tr key={record.id}>
                       <td>{currentItem?.name}</td>
+
                       <td>{formatDate(startTime)}</td>
+
                       <td>{formatDate(endTime)}</td>
+
                       <td>{formatTime(startTime)}</td>
+
                       <td>{formatTime(endTime)}</td>
-                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+
+                      <td>
+                        {nightHours
+                          ? formatHours(nightHours)
+                          : "0"}
+                      </td>
+
                       <td>{formatHours(totalHours)}</td>
+
                       <td>
                         <span className="status pending">
                           {formatHours(type["1"] ?? 0)}
                         </span>
                       </td>
+
                       <td>
                         <span className="status approved">
                           {formatHours(type["2"] ?? 0)}

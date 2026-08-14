@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import Swal from "sweetalert2";
 
-export const useMenagerTable = ({ onApprove, onReject }) => {
+export const useCoordinatorTable = ({ onApprove, onReject }) => {
   const [loading, setLoading] = useState(false);
 
   const handleConfirmAction = useCallback(
@@ -11,17 +11,11 @@ export const useMenagerTable = ({ onApprove, onReject }) => {
       setLoading(true);
 
       Swal.fire({
-        title: mode === "approve"
-          ? "Aprovando..."
-          : "Rejeitando...",
-
+        title: mode === "approve" ? "Aprovando..." : "Rejeitando...",
         text: "Aguarde enquanto a operação é processada.",
-
         allowOutsideClick: false,
         allowEscapeKey: false,
-
         showConfirmButton: false,
-
         didOpen: () => {
           Swal.showLoading();
         },
@@ -35,31 +29,26 @@ export const useMenagerTable = ({ onApprove, onReject }) => {
         }
 
         await Swal.fire({
-          title: "Operação realizada!",
-          text: mode === "approve"
-            ? "O fechamento foi aprovado com sucesso."
-            : "O fechamento foi rejeitado com sucesso.",
-
+          title: "Operação realizada com sucesso!",
+          text:
+            mode === "approve"
+              ? "O fechamento foi aprovado com sucesso."
+              : "O fechamento foi rejeitado com sucesso.",
           icon: "success",
-
           confirmButtonText: "Fechar",
         });
-
       } catch (error) {
         console.error(error);
 
         await Swal.fire({
           title: "Erro",
-
-          text: mode === "approve"
-            ? "Erro ao aprovar. Tente novamente."
-            : "Erro ao rejeitar. Tente novamente.",
-
+          text:
+            mode === "approve"
+              ? "Erro ao aprovar. Tente novamente."
+              : "Erro ao rejeitar. Tente novamente.",
           icon: "error",
-
           confirmButtonText: "Fechar",
         });
-
       } finally {
         setLoading(false);
       }

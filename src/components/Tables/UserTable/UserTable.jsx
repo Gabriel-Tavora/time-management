@@ -10,8 +10,9 @@ import { useNavigate } from "react-router-dom";
 //hooks
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from '../../Layouts/Button/Button';
+
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
-  
+
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
@@ -48,9 +49,8 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     setStartDate("");
     setEndDate("");
   };
-console.log(monthPerf)
   return (
-    <div className="table-page table">
+    <div className="table-page table ">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
 
@@ -73,7 +73,7 @@ console.log(monthPerf)
           </li>
         </ul>
       </div>
-      <div className="table-page">
+      <div className="table-page content">
         <div className="table-header">
           <div className="date-filter">
             <div className="table-header">
@@ -98,14 +98,14 @@ console.log(monthPerf)
                 name="startDate"
               />
               {isFilterActive && (
-              <Button
-                buttonText="Limpar"
-                className="btn-medium btn"
-                onClick={handleClearFilter}
-                icon={FaTimes}
-              />
+                <Button
+                  buttonText="Limpar"
+                  className="btn-medium btn"
+                  onClick={handleClearFilter}
+                  icon={FaTimes}
+                />
 
-            )}
+              )}
             </div>
             <Button
               buttonText="Registrar Hora Extra"

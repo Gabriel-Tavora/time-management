@@ -1,31 +1,37 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 // css
 import "../tables.css";
+import Swal from "sweetalert2";
+
 // router-dom
 import { useNavigate } from "react-router-dom";
+
 // icons
 import { FaPlus, FaTimes } from "react-icons/fa";
+
 // Utils
 import {
   formatHours,
   formatDate,
   formatTime,
 } from "../../../utils/formatHours.js";
+
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
-import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
+import { useTeamLeaderTable } from "../../../hooks/useTeamLeaderTable";
+
 //components
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from "../../Layouts/Button/Button";
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
-  const navigate = useNavigate();
-  const successDialogRef = useRef(null);
-  const confirmDialogRef = useRef(null);
-
-  const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+
+  const navigate = useNavigate();
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   //filtrar users em tabelas com id
   const { currentItem, currentEmployeePerformace, goNext, goPrev } =
@@ -50,36 +56,33 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     });
   }, [currentItem, startDate, endDate, isFilterActive]);
 
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
-
   const handleClearFilter = () => {
     setStartDate("");
     setEndDate("");
   };
 
-  const closeDialog = () => {
-    confirmDialogRef.current?.close();
-  };
-  async function handleApprove() {
-    setLoading(true);
-    confirmDialogRef.current?.close();
+  const {
+    loading,
+    handleConfirmAction,
+  } = useTeamLeaderTable({
+    onApprove: handleCloseMonth,
+  });
 
-    try {
-      await handleCloseMonth();
-      successDialogRef.current?.showModal();
-      setTimeout(() => {
-        successDialogRef.current?.close();
-      }, 4000);
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao fechar o mês. Tente novamente.");
-    } finally {
-      setLoading(false);
+  const handleOpenConfirm = async () => {
+    const result = await Swal.fire({
+      title: "Deseja aprovar o fechamento do mês?",
+      text: "Após confirmar, o período será enviado para aprovação.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aprovar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      await handleConfirmAction();
     }
-  }
-
+  };
   return (
     <div className="table-page table">
       <div>
@@ -107,6 +110,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
           </li>
         </ul>
       </div>
+
       <div className="table-page">
         <div className="table-header">
           <div className="date-filter">
@@ -152,39 +156,13 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
               <Button
                 className="btn-medium btn"
                 buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
-                onClick={() => confirmDialogRef.current?.showModal()}
+                onClick={handleOpenConfirm}
                 disabled={loading}
               />
               <Button className="change-btn" onClick={goPrev} buttonText="◀" />
               <Button className="change-btn" onClick={goNext} buttonText="▶" />
             </div>
           </div>
-
-          <dialog ref={confirmDialogRef} className="close-dialog">
-            <h2>Deseja aprovar o fechamento do mês?</h2>
-            <p>Após confirmar, o período será enviado para aprovação.</p>
-            <div className="dialog-actions">
-              <Button
-                className="btn"
-                onClick={closeDialog}
-                buttonText="Cancelar"
-              />
-              <Button
-                onClick={handleApprove}
-                className="btn"
-                buttonText="Aprovar"
-              />
-            </div>
-          </dialog>
-
-          <dialog ref={successDialogRef}>
-            <h2>Fechamento realizado com sucesso!</h2>
-            <Button
-              className="btn"
-              onClick={() => successDialogRef.current?.close()}
-              buttonText="Fechar"
-            />
-          </dialog>
         </div>
 
         <div className="table-container ">

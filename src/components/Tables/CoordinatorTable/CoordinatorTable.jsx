@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
+import Swal from "sweetalert2";
 //css
 import "../tables.css";
 //Utils
@@ -11,101 +12,48 @@ import {
 import Button from "../../Layouts/Button/Button";
 //hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
-
-const SUCCESS_DIALOG_TIMEOUT_MS = 4000;
+import { useCoordinatorTable } from "../../../hooks/useCoordinatorTable";
 
 const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
-  const confirmDialogRef = useRef(null);
-  const successDialogRef = useRef(null);
-  const successTimeoutRef = useRef(null);
-
-  const [loading, setLoading] = useState(false);
-  const [dialogMode, setDialogMode] = useState(null); // "approve" | "rejected" | null
-  const [errorMessage, setErrorMessage] = useState(null);
-
   const { currentItem, currentEmployeePerformace, goNext, goPrev } =
     useGroupUsers(data);
 
-  useEffect(() => {
-    return () => {
-      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
-    };
-  }, []);
+  const {
+    loading,
+    handleConfirmAction,
+  } = useCoordinatorTable({
+    onApprove: Approval,
+    onReject: Rejected,
+  });
+  const handleOpenConfirm = async (mode) => {
+    const isApprove = mode === "approve";
 
-  useEffect(() => {
-    const dialog = confirmDialogRef.current;
-    if (!dialog) return;
+    const result = await Swal.fire({
+      title: isApprove
+        ? "Deseja aprovar o fechamento do mês?"
+        : "Deseja rejeitar o fechamento?",
 
-    const handleNativeClose = () => {
-      setDialogMode(null);
-      setErrorMessage(null);
-    };
+      text: isApprove
+        ? "Após confirmar, o período será encerrado."
+        : "Os dados serão devolvidos para correção.",
 
-    dialog.addEventListener("close", handleNativeClose);
-    return () => dialog.removeEventListener("close", handleNativeClose);
-  }, []);
+      icon: isApprove ? "warning" : "question",
 
-  useEffect(() => {
-    const dialog = successDialogRef.current;
-    if (!dialog) return;
+      showCancelButton: true,
 
-    const handleNativeClose = () => {
-      if (successTimeoutRef.current) {
-        clearTimeout(successTimeoutRef.current);
-        successTimeoutRef.current = null;
-      }
-    };
+      confirmButtonText: isApprove
+        ? "Aprovar"
+        : "Rejeitar",
 
-    dialog.addEventListener("close", handleNativeClose);
-    return () => dialog.removeEventListener("close", handleNativeClose);
-  }, []);
+      cancelButtonText: "Cancelar",
 
-  const openDialog = useCallback((mode) => {
-    setDialogMode(mode);
-    setErrorMessage(null);
-    confirmDialogRef.current?.showModal();
-  }, []);
+      reverseButtons: true,
+    });
 
-  const closeDialog = useCallback(() => {
-    confirmDialogRef.current?.close();
-  }, []);
-
-  const closeSuccessDialog = useCallback(() => {
-    successDialogRef.current?.close();
-  }, []);
-
-  const handleConfirmAction = useCallback(async () => {
-    if (!dialogMode || loading) return;
-
-    setLoading(true);
-    setErrorMessage(null);
-
-    try {
-      if (dialogMode === "approve") {
-        await Approval();
-      } else {
-        await Rejected();
-      }
-
-      confirmDialogRef.current?.close();
-      successDialogRef.current?.showModal();
-
-      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
-      successTimeoutRef.current = setTimeout(() => {
-        successDialogRef.current?.close();
-      }, SUCCESS_DIALOG_TIMEOUT_MS);
-    } catch (error) {
-      console.error(error);
-      setErrorMessage(
-        dialogMode === "approve"
-          ? "Erro ao aprovar. Tente novamente."
-          : "Erro ao rejeitar. Tente novamente.",
-      );
-    } finally {
-      setLoading(false);
+    if (result.isConfirmed) {
+      await handleConfirmAction(mode);
     }
-  }, [dialogMode, loading, Approval, Rejected]);
-
+  };
   return (
     <div className="table-page table">
       <div>
@@ -114,13 +62,13 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
           <li>
             <h1>Total de Horas Extras</h1>
             <h3 className="time">
-              {formatHours(currentEmployeePerformace?.total_hours)}
+              {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
             </h3>
           </li>
           <li>
             <h1>Total de Horas Noturnas</h1>
             <h3 className="night">
-              {formatHours(currentEmployeePerformace?.nigth_hours)}
+              {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
             </h3>
           </li>
           <li>
@@ -140,77 +88,21 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
             <div className="table-header">
               <Button
                 className="approved-btn"
-                onClick={() => openDialog("approve")}
+                onClick={() => handleOpenConfirm("approve")}
                 disabled={disabled || loading}
-                buttonText="Aprovar"
+                buttonText={loading ? "Processando..." : "Aprovar"}
               />
               <Button
                 className="rejected-btn"
-                onClick={() => openDialog("rejected")}
+                onClick={() => handleOpenConfirm("reject")}
                 disabled={disabled || loading}
-                buttonText="Rejeitar"
+                buttonText={loading ? "Processando..." : "Rejeitar"}
               />
             </div>
             <div className="table-header">
               <Button className="change-btn" onClick={goPrev} buttonText="◀" />
               <Button className="change-btn" onClick={goNext} buttonText="▶" />
             </div>
-            <dialog
-              ref={confirmDialogRef}
-              className="close-dialog"
-              aria-labelledby="confirm-dialog-title"
-            >
-              <h2 id="confirm-dialog-title">
-                {dialogMode === "approve"
-                  ? "Deseja aprovar o fechamento do mês?"
-                  : "Deseja rejeitar o fechamento?"}
-              </h2>
-              <p>
-                {dialogMode === "approve"
-                  ? "Após confirmar, o período será encerrado"
-                  : "Os dados serão devolvidos para correção"}
-              </p>
-
-              {errorMessage && (
-                <p className="form-message error" role="alert">
-                  {errorMessage}
-                </p>
-              )}
-
-              <div className="dialog-actions">
-                <Button
-                  className="btn"
-                  onClick={closeDialog}
-                  disabled={loading}
-                  buttonText="Cancelar"
-                />
-                <Button
-                  className="btn"
-                  onClick={handleConfirmAction}
-                  disabled={loading}
-                  buttonText={
-                    loading
-                      ? "Processando..."
-                      : dialogMode === "approve"
-                        ? "Aprovar"
-                        : "Rejeitar"
-                  }
-                />
-              </div>
-            </dialog>
-
-            {/* Dialog de sucesso */}
-            <dialog
-              ref={successDialogRef}
-              aria-labelledby="success-dialog-title"
-            >
-              <h2 id="success-dialog-title">Operação realizada com sucesso!</h2>
-              <Button
-                className="btn"
-                onClick={closeSuccessDialog}
-                buttonText="Fechar"
-              />
-            </dialog>
           </div>
         </div>
 

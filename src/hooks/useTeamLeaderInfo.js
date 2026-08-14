@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 // Services
-import { employeeDataAll, employeeDataMonth, closeMonth } from '../services/exerciceData.js';
+import { employeeDataMonth, closeMonth } from '../services/exerciceData.js';
 import { employeeDataRecord } from '../services/overtimeData.js';
-import { getCurrentUser } from "../services/userData.js";
+import {getCurrentUser} from "../services/userData.js"
 //utils
 import { getCurrentDate } from "../utils/formatHours.js";
 //context
@@ -13,20 +13,20 @@ export function useTeamLeader() {
   const [colaboratorData, setColaboratorData] = useState([]);
   const [message, setMessage] = useState(null);
   const [idMonth, setIdMonth] = useState(null);
-
   const { token } = useAuthValue();
-  const { formatted, monthStart, monthEnd } = getCurrentDate();
+  const { formatted} = getCurrentDate();
 
   const loadData = async () => {
     try {
+      const userInformations = await getCurrentUser(token);
+      setUser(userInformations);
+      
       const infoMonth = await employeeDataMonth(token);
       setIdMonth(infoMonth);
 
       const responseData = await employeeDataRecord(token, infoMonth?.id);
       setColaboratorData(responseData);
-  
-      const userInformations = await getCurrentUser(token);
-      setUser(userInformations);
+
 
     } catch (error) {
       console.error(error);
@@ -44,6 +44,7 @@ export function useTeamLeader() {
 
     try {
       await closeMonth(token, idMonth?.id);
+
       await loadData();
 
       setMessage({
@@ -52,7 +53,6 @@ export function useTeamLeader() {
       });
 
       return true;
-
     } catch (error) {
       console.error(error);
 
@@ -61,7 +61,7 @@ export function useTeamLeader() {
         text: error.message || "Erro ao fechar o mês.",
       });
 
-      return false;
+      throw error;
     }
   };
 

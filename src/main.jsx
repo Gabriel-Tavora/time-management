@@ -1,5 +1,5 @@
 // React
-import { StrictMode, Suspense, lazy } from "react";
+import {  Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -63,7 +63,6 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <HelmetProvider>
       <AuthProvider>
         <ThemeProvider> {/* <-- envolve tudo */}
@@ -73,5 +72,4 @@ createRoot(document.getElementById("root")).render(
         </ThemeProvider>
       </AuthProvider>
     </HelmetProvider>
-  </StrictMode>
 );

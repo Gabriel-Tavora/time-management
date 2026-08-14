@@ -31,7 +31,7 @@
   height: 3rem;
   padding: 0 18px;
   font-size: .95rem;
-  color: var(--white-color);
+  color: var(--input-label);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: 16px;
@@ -39,11 +39,11 @@
 }
 
 .time-menu-send-obs input::placeholder {
-  color: var(--white-color);
+  color: var(--input-label);
 }
 
 .time-menu-send-obs input:focus {
-  color: var(--white-color);
+  color: var(--input-label);
   outline: none;
   background: var(--input-bg-focus);
   border-color: var(--input-border-focus);

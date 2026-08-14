@@ -6,13 +6,14 @@ import { login as apiLogin } from "../../../services/login.js";
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 //css
 import "./Login.css";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 //components
 import AnalogClock from "../../../components/Layouts/AnalogClock/AnalogClock.jsx";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuthValue();
   const navigate = useNavigate();
 
@@ -68,11 +69,18 @@ const Login = () => {
           <div className="input-group">
             <FaLock className="input-icon" />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
           </div>
 
           <div className="login-options">

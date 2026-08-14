@@ -272,7 +272,7 @@
 }
 
 .dialog-confirm-btn {
-  color: var(--text-primary);
+  color: var(--white-color);
   background: var(--gradient-accent);
 }
 
@@ -282,8 +282,8 @@
 }
 
 .dialog-cancel-btn {
-  color: var(--text-primary);
-  background: var(--cancel-bg);
+  color: var(--white-color);
+  background: var(--bg);
   border: 1px solid var(--cancel-border);
 }
 
