@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { createOvertime, getUserHours } from "../services/overtimeData.js";
 import { getCurrentDate } from "../utils/formatHours.js";
@@ -19,12 +19,34 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
   const submittingRef = useRef(false);
+  const messageTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const showMessage = (type, text) => {
+    if (!isMountedRef.current) return;
+
+    // Cancela o timeout da mensagem anterior antes de agendar um novo —
+    // sem isso, uma mensagem antiga podia apagar uma mensagem nova.
+    if (messageTimeoutRef.current) {
+      clearTimeout(messageTimeoutRef.current);
+    }
+
     setMessage({ type, text });
 
-    setTimeout(() => {
-      setMessage(null);
+    messageTimeoutRef.current = setTimeout(() => {
+      if (isMountedRef.current) {
+        setMessage(null);
+      }
+      messageTimeoutRef.current = null;
     }, 4000);
   };
 
@@ -89,14 +111,14 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
       await createOvertime(token, overtimeData);
 
       showMessage("success", Messages.SUCCESS);
-
       clearForm();
     } catch (err) {
       console.error(err);
 
       switch (err.status) {
         case 400:
-          showMessage("error", err.message);
+        case 422:
+          showMessage("error", err.message || Messages.VALIDATION);
           break;
 
         case 401:
@@ -108,15 +130,15 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
           break;
 
         case 404:
-          showMessage("error", "Recurso não encontrado.");
+          showMessage("error", Messages.NOT_FOUND);
           break;
 
         case 409:
           showMessage("error", Messages.DUPLICATED);
           break;
 
-        case 422:
-          showMessage("error", err.message);
+        case 429:
+          showMessage("error", Messages.RATE_LIMITED);
           break;
 
         case 500:
@@ -124,11 +146,14 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
           break;
 
         default:
-          showMessage("error", Messages.UNKNOWN);
+          // erro desconhecido" genérico.
+          showMessage("error", err.status === undefined ? Messages.NETWORK : Messages.UNKNOWN);
       }
     } finally {
       submittingRef.current = false;
-      setIsSubmitting(false);
+      if (isMountedRef.current) {
+        setIsSubmitting(false);
+      }
     }
   };
 

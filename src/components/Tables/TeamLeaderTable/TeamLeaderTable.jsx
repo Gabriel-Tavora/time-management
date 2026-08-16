@@ -61,10 +61,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     setEndDate("");
   };
 
-  const {
-    loading,
-    handleConfirmAction,
-  } = useTeamLeaderTable({
+  const { loading, handleConfirmAction } = useTeamLeaderTable({
     onApprove: handleCloseMonth,
   });
 
@@ -77,6 +74,14 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
       confirmButtonText: "Aprovar",
       cancelButtonText: "Cancelar",
       reverseButtons: true,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
     });
 
     if (result.isConfirmed) {

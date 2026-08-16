@@ -4,6 +4,8 @@ const MS_IN_HOUR = 1000 * 60 * 60;
 const MS_IN_DAY = MS_IN_HOUR * 24;
 
 export const FUTURE_TOLERANCE_HOURS = 36;
+export const MAX_OVERTIME_SPAN_DAYS = 7;
+
 
 export function buildIsoDateTime(date, time) {
   if (!date || !time) return null;
@@ -13,6 +15,14 @@ export function buildIsoDateTime(date, time) {
 export function combineDateTime(date, time) {
   const iso = buildIsoDateTime(date, time);
   return iso ? new Date(iso) : null;
+}
+
+function nowAsUtcLabeled() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  return combineDateTime(date, time);
 }
 
 function normalizeToDate(value, fallbackTime = "00:00") {
@@ -58,8 +68,8 @@ export function validateOvertime({
     return Messages.INVALID_DATE_ORDER;
   }
 
-  if (dayDiff > 1) {
-    return Messages.INVALID_DATE_RANGE;
+  if (dayDiff > MAX_OVERTIME_SPAN_DAYS) {
+    return Messages.INVALID_DATE_RANGE(MAX_OVERTIME_SPAN_DAYS);
   }
 
   if (end <= start) {
@@ -67,7 +77,7 @@ export function validateOvertime({
   }
 
   const maxAllowedStart = new Date(
-    Date.now() + FUTURE_TOLERANCE_HOURS * MS_IN_HOUR,
+    nowAsUtcLabeled().getTime() + FUTURE_TOLERANCE_HOURS * MS_IN_HOUR,
   );
 
   if (start > maxAllowedStart) {
@@ -89,9 +99,10 @@ export function validateOvertime({
     return Messages.REQUIRED_JIRA;
   }
 
+  const normalizedJira = jiraTask.trim().toUpperCase();
   const jiraRegex = /^[A-Z]+-\d+$/;
 
-  if (!jiraRegex.test(jiraTask.trim())) {
+  if (!jiraRegex.test(normalizedJira)) {
     return Messages.INVALID_JIRA;
   }
 

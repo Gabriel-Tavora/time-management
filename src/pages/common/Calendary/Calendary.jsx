@@ -1,17 +1,46 @@
 import React, { useState, useEffect } from "react";
-//compone
+//componentes
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 //css
 import "./Calendary.css";
 //utils
 import { calendaryGet } from '../../../utils/calendaryget';
-import { formatDate } from '../../../utils/formatHours';
 // services
 import { getUserHours } from '../../../services/overtimeData.js';
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx"
 
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+function getUtcDateKey(dateValue) {
+  const d = new Date(dateValue);
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const year = d.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+// Deriva os dias com hora extra a partir de start_time/end_time, não de
+// work_date — isso garante que turnos de múltiplos dias marquem TODOS os
+// dias cobertos, não só o dia de início.
+function buildWorkDatesSet(records) {
+  const dates = new Set();
+
+  records.forEach((item) => {
+    const { start_time, end_time } = item.overtime_records;
+    if (!start_time || !end_time) return;
+
+    const cursor = new Date(start_time);
+    const end = new Date(end_time);
+
+    while (cursor <= end) {
+      dates.add(getUtcDateKey(cursor));
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+  });
+
+  return dates;
+}
 
 const Calendary = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -32,19 +61,19 @@ const Calendary = () => {
   const calendarDays = [];
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadingData() {
       setErrorMessage(null);
 
       try {
         const userData = await getUserHours(token);
+        if (cancelled) return;
+
         setUserCurrentDate(userData);
-
-        const dates = new Set(
-          userData.map((item) => formatDate(item.overtime_records.work_date))
-        );
-
-        setWorkDates(dates);
+        setWorkDates(buildWorkDatesSet(userData));
       } catch (error) {
+        if (cancelled) return;
         console.error(error);
         setErrorMessage(error?.message || "Erro ao carregar horas extras.");
       }
@@ -53,6 +82,10 @@ const Calendary = () => {
     if (token) {
       loadingData();
     }
+
+    return () => {
+      cancelled = true;
+    };
   }, [token]);
 
   const previousMonth = () => {
@@ -81,7 +114,7 @@ const Calendary = () => {
 
       <div className="calendary-page">
         <header className="calendar-header">
-          <button type="button" className="month-btn" onClick={previousMonth}>
+          <button type="button" className="month-btn" onClick={previousMonth} aria-label="Mês anterior">
             ◀
           </button>
 
@@ -96,7 +129,7 @@ const Calendary = () => {
             </h2>
           </div>
 
-          <button type="button" className="month-btn" onClick={nextMonth}>
+          <button type="button" className="month-btn" onClick={nextMonth} aria-label="Próximo mês">
             ▶
           </button>
         </header>
@@ -146,7 +179,13 @@ const Calendary = () => {
               .join(" ");
 
             return (
-              <button key={index} type="button" className={classNames}>
+              <button
+                key={index}
+                type="button"
+                className={classNames}
+                aria-current={isToday ? "date" : undefined}
+                aria-label={`${buttonDate}${hasOvertime ? ", com hora extra registrada" : ""}`}
+              >
                 {day}
               </button>
             );

@@ -1,6 +1,9 @@
 :root {
   /* === PALETTE === */
-  --h: 220; --h-s: 142; --h-d: 0; --h-w: 45;
+  --h: 220;
+  --h-s: 142;
+  --h-d: 0;
+  --h-w: 45;
   --accent: hsl(var(--h) 90% 55%);
   --accent-dim: hsl(var(--h) 90% 48%);
   --accent-bright: hsl(var(--h) 100% 68%);
@@ -16,7 +19,11 @@
 
   /* === LAYOUT === */
   --size-page: -180px;
-  --radius-sm: 16px; --radius-md: 18px; --radius-lg: 24px; --radius-xl: 28px; --radius-pill: 999px;
+  --radius-sm: 16px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
 
   /* === SURFACE === */
   --bg-primary: hsl(225 60% 5%);
@@ -68,27 +75,45 @@
   --bg-danger: hsl(var(--h-d) 60% 60% / 0.25);
 
   /* === SHADOWS === */
-  --shadow-card: 0 20px 45px rgb(0 0 0 / 0.35), 0 0 30px hsl(var(--h) 90% 55% / 0.2), inset 0 0 0 1px hsl(0 0% 100% / 0.04);
-  --shadow-table: 0 20px 60px rgb(0 0 0 / 0.35), 0 0 30px hsl(var(--h) 90% 55% / 0.15), inset 0 0 0 1px hsl(0 0% 100% / 0.04);
+  --shadow-card:
+    0 20px 45px rgb(0 0 0 / 0.35), 0 0 30px hsl(var(--h) 90% 55% / 0.2),
+    inset 0 0 0 1px hsl(0 0% 100% / 0.04);
+  --shadow-table:
+    0 20px 60px rgb(0 0 0 / 0.35), 0 0 30px hsl(var(--h) 90% 55% / 0.15),
+    inset 0 0 0 1px hsl(0 0% 100% / 0.04);
   --shadow-header: 0 10px 25px hsl(var(--h) 90% 55% / 0.25);
   --shadow-success: 0 0 18px hsl(var(--h-s) 70% 45% / 0.18);
   --shadow-warning: 0 0 18px hsl(var(--h-w) 100% 62% / 0.18);
   --shadow-link: 0 0 12px hsl(var(--h) 90% 55% / 0.45);
 
   /* === GRADIENTS === */
-  --gradient-page: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 35%, var(--bg-tertiary) 100%);
-  --gradient-accent: linear-gradient(90deg, hsl(var(--h) 90% 45%), var(--accent));
+  --gradient-page: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 35%,
+    var(--bg-tertiary) 100%
+  );
+  --gradient-accent: linear-gradient(
+    90deg,
+    hsl(var(--h) 90% 45%),
+    var(--accent)
+  );
   --gradient-success: linear-gradient(90deg, var(--ok-dim), var(--ok));
   --gradient-danger: linear-gradient(90deg, var(--bad), var(--bad-dim));
   --gradient-scroll: linear-gradient(hsl(var(--h) 90% 45%), var(--accent));
-  --gradient-table-header: linear-gradient(0deg, hsl(var(--h) 90% 45%), var(--accent));
+  --gradient-table-header: linear-gradient(
+    0deg,
+    hsl(var(--h) 90% 45%),
+    var(--accent)
+  );
 
   /* === SCROLLBAR === */
   --scroll-track: hsl(0 0% 100% / 0.03);
 
   /* === DIALOG === */
   --dialog-backdrop: hsl(0 0% 0% / 0.65);
-  --dialog-shadow: 0 20px 60px rgb(0 0 0 / 0.45), 0 0 30px hsl(var(--h) 90% 55% / 0.18);
+  --dialog-shadow:
+    0 20px 60px rgb(0 0 0 / 0.45), 0 0 30px hsl(var(--h) 90% 55% / 0.18);
 
   /* === EFFECTS === */
   --text-glow: 0 0 20px hsl(var(--h) 90% 55% / 0.2);
@@ -116,11 +141,19 @@
   --toggle-bg: hsl(0 0% 100% / 0.04);
   --toggle-border: hsl(0 0% 100% / 0.08);
   --toggle-shadow: 0 0 20px hsl(var(--h) 90% 55% / 0.35);
-  --menu-active-bg: linear-gradient(90deg, hsl(var(--h) 90% 45% / 0.22), hsl(var(--h) 90% 55% / 0.22));
+  --menu-active-bg: linear-gradient(
+    90deg,
+    hsl(var(--h) 90% 45% / 0.22),
+    hsl(var(--h) 90% 55% / 0.22)
+  );
   --menu-active-border: hsl(var(--h) 90% 55% / 0.3);
   --menu-active-shadow: 0 0 20px hsl(var(--h) 90% 55% / 0.15);
   --menu-hover-bg: hsl(0 0% 100% / 0.05);
-  --profile-active-bg: linear-gradient(90deg, hsl(var(--h) 90% 45% / 0.2), hsl(var(--h) 90% 55% / 0.2));
+  --profile-active-bg: linear-gradient(
+    90deg,
+    hsl(var(--h) 90% 45% / 0.2),
+    hsl(var(--h) 90% 55% / 0.2)
+  );
   --profile-active-border: hsl(var(--h) 90% 55% / 0.25);
   --logout-color: hsl(0 100% 70);
   --logout-hover-bg: hsl(0 100% 50% / 0.15);
@@ -139,7 +172,7 @@
 
 [data-theme="light"] {
   --white-color: #fff;
-  
+
   --bg-primary: hsl(220 60% 97%);
   --bg-secondary: var(--white-color);
   --bg-tertiary: var(--white-color);
@@ -167,7 +200,7 @@
   --success-text: hsl(var(--h-s) 65% 24%);
   --warning: hsl(38 95% 52%);
   --warning-text: hsl(25 85% 31%);
-  
+
   --border-card: hsl(var(--h) 91% 60% / 0.18);
   --border-card-soft: hsl(var(--h) 91% 60% / 0.1);
   --border-table: hsl(213 94% 68% / 0.2);
@@ -181,21 +214,32 @@
   --bg-warning: hsl(38 95% 50% / 0.12);
   --bg-danger: hsl(var(--h-d) 85% 60% / 0.1);
 
-  --shadow-card: 0 12px 30px hsl(var(--h) 91% 60% / 0.1), 0 0 20px hsl(var(--h) 91% 60% / 0.08), inset 0 0 0 1px hsl(0 0% 100% / 0.75);
-  --shadow-table: 0 15px 35px hsl(var(--h) 91% 60% / 0.1), 0 0 15px hsl(var(--h) 91% 60% / 0.06), inset 0 0 0 1px hsl(0 0% 100% / 0.75);
+  --shadow-card:
+    0 12px 30px hsl(var(--h) 91% 60% / 0.1),
+    0 0 20px hsl(var(--h) 91% 60% / 0.08), inset 0 0 0 1px hsl(0 0% 100% / 0.75);
+  --shadow-table:
+    0 15px 35px hsl(var(--h) 91% 60% / 0.1),
+    0 0 15px hsl(var(--h) 91% 60% / 0.06), inset 0 0 0 1px hsl(0 0% 100% / 0.75);
   --shadow-header: 0 8px 18px hsl(var(--h) 91% 60% / 0.16);
   --shadow-success: 0 0 12px hsl(var(--h-s) 70% 45% / 0.18);
   --shadow-warning: 0 0 12px hsl(38 95% 50% / 0.18);
   --shadow-link: 0 0 8px hsl(var(--h) 83% 53% / 0.22);
 
-  --gradient-page: linear-gradient(135deg, var(--white-color) 0%, var(--bg-primary) 45%, hsl(213 95% 93%) 100%);
+  --gradient-page: linear-gradient(
+    135deg,
+    var(--white-color) 0%,
+    var(--bg-primary) 45%,
+    hsl(213 95% 93%) 100%
+  );
   --gradient-accent: var(--accent);
   --gradient-scroll: var(--accent);
   --gradient-table-header: var(--accent);
   --scroll-track: hsl(213 95% 78% / 0.5);
 
   --dialog-backdrop: hsl(var(--h) 83% 53% / 0.25);
-  --dialog-shadow: 0 15px 35px hsl(var(--h) 91% 60% / 0.12), 0 0 18px hsl(var(--h) 91% 60% / 0.1);
+  --dialog-shadow:
+    0 15px 35px hsl(var(--h) 91% 60% / 0.12),
+    0 0 18px hsl(var(--h) 91% 60% / 0.1);
   --text-glow: 0 0 10px hsl(var(--h) 83% 53% / 0.2);
 
   --success-glow-soft: hsl(var(--h-s) 70% 45% / 0.12);
@@ -223,12 +267,20 @@
   --toggle-border: hsl(var(--h) 91% 60% / 0.15);
   --toggle-shadow: 0 0 20px hsl(var(--h) 91% 60% / 0.35);
 
-  --menu-active-bg: linear-gradient(90deg, hsl(var(--h) 91% 60% / 0.18), hsl(213 95% 78% / 0.18));
+  --menu-active-bg: linear-gradient(
+    90deg,
+    hsl(var(--h) 91% 60% / 0.18),
+    hsl(213 95% 78% / 0.18)
+  );
   --menu-active-border: hsl(var(--h) 91% 60% / 0.22);
   --menu-active-shadow: 0 0 16px hsl(var(--h) 91% 60% / 0.14);
   --menu-hover-bg: hsl(var(--h) 91% 60% / 0.06);
 
-  --profile-active-bg: linear-gradient(90deg, hsl(var(--h) 91% 60% / 0.16), hsl(213 95% 78% / 0.16));
+  --profile-active-bg: linear-gradient(
+    90deg,
+    hsl(var(--h) 91% 60% / 0.16),
+    hsl(213 95% 78% / 0.16)
+  );
   --profile-active-border: hsl(var(--h) 91% 60% / 0.22);
   --logout-color: hsl(var(--h-d) 80% 50%);
   --logout-hover-bg: hsl(var(--h-d) 70% 56% / 0.12);
@@ -240,7 +292,7 @@
   --cancel-border: hsl(var(--h) 91% 60% / 0.15);
   --accent-soft: hsl(var(--h) 91% 60%);
   --success-color: hsl(var(--h-s) 75% 37%);
-  
+
   --night-color: var(--accent);
   --danger-text: hsl(var(--h-d) 80% 35%);
   --danger-shadow: 0 0 12px hsl(var(--h-d) 85% 60% / 0.12);
@@ -251,7 +303,11 @@
   display: flex;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 15% 15%, var(--bg-radial-purple), transparent 35%),
+    radial-gradient(
+      circle at 15% 15%,
+      var(--bg-radial-purple),
+      transparent 35%
+    ),
     radial-gradient(circle at 85% 10%, var(--bg-radial-blue), transparent 30%),
     radial-gradient(circle at 50% 100%, var(--bg-radial-cyan), transparent 45%),
     var(--gradient-page);
@@ -268,8 +324,16 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 30% 80%, var(--bg-radial-purple-soft), transparent 40%),
-    radial-gradient(circle at 80% 30%, var(--bg-radial-blue-soft), transparent 30%);
+    radial-gradient(
+      circle at 30% 80%,
+      var(--bg-radial-purple-soft),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      var(--bg-radial-blue-soft),
+      transparent 30%
+    );
 }
 .main-menu {
   position: relative;
@@ -295,31 +359,71 @@
   box-shadow: var(--shadow-card);
 }
 
-.close-dialog {
-  align-self: center;
-  justify-self: center;
-  padding: 25px;
-  border: 1px solid var(--border-card-soft);
-  border-radius: var(--radius-lg);
-  background: var(--bg-card-strong);
-  backdrop-filter: blur(25px);
-  color: var(--text-primary);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.45),
-    0 0 30px rgba(124, 92, 255, 0.2);
+.my-swal-popup {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border: 1px solid #1e40af !important;
+  border-radius: 16px !important;
 }
 
-.close-dialog h2 {
-  font-size: 1.6rem;
+.my-swal-title {
+  color: #ffffff !important;
 }
 
-.dialog-actions {
-  display: flex;
-  margin: auto;
-  justify-content: center;
+.my-swal-text {
+  color: #93c5fd !important;
+}
+.my-swal-icon {
+  border-color: #4361ee !important;
+  color: #4361ee !important;
 }
 
-dialog::backdrop {
-  background: var(--dialog-backdrop);
-  backdrop-filter: blur(4px);
+.my-swal-icon.swal2-icon.swal2-warning {
+  border-color: #4361ee !important;
+}
+
+.my-swal-icon .swal2-icon-content {
+  color: #4361ee !important;
+}
+.my-swal-confirm {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 10px 26px !important;
+  font-weight: bold !important;
+  font-size: 1em !important;
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: none !important;
+  transition: 0.2s !important;
+}
+
+.my-swal-confirm:hover {
+  background-color: #1d4ed8 !important;
+}
+
+.my-swal-confirm:focus {
+  box-shadow: 0 0 0 2px #60a5fa55 !important;
+}
+
+.my-swal-cancel {
+  background-color: #172554 !important;
+  color: #93c5fd !important;
+  border: 2px solid #2563eb !important;
+  border-radius: 12px !important;
+  padding: 9px 24px !important;
+  font-weight: bold !important;
+  font-size: 1em !important;
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: none !important;
+  transition: 0.2s !important;
+}
+
+.my-swal-cancel:hover {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.my-swal-cancel:focus {
+  box-shadow: 0 0 0 2px #60a5fa55 !important;
 }
