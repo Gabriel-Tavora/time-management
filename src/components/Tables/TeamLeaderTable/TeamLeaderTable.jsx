@@ -66,8 +66,32 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     setEndDate("");
   };
 
-  const closeDialog = () => {
-    confirmDialogRef.current?.close();
+  const { loading, handleConfirmAction } = useTeamLeaderTable({
+    onApprove: handleCloseMonth,
+  });
+
+  const handleOpenConfirm = async () => {
+    const result = await Swal.fire({
+      title: "Deseja aprovar o fechamento do mês?",
+      text: "Após confirmar, o período será enviado para aprovação.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aprovar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
+    });
+
+    if (result.isConfirmed) {
+      await handleConfirmAction();
+    }
   };
   async function handleApprove() {
     setLoading(true);

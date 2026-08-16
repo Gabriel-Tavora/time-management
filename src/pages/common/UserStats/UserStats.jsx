@@ -2,8 +2,17 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
+import Button from "../../../components/Layouts/Button/Button";
+//hooks
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
-import { useTheme } from "../../../hooks/useTheme";
+
+//context
+import { useTheme } from "../../../context/themeContext.jsx";
+
+//utils
+import { getAvatarUrl, getAvatarByUser } from "../../../utils/avatarUtils";
+
+//css
 import "./UserStats.css";
 import "../../../styles/global.css";
 import { FaKey, FaLock } from "react-icons/fa";
@@ -14,6 +23,8 @@ const UserStats = () => {
   const confirmDialogRef = useRef(null);
   const formDialogRef = useRef(null);
   const { theme, toggle, isDark } = useTheme();
+  const [avatarUrl, setAvatarUrl] = useState(() => getAvatarUrl({ seed: "guest" }));
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     email,
@@ -35,7 +46,14 @@ const UserStats = () => {
     onSuccess: () => navigate("/"),
   });
 
-  React.useEffect(() => cleanup, [cleanup]);
+  const handleEmailLoaded = (loadedEmail) => {
+    setEmail(loadedEmail);
+    if (loadedEmail) {
+      setAvatarUrl(getAvatarByUser({ email: loadedEmail }));
+    }
+  };
+
+  useEffect(() => cleanup, [cleanup]);
 
   const handleOpenConfirm = () => {
     confirmDialogRef.current?.showModal();
@@ -85,17 +103,18 @@ const UserStats = () => {
                 className={isDark ? "sun-button" : "moon-button"}
                 onClick={toggle}
                 aria-label="Alternar tema"
-              >
-                {isDark ? (
-                  <FiSun className="sun-icon" />
-                ) : (
-                  <FiMoon className="moon-icon" />
-                )}
-              </button>
+                buttonText={
+                  isDark ? (
+                    <FiMoon className="moon-icon" />
+                  ) : (
+                    <FiSun className="sun-icon" />
+                  )
+                }
+              />
             </div>
           </header>
 
-          <InfoCards onEmailLoaded={setEmail} />
+          <InfoCards onEmailLoaded={handleEmailLoaded} />
 
           <div className="profile-buttons">
             <button

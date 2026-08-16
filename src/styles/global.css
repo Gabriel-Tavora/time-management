@@ -294,3 +294,76 @@
   border: 1px solid var(--border-card);
   box-shadow: var(--shadow-card);
 }
+
+
+.my-swal-popup {
+  border-radius: 16px !important;
+  padding: 8px 8px 28px !important;
+  font-family: "Nunito", sans-serif !important;
+  background: #10182b !important;
+  border: 1px solid rgba(88, 130, 255, 0.35) !important;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(67, 97, 238, 0.2) !important;
+}
+
+.my-swal-title {
+  color: #ffffff !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  padding-top: 12px !important;
+}
+
+.my-swal-text {
+  color: #c7d0e6 !important;
+  font-size: 0.98rem !important;
+  line-height: 1.5 !important;
+}
+.my-swal-icon.swal2-icon.swal2-warning {
+  border-color: #4361ee !important;
+}
+
+.my-swal-icon .swal2-icon-content {
+  color: #4361ee !important;
+}
+
+.my-swal-confirm {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 10px 26px !important;
+  font-weight: bold !important;
+  font-size: 1em !important;
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: none !important;
+  transition: 0.2s !important;
+}
+
+.my-swal-confirm:hover {
+  background-color: #1d4ed8 !important;
+}
+
+.my-swal-confirm:focus {
+  box-shadow: 0 0 0 2px #60a5fa55 !important;
+}
+
+.my-swal-cancel {
+  background-color: #172554 !important;
+  color: #93c5fd !important;
+  border: 2px solid #2563eb !important;
+  border-radius: 12px !important;
+  padding: 9px 24px !important;
+  font-weight: bold !important;
+  font-size: 1em !important;
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: none !important;
+  transition: 0.2s !important;
+}
+
+.my-swal-cancel:hover {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.my-swal-cancel:focus {
+  box-shadow: 0 0 0 2px #60a5fa55 !important;
+}

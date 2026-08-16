@@ -1,58 +1,74 @@
-import React, { useState, useEffect } from "react";
-//compone
+import React, { useEffect, useState } from "react";
+
+// components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
-//css
+
+// css
 import "./Calendary.css";
-//utils
-import { calendaryGet } from '../../../utils/calendaryget';
-import { formatDate } from '../../../utils/formatHours';
+
+// utils
+import { calendaryGet } from "../../../utils/calendaryget";
+import { formatDate } from "../../../utils/formatHours";
+
 // services
-import { getUserHours } from '../../../services/overtimeData.js';
-//context
-import { useAuthValue } from "../../../context/TokenContext.jsx"
+import { getUserHours } from "../../../services/overtimeData.js";
+
+// context
+import { useAuthValue } from "../../../context/TokenContext.jsx";
 
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 const Calendary = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [userCurrentDate, setUserCurrentDate] = useState(null);
   const [workDates, setWorkDates] = useState(new Set());
   const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { token } = useAuthValue();
 
-  const {
-    year,
-    month,
-    firstDay,
-    daysInMonth,
-    today,
-  } = calendaryGet(currentDate);
-
-  const calendarDays = [];
+  const { year, month, firstDay, daysInMonth, today } =
+    calendaryGet(currentDate);
 
   useEffect(() => {
-    async function loadingData() {
+    let isMounted = true;
+
+    const loadingData = async () => {
+      setLoading(true);
       setErrorMessage(null);
 
       try {
         const userData = await getUserHours(token);
-        setUserCurrentDate(userData);
+
+        if (!isMounted) return;
 
         const dates = new Set(
-          userData.map((item) => formatDate(item.overtime_records.work_date))
+          userData
+            .map((item) => item?.overtime_record?.work_date)
+            .filter(Boolean)
+            .map(formatDate),
         );
 
         setWorkDates(dates);
       } catch (error) {
         console.error(error);
-        setErrorMessage(error?.message || "Erro ao carregar horas extras.");
+
+        if (isMounted) {
+          setErrorMessage(error?.message || "Erro ao carregar horas extras.");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-    }
+    };
 
     if (token) {
       loadingData();
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [token]);
 
   const previousMonth = () => {
@@ -63,13 +79,10 @@ const Calendary = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
 
-  for (let i = 0; i < firstDay; i++) {
-    calendarDays.push(null);
-  }
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    calendarDays.push(day);
-  }
+  const calendarDays = [
+    ...Array(firstDay).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
+  ];
 
   while (calendarDays.length < 42) {
     calendarDays.push(null);
@@ -79,9 +92,14 @@ const Calendary = () => {
     <div className="calendary-menu">
       <Sidebar />
 
-      <div className="calendary-page">
+      <main className="calendary-page">
         <header className="calendar-header">
-          <button type="button" className="month-btn" onClick={previousMonth}>
+          <button
+            type="button"
+            className="month-btn"
+            onClick={previousMonth}
+            aria-label="Mês anterior"
+          >
             ◀
           </button>
 
@@ -96,10 +114,17 @@ const Calendary = () => {
             </h2>
           </div>
 
-          <button type="button" className="month-btn" onClick={nextMonth}>
+          <button
+            type="button"
+            className="month-btn"
+            onClick={nextMonth}
+            aria-label="Próximo mês"
+          >
             ▶
           </button>
         </header>
+
+        {loading && <p className="form-message">Carregando horas extras...</p>}
 
         {errorMessage && (
           <p className="form-message error" role="alert">
@@ -115,13 +140,14 @@ const Calendary = () => {
 
         <div className="calendar-grid">
           {calendarDays.map((day, index) => {
-            if (!day) {
+            if (day === null) {
               return (
                 <button
-                  key={index}
+                  key={`empty-${index}`}
                   type="button"
                   className="day empty"
                   disabled
+                  aria-hidden="true"
                 />
               );
             }
@@ -133,6 +159,7 @@ const Calendary = () => {
 
             const currentDay = String(day).padStart(2, "0");
             const currentMonth = String(month + 1).padStart(2, "0");
+
             const buttonDate = `${currentDay}/${currentMonth}/${year}`;
 
             const hasOvertime = workDates.has(buttonDate);
@@ -146,13 +173,17 @@ const Calendary = () => {
               .join(" ");
 
             return (
-              <button key={index} type="button" className={classNames}>
+              <button
+                key={`${year}-${month}-${day}`}
+                type="button"
+                className={classNames}
+              >
                 {day}
               </button>
             );
           })}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

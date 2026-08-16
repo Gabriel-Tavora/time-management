@@ -21,6 +21,7 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   const [dialogMode, setDialogMode] = useState(null); // "approve" | "rejected" | null
   const [errorMessage, setErrorMessage] = useState(null);
   const {
+<<<<<<< Updated upstream
     items,
     currentItem,
     currentIndex,
@@ -65,6 +66,33 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
     dialog.addEventListener("close", handleNativeClose);
     return () => dialog.removeEventListener("close", handleNativeClose);
   }, []);
+=======
+    loading,
+    handleConfirmAction,
+  } = useCoordinatorTable({
+    onApprove: Approval,
+    onReject: Rejected,
+  });
+  const handleOpenConfirm = async (mode) => {
+    const isApprove = mode === "approve";
+    const result = await Swal.fire({
+      title: isApprove
+        ? "Deseja aprovar o fechamento do mês?"
+        : "Deseja rejeitar o fechamento?",
+      text: isApprove
+        ? "Após confirmar, o período será encerrado."
+        : "Os dados serão devolvidos para correção.",
+
+      icon: isApprove ? "warning" : "question",
+      showCancelButton: true,
+      confirmButtonText: isApprove
+        ? "Aprovar"
+        : "Rejeitar",
+
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+    });
+>>>>>>> Stashed changes
 
   const openDialog = useCallback((mode) => {
     setDialogMode(mode);
