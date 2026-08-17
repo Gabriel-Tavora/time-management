@@ -258,3 +258,30 @@ Filter
   border-color: var(--input-border-focus);
   box-shadow: var(--input-focus-shadow);
 }
+/* table edit*/
+.last-column {
+  position: relative;
+  overflow: hidden;
+}
+
+.table-edit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-accent);
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition:
+    transform 0.35s ease,
+    opacity 0.25s ease;
+}
+
+.table-edit.active {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}

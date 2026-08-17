@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 //components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
@@ -22,13 +22,13 @@ import { FiSun, FiMoon } from "react-icons/fi";
 
 const UserStats = () => {
   const navigate = useNavigate();
-  const confirmDialogRef = useRef(null);
   const formDialogRef = useRef(null);
-  const { theme, toggle, isDark } = useTheme();
+  const { toggle, isDark } = useTheme();
   const [avatarUrl, setAvatarUrl] = useState(() =>
     getAvatarUrl({ seed: "guest" }),
   );
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     email,
@@ -58,21 +58,7 @@ const UserStats = () => {
       setAvatarUrl(getAvatarByUser({ email: loadedEmail }));
     }
   };
-  const handleOpenConfirm = () => {
-    confirmDialogRef.current?.showModal();
-  };
 
-  const handleCancelConfirm = () => {
-    confirmDialogRef.current?.close();
-  };
-
-  const handleConfirmSendCode = async () => {
-    const result = await sendCode();
-    if (result.success) {
-      confirmDialogRef.current?.close();
-      formDialogRef.current?.showModal();
-    }
-  };
 
   const handleCancelForm = () => {
     formDialogRef.current?.close();
@@ -82,6 +68,51 @@ const UserStats = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await submitPassword(code, password);
+  };
+
+  const handleOpenConfirm = async () => {
+    const result = await Swal.fire({
+      title: "Alterar senha",
+      text: `Um código será enviado para ${email}. Deseja continuar?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Enviar código",
+      cancelButtonText: "Cancelar",
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      preConfirm: async () => {
+        try {
+          const response = await sendCode();
+
+          if (!response?.success) {
+            Swal.showValidationMessage(
+              response?.message || "Não foi possível enviar o código.",
+            );
+
+            return false;
+          }
+          return response;
+        } catch (error) {
+          Swal.showValidationMessage(
+            error?.message || "Erro ao enviar código.",
+          );
+          return false;
+        }
+      },
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
+    });
+
+    if (result.isConfirmed && result.value?.success) {
+      formDialogRef.current?.showModal();
+    }
   };
 
   return (
@@ -126,50 +157,26 @@ const UserStats = () => {
           <div className="profile-buttons">
             <Button
               className="btn btn-medium"
-              onClick={handleOpenConfirm}
+
               disabled={!email}
               buttonText="Alterar Dados"
             />
             <Button
               className="btn btn-medium"
               onClick={handleOpenConfirm}
-              disabled={!email}
+              // disabled={!email}
               buttonText="Alterar Senha"
             />
           </div>
 
-          {/* Dialog 1: confirmação */}
-          <dialog ref={confirmDialogRef} className="close-dialog">
-            <h2>Alterar senha</h2>
-            <p>
-              Um código será enviado para <strong>{email}</strong> Deseja
-              continuar?
-            </p>
-            {message && (
-              <p className={`form-message ${message.type}`}>{message.text}</p>
-            )}
-            <div className="dialog-actions">
-              <Button
-                className="rejected-btn"
-                onClick={handleCancelConfirm}
-                disabled={loading}
-                buttonText="Cancelar"
-              />
-              <Button
-                className="approved-btn"
-                onClick={handleConfirmSendCode}
-                disabled={loading}
-                buttonText={loading ? "Enviando..." : "Enviar código"}
-              />
-            </div>
-          </dialog>
-
           {/* Dialog 2: código + nova senha */}
           <dialog ref={formDialogRef} className="close-dialog">
             <h2>Confirme o código e defina a nova senha</h2>
+
             <form onSubmit={handleSubmit}>
-              <div className="input-group">
+              <div className="input-insert">
                 <FaKey className="input-icon" />
+
                 <input
                   type="text"
                   placeholder="Digite o código"
@@ -179,10 +186,12 @@ const UserStats = () => {
                   required
                 />
               </div>
-              <div className="input-group">
+
+              <div className="input-insert">
                 <FaLock className="input-icon" />
+
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Nova senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -190,17 +199,23 @@ const UserStats = () => {
                   required
                   minLength={8}
                 />
+
                 <span
                   className="password-toggle"
                   onClick={() => setShowPassword((prev) => !prev)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              <div className="input-group">
+
+              <div className="input-insert">
                 <FaLock className="input-icon" />
+
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirme a senha"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -208,16 +223,30 @@ const UserStats = () => {
                   required
                   minLength={8}
                 />
+
                 <span
                   className="password-toggle"
-                  onClick={() => setShowPassword((prev) => !prev)}
+                  onClick={() =>
+                    setShowConfirmPassword((prev) => !prev)
+                  }
+                  role="button"
+                  tabIndex={0}
+                  aria-label={
+                    showConfirmPassword
+                      ? "Ocultar confirmação da senha"
+                      : "Mostrar confirmação da senha"
+                  }
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
+
               {message && (
-                <p className={`form-message ${message.type}`}>{message.text}</p>
+                <p className={`form-message ${message.type}`}>
+                  {message.text}
+                </p>
               )}
+
               <div className="dialog-actions">
                 <Button
                   type="button"
@@ -226,6 +255,7 @@ const UserStats = () => {
                   disabled={loading}
                   buttonText="Cancelar"
                 />
+
                 <Button
                   type="submit"
                   className="approved-btn"

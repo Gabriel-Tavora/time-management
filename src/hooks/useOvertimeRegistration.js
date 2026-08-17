@@ -60,8 +60,9 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
 
     try {
       const { monthStart, monthEnd } = getCurrentDate();
-
+      const type = 1;
       const validationError = validateOvertime({
+        type,
         endTime,
         endDate,
         startTime,

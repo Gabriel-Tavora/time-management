@@ -146,3 +146,67 @@ export async function createOvertime(token, overtimeData) {
 
   return data;
 }
+// edita hora extra já existente 
+
+export async function editOvertime(
+  token,
+  idOvertime,
+  overtimeData
+) {
+  if (!token) {
+    throw {
+      status: 401,
+      message: "Usuário não autenticado.",
+    };
+  }
+
+  if (!idOvertime) {
+    throw {
+      status: 400,
+      message: "ID da hora extra não informado.",
+    };
+  }
+
+  const data = Object.fromEntries(
+    Object.entries(overtimeData || {}).filter(
+      ([_, value]) =>
+        value !== undefined &&
+        value !== null &&
+        String(value).trim() !== ""
+    )
+  );
+ console.log(data)
+  const response = await fetch(
+    `${API_URL}/overtime/${idOvertime}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  let result = null;
+
+  try {
+    result = await response.json();
+  } catch {
+    result = {
+      message: "Erro inesperado.",
+    };
+  }
+
+  if (!response.ok) {
+    throw {
+      status: response.status,
+      message:
+        result?.message ||
+        result?.error ||
+        "Erro ao editar hora extra.",
+    };
+  }
+
+  return result;
+}

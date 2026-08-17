@@ -1,5 +1,5 @@
 // React
-import {  Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -25,6 +25,9 @@ const ForgotPassword = lazy(() =>
 const UserScreen = lazy(() => import("./pages/user/UserScreen.jsx"));
 const RegisterHours = lazy(() =>
   import("./pages/common/RegisterHours/RegisterHours.jsx")
+);
+const EditHours = lazy(() =>
+  import("./pages/common/EditHours/EditHours.jsx")
 );
 const UserStats = lazy(() =>
   import("./pages/common/UserStats/UserStats.jsx")
@@ -53,6 +56,7 @@ const router = createBrowserRouter([
   { path: "/ForgotPassword", element: <ForgotPassword /> },
   { path: "/userscreen", element: <UserScreen /> },
   { path: "/registerhours", element: <RegisterHours /> },
+  { path: "/EditHours", element: <EditHours /> },
   { path: "/UserStats", element: <UserStats /> },
   { path: "/calendary", element: <Calendary /> },
   { path: "/Teamleader", element: <Teamleader /> },
@@ -63,13 +67,13 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-    <HelmetProvider>
-      <AuthProvider>
-        <ThemeProvider> {/* <-- envolve tudo */}
-          <Suspense fallback={<div>Carregando...</div>}>
-            <RouterProvider router={router} />
-          </Suspense>
-        </ThemeProvider>
-      </AuthProvider>
-    </HelmetProvider>
+  <HelmetProvider>
+    <AuthProvider>
+      <ThemeProvider> {/* <-- envolve tudo */}
+        <Suspense fallback={<div>Carregando...</div>}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </ThemeProvider>
+    </AuthProvider>
+  </HelmetProvider>
 );

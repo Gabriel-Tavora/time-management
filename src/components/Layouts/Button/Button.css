@@ -135,3 +135,70 @@
 .rejected-btn:active {
   transform: scale(.95);
 }
+
+/* botão tabelas */
+
+.table-action-cell {
+  position: relative;
+  width: 0;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.table-edit {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 0;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  background: var(--gradient-accent);
+
+  transform: translateX(100%);
+
+  transition:
+    width 0.35s ease,
+    transform 0.35s ease,
+    opacity 0.25s ease;
+
+  z-index: 20;
+}
+
+.table-edit.active {
+  width: 100%;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.btn-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--white-color);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+    font-size: 1.4em;
+}
+
+.btn-table:active:not(:disabled) {
+  transform: scale(0.8);
+}

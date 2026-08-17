@@ -37,6 +37,7 @@ function normalizeToDate(value, fallbackTime = "00:00") {
 }
 
 export function validateOvertime({
+  type,
   endTime,
   endDate,
   startTime,
@@ -95,15 +96,19 @@ export function validateOvertime({
     return Messages.OUTSIDE_PERIOD;
   }
 
-  if (!jiraTask.trim()) {
-    return Messages.REQUIRED_JIRA;
-  }
+  if (type === 1) {
+    if (!jiraTask?.trim()) {
+      return Messages.REQUIRED_JIRA;
+    }
 
-  const normalizedJira = jiraTask.trim().toUpperCase();
-  const jiraRegex = /^[A-Z]+-\d+$/;
+    const normalizedJira =
+      jiraTask.trim().toUpperCase();
 
-  if (!jiraRegex.test(normalizedJira)) {
-    return Messages.INVALID_JIRA;
+    const jiraRegex = /^[A-Z]+-\d+$/;
+
+    if (!jiraRegex.test(normalizedJira)) {
+      return Messages.INVALID_JIRA;
+    }
   }
 
   return null;

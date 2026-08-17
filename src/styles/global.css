@@ -87,25 +87,19 @@
   --shadow-link: 0 0 12px hsl(var(--h) 90% 55% / 0.45);
 
   /* === GRADIENTS === */
-  --gradient-page: linear-gradient(
-    135deg,
-    var(--bg-primary) 0%,
-    var(--bg-secondary) 35%,
-    var(--bg-tertiary) 100%
-  );
-  --gradient-accent: linear-gradient(
-    90deg,
-    hsl(var(--h) 90% 45%),
-    var(--accent)
-  );
+  --gradient-page: linear-gradient(135deg,
+      var(--bg-primary) 0%,
+      var(--bg-secondary) 35%,
+      var(--bg-tertiary) 100%);
+  --gradient-accent: linear-gradient(90deg,
+      hsl(var(--h) 90% 45%),
+      var(--accent));
   --gradient-success: linear-gradient(90deg, var(--ok-dim), var(--ok));
   --gradient-danger: linear-gradient(90deg, var(--bad), var(--bad-dim));
   --gradient-scroll: linear-gradient(hsl(var(--h) 90% 45%), var(--accent));
-  --gradient-table-header: linear-gradient(
-    0deg,
-    hsl(var(--h) 90% 45%),
-    var(--accent)
-  );
+  --gradient-table-header: linear-gradient(0deg,
+      hsl(var(--h) 90% 45%),
+      var(--accent));
 
   /* === SCROLLBAR === */
   --scroll-track: hsl(0 0% 100% / 0.03);
@@ -141,19 +135,15 @@
   --toggle-bg: hsl(0 0% 100% / 0.04);
   --toggle-border: hsl(0 0% 100% / 0.08);
   --toggle-shadow: 0 0 20px hsl(var(--h) 90% 55% / 0.35);
-  --menu-active-bg: linear-gradient(
-    90deg,
-    hsl(var(--h) 90% 45% / 0.22),
-    hsl(var(--h) 90% 55% / 0.22)
-  );
+  --menu-active-bg: linear-gradient(90deg,
+      hsl(var(--h) 90% 45% / 0.22),
+      hsl(var(--h) 90% 55% / 0.22));
   --menu-active-border: hsl(var(--h) 90% 55% / 0.3);
   --menu-active-shadow: 0 0 20px hsl(var(--h) 90% 55% / 0.15);
   --menu-hover-bg: hsl(0 0% 100% / 0.05);
-  --profile-active-bg: linear-gradient(
-    90deg,
-    hsl(var(--h) 90% 45% / 0.2),
-    hsl(var(--h) 90% 55% / 0.2)
-  );
+  --profile-active-bg: linear-gradient(90deg,
+      hsl(var(--h) 90% 45% / 0.2),
+      hsl(var(--h) 90% 55% / 0.2));
   --profile-active-border: hsl(var(--h) 90% 55% / 0.25);
   --logout-color: hsl(0 100% 70);
   --logout-hover-bg: hsl(0 100% 50% / 0.15);
@@ -225,12 +215,10 @@
   --shadow-warning: 0 0 12px hsl(38 95% 50% / 0.18);
   --shadow-link: 0 0 8px hsl(var(--h) 83% 53% / 0.22);
 
-  --gradient-page: linear-gradient(
-    135deg,
-    var(--white-color) 0%,
-    var(--bg-primary) 45%,
-    hsl(213 95% 93%) 100%
-  );
+  --gradient-page: linear-gradient(135deg,
+      var(--white-color) 0%,
+      var(--bg-primary) 45%,
+      hsl(213 95% 93%) 100%);
   --gradient-accent: var(--accent);
   --gradient-scroll: var(--accent);
   --gradient-table-header: var(--accent);
@@ -267,20 +255,16 @@
   --toggle-border: hsl(var(--h) 91% 60% / 0.15);
   --toggle-shadow: 0 0 20px hsl(var(--h) 91% 60% / 0.35);
 
-  --menu-active-bg: linear-gradient(
-    90deg,
-    hsl(var(--h) 91% 60% / 0.18),
-    hsl(213 95% 78% / 0.18)
-  );
+  --menu-active-bg: linear-gradient(90deg,
+      hsl(var(--h) 91% 60% / 0.18),
+      hsl(213 95% 78% / 0.18));
   --menu-active-border: hsl(var(--h) 91% 60% / 0.22);
   --menu-active-shadow: 0 0 16px hsl(var(--h) 91% 60% / 0.14);
   --menu-hover-bg: hsl(var(--h) 91% 60% / 0.06);
 
-  --profile-active-bg: linear-gradient(
-    90deg,
-    hsl(var(--h) 91% 60% / 0.16),
-    hsl(213 95% 78% / 0.16)
-  );
+  --profile-active-bg: linear-gradient(90deg,
+      hsl(var(--h) 91% 60% / 0.16),
+      hsl(213 95% 78% / 0.16));
   --profile-active-border: hsl(var(--h) 91% 60% / 0.22);
   --logout-color: hsl(var(--h-d) 80% 50%);
   --logout-hover-bg: hsl(var(--h-d) 70% 56% / 0.12);
@@ -303,38 +287,35 @@
   display: flex;
   min-height: 100vh;
   background:
-    radial-gradient(
-      circle at 15% 15%,
+    radial-gradient(circle at 15% 15%,
       var(--bg-radial-purple),
-      transparent 35%
-    ),
+      transparent 35%),
     radial-gradient(circle at 85% 10%, var(--bg-radial-blue), transparent 30%),
     radial-gradient(circle at 50% 100%, var(--bg-radial-cyan), transparent 45%),
     var(--gradient-page);
 }
+
 .main-informations {
   position: relative;
   flex: 1;
   min-height: 100vh;
   overflow: hidden;
 }
+
 .main-informations::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 30% 80%,
+    radial-gradient(circle at 30% 80%,
       var(--bg-radial-purple-soft),
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 80% 30%,
+      transparent 40%),
+    radial-gradient(circle at 80% 30%,
       var(--bg-radial-blue-soft),
-      transparent 30%
-    );
+      transparent 30%);
 }
+
 .main-menu {
   position: relative;
   z-index: 2;
@@ -343,6 +324,7 @@
   list-style: none;
   margin-bottom: 60px;
 }
+
 .main-menu li {
   display: flex;
   flex-direction: column;
@@ -373,6 +355,7 @@
 .my-swal-text {
   color: #93c5fd !important;
 }
+
 .my-swal-icon {
   border-color: #4361ee !important;
   color: #4361ee !important;
@@ -385,6 +368,7 @@
 .my-swal-icon .swal2-icon-content {
   color: #4361ee !important;
 }
+
 .my-swal-confirm {
   background-color: #2563eb !important;
   color: #ffffff !important;
@@ -426,4 +410,33 @@
 
 .my-swal-cancel:focus {
   box-shadow: 0 0 0 2px #60a5fa55 !important;
+}
+
+.close-dialog {
+  align-self: center;
+  justify-self: center;
+  padding: 25px;
+  border: 1px solid var(--border-card-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-strong);
+  backdrop-filter: blur(25px);
+  color: var(--text-primary);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(124, 92, 255, 0.2);
+}
+
+.close-dialog h2 {
+  font-size: 1.6rem;
+}
+
+.dialog-actions {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+dialog::backdrop {
+  background: var(--dialog-backdrop);
+  backdrop-filter: blur(4px);
 }

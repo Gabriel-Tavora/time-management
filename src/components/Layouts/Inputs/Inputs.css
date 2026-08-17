@@ -53,3 +53,163 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
   cursor: pointer;
 }
+
+.input-insert {
+  position: relative;
+  width: 100%;
+  max-width: 373px;
+  margin-bottom: 16px;
+}
+
+.input-insert input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  padding: 0 50px 0 55px;
+
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.55);
+  color: #1f2937;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  outline: none;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.input-insert input::placeholder {
+  color: #404f65;
+  opacity: 0.85;
+}
+
+.input-insert input:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.45);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.input-insert input:focus {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1),
+    0 0 18px rgba(37, 99, 235, 0.18);
+}
+
+.input-insert input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Ícone esquerdo */
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+
+  z-index: 2;
+
+  width: 20px;
+  height: 20px;
+
+  transform: translateY(-50%);
+
+  color: #2563eb;
+
+  pointer-events: none;
+
+  transition: color 0.3s ease;
+}
+
+.input-group:focus-within .input-icon {
+  color: #1d4ed8;
+}
+
+/* Botão mostrar/ocultar senha */
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  transform: translateY(-50%);
+
+  border-radius: 8px;
+
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.password-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Remove os controles nativos de senha */
+.input-group input[type="password"]::-ms-reveal,
+.input-group input[type="password"]::-ms-clear,
+.input-group input[type="password"]::-webkit-password-reveal {
+  display: none;
+}
+
+/* Autofill do Chrome */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #211f37;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .input-group {
+    max-width: 100%;
+  }
+
+  .input-group input {
+    height: 56px;
+    border-radius: 16px;
+    font-size: 15px;
+  }
+
+  .input-icon {
+    left: 17px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .password-toggle {
+    right: 15px;
+  }
+}

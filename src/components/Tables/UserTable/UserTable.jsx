@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from "react";
 //css
 import "../tables.css";
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
 //Utils
 import { formatHours, formatDate, formatTime } from "../../../utils/formatHours.js";
-import { getOvertimeSummary } from "../../../utils/overtimeSummary.js";
 //router-dom
 import { useNavigate } from "react-router-dom";
 //hooks
@@ -18,6 +17,24 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     navigate(path);
   };
 
+  const handleEditHours = (editTime, path) => {
+    const record = filteredData?.find(
+      (item) => item.overtime_records.id === editTime
+    );
+
+    if (!record) {
+      console.log("Hora extra não encontrada");
+      return;
+    }
+
+    navigate(path, {
+      state: {
+        overtime: record.overtime_records,
+      },
+    });
+  };
+
+  const [editTime, setEditTime] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -40,11 +57,6 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     });
   }, [data, startDate, endDate, isFilterActive]);
 
-  const summary = useMemo(
-    () => getOvertimeSummary(filteredData),
-    [filteredData]
-  );
-
   const handleClearFilter = () => {
     setStartDate("");
     setEndDate("");
@@ -52,8 +64,8 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   return (
     <div className="table-page table ">
       <div>
-        <h2 className="title-h2">Histórico de Horas Extras</h2>
 
+        <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
@@ -128,6 +140,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                 <th>Horas Totais</th>
                 <th>50%</th>
                 <th>100%</th>
+                <th className="table-action-header"></th>
               </tr>
             </thead>
 
@@ -142,14 +155,18 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                 </tr>
               ) : (
                 filteredData?.map((register) => {
-                  const totalHours = register.overtime_records.total_hours ?? 0;
-                  const nightHours = register.overtime_records.nigth_hours ?? 0;
                   const startTime = register.overtime_records.start_time;
                   const endTime = register.overtime_records.end_time;
+                  const totalHours = register.overtime_records.total_hours ?? 0;
+                  const nightHours = register.overtime_records.nigth_hours ?? 0;
                   const type = register.hours_by_type;
+
                   return (
-                    <tr key={register.overtime_records.id}>
-                      <td>{formatDate(startTime)}</td>
+                    <tr
+                      key={register.overtime_records.id}
+                      onClick={() => setEditTime(register.overtime_records.id)}
+                    >
+                      <td >{formatDate(startTime)}</td>
                       <td>{formatDate(endTime)}</td>
                       <td>{formatTime(startTime)}</td>
                       <td>{formatTime(endTime)}</td>
@@ -158,8 +175,24 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                       <td>
                         <span className="status pending">{formatHours(type["1"])}</span>
                       </td>
-                      <td>
-                        <span className="status approved">{formatHours(type["2"])}</span>
+                      <td className="last-column">
+                        <span className="status approved">
+                          {formatHours(type["2"])}
+                        </span>
+                        <div
+                          className={`table-edit ${editTime === register.overtime_records.id ? "active" : ""
+                            }`}
+                        >
+                          <Button
+                            className="btn-table"
+                            type="button"
+                            icon={FaEdit}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditHours(register.overtime_records.id, "/EditHours");
+                            }}
+                          />
+                        </div>
                       </td>
                     </tr>
                   );
