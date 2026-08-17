@@ -28,15 +28,30 @@ export const useTeamLeaderTable = ({ onApprove }) => {
         text: "O período foi enviado para aprovação.",
         icon: "success",
         confirmButtonText: "Fechar",
+        customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
       });
     } catch (error) {
       console.error(error);
 
       await Swal.fire({
         title: "Erro ao fechar o mês",
-        text: error?.message || "Não foi possível fechar o mês. Tente novamente.",
+        text:
+          error?.message || "Não foi possível fechar o mês. Tente novamente.",
         icon: "error",
         confirmButtonText: "Fechar",
+        customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
       });
     } finally {
       setLoading(false);
