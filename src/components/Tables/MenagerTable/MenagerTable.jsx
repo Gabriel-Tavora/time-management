@@ -163,10 +163,8 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
                 records.map((record) => {
                   const totalHours = record.total_hours ?? 0;
                   const nightHours = record.nigth_hours ?? 0;
-
                   const startTime = record.start_time;
                   const endTime = record.end_time;
-
                   const type = record.hours_by_type ?? {};
 
                   return (

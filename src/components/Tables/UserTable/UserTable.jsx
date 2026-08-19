@@ -147,7 +147,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
             <tbody>
               {filteredData && filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="empty-state">
+                  <td colSpan={9} className="empty-state">
                     {isFilterActive
                       ? "Nenhum registro encontrado no período selecionado."
                       : "Nenhum registro encontrado."}

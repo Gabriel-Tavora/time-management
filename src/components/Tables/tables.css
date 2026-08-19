@@ -7,7 +7,6 @@
   max-width: 80rem;
 }
 
-
 .table-page {
   display: grid;
   gap: 3rem;
@@ -71,7 +70,6 @@
   border-radius: 20px;
 }
 
-
 .app-table {
   width: 100%;
   border-collapse: separate;
@@ -88,7 +86,7 @@
   background: var(--gradient-table-header);
   color: var(--white-color);
   text-align: center;
-  font-size: .95rem;
+  font-size: 0.95rem;
   font-weight: 700;
   backdrop-filter: blur(20px);
   box-shadow: var(--shadow-header);
@@ -106,14 +104,18 @@
   padding: 14px 23px;
   color: var(--text-primary);
   text-align: center;
-  font-size: .95rem;
+  font-size: 0.95rem;
   border: 1px solid var(--border-table);
   background: var(--bg-glass);
-  transition: background .3s, color .3s;
+  transition:
+    background 0.3s,
+    color 0.3s;
 }
 
 .app-table tbody tr {
-  transition: transform .3s, background .3s;
+  transition:
+    transform 0.3s,
+    background 0.3s;
 }
 
 .app-table tbody tr:hover {
@@ -129,7 +131,7 @@
   color: var(--text-link);
   font-weight: 600;
   text-decoration: none;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .table-page a:hover {
@@ -144,11 +146,13 @@
   min-width: 50px;
   padding: 8px 18px;
   border-radius: var(--radius-pill);
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 700;
   border: 1px solid;
   backdrop-filter: blur(10px);
-  transition: transform .3s, box-shadow .3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .pending {
@@ -164,7 +168,6 @@
   border-color: var(--border-success);
   box-shadow: var(--shadow-success);
 }
-
 
 /* 
 MENU - TABLE
@@ -271,17 +274,38 @@ Filter
   align-items: center;
   justify-content: center;
   background: var(--gradient-accent);
-  transform: translateX(100%);
+  border-radius: inherit;
+
   opacity: 0;
+  visibility: hidden;
+  transform: translateX(100%);
   pointer-events: none;
-  z-index: 10;
+
+  z-index: 1;
+  will-change: transform, opacity;
   transition:
     transform 0.35s ease,
-    opacity 0.25s ease;
+    opacity 0.25s ease,
+    visibility 0s linear 0.35s;
 }
 
 .table-edit.active {
-  transform: translateX(0);
   opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
   pointer-events: auto;
+  transition:
+    transform 0.35s ease,
+    opacity 0.25s ease,
+    visibility 0s linear 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .table-edit {
+    transition: opacity 0.15s ease, visibility 0s linear 0.15s;
+    transform: none;
+  }
+  .table-edit.active {
+    transition: opacity 0.15s ease;
+  }
 }
