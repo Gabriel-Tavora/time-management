@@ -50,4 +50,10 @@ export const Messages = {
 
   UNKNOWN:
     "Algo deu errado. Tente novamente ou entre em contato com o suporte se o problema persistir.",
+
+  MISSING_OVERTIME_ID: "Não foi possível identificar a hora extra.",
+
+  NO_CHANGES: "Nenhuma alteração foi realizada.",
+
+  EDIT_SUCCESS: "Hora extra editada com sucesso.",
 };

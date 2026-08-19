@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import {
-  getUserHours,
-  editOvertime,
-} from "../services/overtimeData.js";
+import { getUserHours, editOvertime } from "../services/overtimeData.js";
 
 import { getCurrentDate } from "../utils/formatHours.js";
 
@@ -22,12 +19,9 @@ import {
 
 import { Messages } from "../utils/message.js";
 
-export function useOvertimeEdit({
-  token,
-  form,
-  overtime,
-  clearForm,
-}) {
+const MESSAGE_DURATION_MS = 4000;
+
+export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
   const {
     overtimeId,
     endTime,
@@ -39,10 +33,12 @@ export function useOvertimeEdit({
   } = form;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [message, setMessage] = useState(null);
 
   const submittingRef = useRef(false);
   const messageTimeoutRef = useRef(null);
+  const successTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
 
   useEffect(() => {
@@ -51,6 +47,9 @@ export function useOvertimeEdit({
 
       if (messageTimeoutRef.current) {
         clearTimeout(messageTimeoutRef.current);
+      }
+      if (successTimeoutRef.current) {
+        clearTimeout(successTimeoutRef.current);
       }
     };
   }, []);
@@ -62,54 +61,34 @@ export function useOvertimeEdit({
       clearTimeout(messageTimeoutRef.current);
     }
 
-    setMessage({
-      type,
-      text,
-    });
+    setMessage({ type, text });
 
     messageTimeoutRef.current = setTimeout(() => {
       if (isMountedRef.current) {
         setMessage(null);
       }
-
       messageTimeoutRef.current = null;
-    }, 4000);
+    }, MESSAGE_DURATION_MS);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (submittingRef.current) return;
+    if (submittingRef.current || isRedirecting) return;
 
     submittingRef.current = true;
     setIsSubmitting(true);
     setMessage(null);
 
     try {
-      /*
-       * Verifica ID
-       */
       if (!overtimeId) {
-        showMessage(
-          "error",
-          "Não foi possível identificar a hora extra."
-        );
-
+        showMessage("error", Messages.MISSING_OVERTIME_ID);
         return;
       }
 
-      /*
-       * Validação
-       *
-       * type 2 = edição.
-       * Jira não é obrigatório.
-       */
       const { monthStart, monthEnd } = getCurrentDate();
 
-      const type = 2;
-
       const validationError = validateOvertime({
-        type,
         endTime,
         endDate,
         startTime,
@@ -117,6 +96,7 @@ export function useOvertimeEdit({
         jiraTask,
         monthStart,
         monthEnd,
+        requireJira: false,
       });
 
       if (validationError) {
@@ -124,291 +104,121 @@ export function useOvertimeEdit({
         return;
       }
 
-      /*
-       * Combina data + horário
-       */
-      const startDateTime = combineDateTime(
-        startDate,
-        startTime
-      );
-
-      const endDateTime = combineDateTime(
-        endDate,
-        endTime
-      );
-
-      /*
-       * Busca registros existentes
-       */
+      const startDateTime = combineDateTime(startDate, startTime);
+      const endDateTime = combineDateTime(endDate, endTime);
       const records = await getUserHours(token);
 
       if (records) {
         const relevantRecords = records
           .map((record) => record.overtime_records)
           .filter(Boolean)
-          .filter(
-            (record) =>
-              String(record.id) !== String(overtimeId)
-          )
+          .filter((record) => String(record.id) !== String(overtimeId))
           .filter((record) => {
-            const workDate =
-              record.work_date?.slice(0, 10);
-
-            return (
-              workDate === startDate ||
-              workDate === endDate
-            );
+            const workDate = record.work_date?.slice(0, 10);
+            return workDate === startDate || workDate === endDate;
           });
 
-        /*
-         * Verifica duplicidade
-         */
-        if (
-          isDuplicate(
-            relevantRecords,
-            startDateTime,
-            endDateTime
-          )
-        ) {
-          showMessage(
-            "error",
-            Messages.DUPLICATED
-          );
-
+        if (isDuplicate(relevantRecords, startDateTime, endDateTime)) {
+          showMessage("error", Messages.DUPLICATED);
           return;
         }
 
-        /*
-         * Verifica conflito
-         */
-        if (
-          hasTimeConflict(
-            relevantRecords,
-            startDateTime,
-            endDateTime
-          )
-        ) {
-          showMessage(
-            "error",
-            Messages.OVERLAP
-          );
-
+        if (hasTimeConflict(relevantRecords, startDateTime, endDateTime)) {
+          showMessage("error", Messages.OVERLAP);
           return;
         }
       }
 
-      /*
-       * ==================================================
-       * VALORES ORIGINAIS
-       * ==================================================
-       */
-
-      const originalStartTime =
-        formatTimeForInput(
-          overtime.start_time
-        );
-
-      const originalEndTime =
-        formatTimeForInput(
-          overtime.end_time
-        );
-
-      const originalStartDate =
-        formatDateForInput(
-          overtime.start_time
-        );
-
-      const originalEndDate =
-        formatDateForInput(
-          overtime.end_time
-        );
-
-      const originalJira =
-        overtime.jira_task_identifier || "";
-
-      const originalObservation =
-        overtime.observation || "";
-
-      /*
-       * ==================================================
-       * PAYLOAD SOMENTE COM CAMPOS ALTERADOS
-       * ==================================================
-       */
+      const originalStartTime = formatTimeForInput(overtime.start_time);
+      const originalEndTime = formatTimeForInput(overtime.end_time);
+      const originalStartDate = formatDateForInput(overtime.start_time);
+      const originalEndDate = formatDateForInput(overtime.end_time);
+      const originalJira = overtime.jira_task_identifier || "";
+      const originalObservation = overtime.observation || "";
 
       const overtimeData = {};
 
-      /*
-       * Data inicial
-       */
       if (startDate !== originalStartDate) {
         overtimeData.work_date = startDate;
       }
 
-      /*
-       * Horário inicial
-       */
-      if (
-        startDate !== originalStartDate ||
-        startTime !== originalStartTime
-      ) {
-        overtimeData.start_time =
-          buildIsoDateTime(
-            startDate,
-            startTime
-          );
+      if (startDate !== originalStartDate || startTime !== originalStartTime) {
+        overtimeData.start_time = buildIsoDateTime(startDate, startTime);
       }
 
-      /*
-       * Horário final
-       *
-       * A data também é comparada porque horário
-       * noturno pode mudar o dia.
-       */
-      if (
-        endDate !== originalEndDate ||
-        endTime !== originalEndTime
-      ) {
-        overtimeData.end_time =
-          buildIsoDateTime(
-            endDate,
-            endTime
-          );
+      if (endDate !== originalEndDate || endTime !== originalEndTime) {
+        overtimeData.end_time = buildIsoDateTime(endDate, endTime);
       }
 
-      /*
-       * Jira
-       */
-      const currentJira =
-        jiraTask?.trim() || "";
-
+      const currentJira = jiraTask?.trim() || "";
       if (currentJira !== originalJira) {
-        overtimeData.jira_task_identifier =
-          currentJira
-            ? currentJira.toUpperCase()
-            : "";
+        overtimeData.jira_task_identifier = currentJira
+          ? currentJira.toUpperCase()
+          : "";
       }
 
-      /*
-       * Observação
-       */
-      const currentObservation =
-        observation?.trim() || "";
-
-      if (
-        currentObservation !==
-        originalObservation
-      ) {
-        overtimeData.observation =
-          currentObservation;
+      const currentObservation = observation?.trim() || "";
+      if (currentObservation !== originalObservation) {
+        overtimeData.observation = currentObservation;
       }
-
-      /*
-       * ==================================================
-       * NADA FOI ALTERADO
-       * ==================================================
-       */
 
       if (Object.keys(overtimeData).length === 0) {
-        showMessage(
-          "error",
-          "Nenhuma alteração foi realizada."
-        );
-
+        showMessage("error", Messages.NO_CHANGES);
         return;
       }
 
-      console.log(
-        "PATCH /overtime/",
-        overtimeId
-      );
+      await editOvertime(token, overtimeId, overtimeData);
+      showMessage("success", Messages.EDIT_SUCCESS);
 
-      console.log(
-        "Dados alterados:",
-        overtimeData
-      );
-
-      /*
-       * PATCH
-       */
-      await editOvertime(
-        token,
-        overtimeId,
-        overtimeData
-      );
-
-      showMessage(
-        "success",
-        "Hora extra editada com sucesso."
-      );
-
-      if (clearForm) {
-        clearForm();
+      if (isMountedRef.current) {
+        setIsRedirecting(true);
       }
 
+      successTimeoutRef.current = setTimeout(() => {
+        if (isMountedRef.current && onSuccess) {
+          onSuccess();
+        }
+        successTimeoutRef.current = null;
+      }, MESSAGE_DURATION_MS);
     } catch (err) {
       console.error(err);
 
       switch (err?.status) {
         case 400:
         case 422:
-          showMessage(
-            "error",
-            err.message ||
-              Messages.VALIDATION
-          );
+          showMessage("error", err.message || Messages.VALIDATION);
           break;
 
         case 401:
-          showMessage(
-            "error",
-            Messages.SESSION
-          );
+          showMessage("error", Messages.SESSION);
           break;
 
         case 403:
-          showMessage(
-            "error",
-            Messages.FORBIDDEN
-          );
+          showMessage("error", Messages.FORBIDDEN);
           break;
 
         case 404:
-          showMessage(
-            "error",
-            Messages.NOT_FOUND
-          );
+          showMessage("error", Messages.NOT_FOUND);
           break;
 
         case 409:
-          showMessage(
-            "error",
-            Messages.DUPLICATED
-          );
+          showMessage("error", Messages.DUPLICATED);
           break;
 
         case 429:
-          showMessage(
-            "error",
-            Messages.RATE_LIMITED
-          );
+          showMessage("error", Messages.RATE_LIMITED);
           break;
 
         case 500:
-          showMessage(
-            "error",
-            Messages.SERVER
-          );
+          showMessage("error", Messages.SERVER);
           break;
 
         default:
           showMessage(
             "error",
-            err?.status === undefined
-              ? Messages.NETWORK
-              : Messages.UNKNOWN
+            err?.status === undefined ? Messages.NETWORK : Messages.UNKNOWN,
           );
       }
-
     } finally {
       submittingRef.current = false;
 
@@ -422,5 +232,6 @@ export function useOvertimeEdit({
     handleSubmit,
     message,
     isSubmitting,
+    isRedirecting,
   };
 }

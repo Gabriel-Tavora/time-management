@@ -14,7 +14,8 @@ import {
 import { Messages } from "../utils/message.js";
 
 export function useOvertimeRegistration({ token, form, clearForm }) {
-  const { endTime, endDate, startTime, startDate, jiraTask, observation } = form;
+  const { endTime, endDate, startTime, startDate, jiraTask, observation } =
+    form;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
@@ -107,6 +108,7 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
         end_time: buildIsoDateTime(endDate, endTime),
         jira_task_identifier: jiraTask.trim().toUpperCase(),
         observation,
+        requireJira: true,
       };
 
       await createOvertime(token, overtimeData);
@@ -148,7 +150,10 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
 
         default:
           // erro desconhecido" genérico.
-          showMessage("error", err.status === undefined ? Messages.NETWORK : Messages.UNKNOWN);
+          showMessage(
+            "error",
+            err.status === undefined ? Messages.NETWORK : Messages.UNKNOWN,
+          );
       }
     } finally {
       submittingRef.current = false;

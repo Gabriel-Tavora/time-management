@@ -6,7 +6,6 @@ const MS_IN_DAY = MS_IN_HOUR * 24;
 export const FUTURE_TOLERANCE_HOURS = 36;
 export const MAX_OVERTIME_SPAN_DAYS = 7;
 
-
 export function buildIsoDateTime(date, time) {
   if (!date || !time) return null;
   return `${date}T${time}:00Z`;
@@ -37,7 +36,7 @@ function normalizeToDate(value, fallbackTime = "00:00") {
 }
 
 export function validateOvertime({
-  type,
+  requireJira,
   endTime,
   endDate,
   startTime,
@@ -96,16 +95,15 @@ export function validateOvertime({
     return Messages.OUTSIDE_PERIOD;
   }
 
-  if (type === 1) {
-    if (!jiraTask?.trim()) {
-      return Messages.REQUIRED_JIRA;
-    }
+  const trimmedJira = jiraTask?.trim() ?? "";
 
-    const normalizedJira =
-      jiraTask.trim().toUpperCase();
+  if (requireJira && !trimmedJira) {
+    return Messages.REQUIRED_JIRA;
+  }
 
+  if (trimmedJira) {
+    const normalizedJira = trimmedJira.toUpperCase();
     const jiraRegex = /^[A-Z]+-\d+$/;
-
     if (!jiraRegex.test(normalizedJira)) {
       return Messages.INVALID_JIRA;
     }

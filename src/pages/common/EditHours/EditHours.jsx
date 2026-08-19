@@ -14,10 +14,7 @@ import "./EditHours.css";
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 
 // Utils
-import {
-  getCurrentDate,
-} from "../../../utils/formatHours.js";
-
+import { getCurrentDate } from "../../../utils/formatHours.js";
 import {
   formatTimeForInput,
   formatDateForInput,
@@ -39,13 +36,10 @@ const EditHours = () => {
     setStartTime,
     endTime,
     setEndTime,
-
     nightTime,
     setNightTime,
-
     endDate,
     setEndDate,
-
     startDate,
     setStartDate,
   } = useRegisterHours();
@@ -55,38 +49,25 @@ const EditHours = () => {
 
   const { token } = useAuthValue();
 
-
   useEffect(() => {
     if (!overtime) {
       navigate("/userscreen", { replace: true });
       return;
     }
 
-    const start = formatTimeForInput(
-      overtime.start_time
-    );
-
-    const end = formatTimeForInput(
-      overtime.end_time
-    );
-
-    const startDateValue = formatDateForInput(
-      overtime.start_time
-    );
-
-    const endDateValue = formatDateForInput(
-      overtime.end_time
-    );
+    const start = formatTimeForInput(overtime.start_time);
+    const end = formatTimeForInput(overtime.end_time);
+    const startDateValue = formatDateForInput(overtime.start_time);
+    const endDateValue = formatDateForInput(overtime.end_time);
 
     setStartTime(start);
     setEndTime(end);
-
     setStartDate(startDateValue);
     setEndDate(endDateValue);
+    setJiraTask(overtime.jira_task_identifier || "");
+    setObservation(overtime.observation || "");
 
-    setNightTime(
-      isNightTime(start, end)
-    );
+    setNightTime(isNightTime(start, end));
   }, [
     overtime,
     navigate,
@@ -97,54 +78,32 @@ const EditHours = () => {
     setNightTime,
   ]);
 
-  const clearForm = () => {
-    setStartTime("");
-    setEndTime("");
-    setObservation("");
-    setJiraTask("");
-    setNightTime(false);
-  };
-
-
   const form = {
     overtimeId: overtime?.id,
-
     startTime,
     endTime,
-
     startDate,
     endDate,
-
     jiraTask,
     observation,
   };
 
-  const {
-    handleSubmit,
-    message,
-    isSubmitting,
-  } = useOvertimeEdit({
-    token,
-    form,
-    overtime,
-    clearForm,
-  });
-
+  const { handleSubmit, message, isSubmitting, isRedirecting } =
+    useOvertimeEdit({
+      token,
+      form,
+      overtime,
+      onSuccess: () => navigate("/userscreen"),
+    });
 
   const handleStartTimeChange = (value) => {
     setStartTime(value);
-
-    setNightTime(
-      isNightTime(value, endTime)
-    );
+    setNightTime(isNightTime(value, endTime));
   };
 
   const handleEndTimeChange = (value) => {
     setEndTime(value);
-
-    setNightTime(
-      isNightTime(startTime, value)
-    );
+    setNightTime(isNightTime(startTime, value));
   };
 
   return (
@@ -154,20 +113,14 @@ const EditHours = () => {
       <aside className="add-time-menu">
         <div className="time-menu-container">
           <h1>Editar Hora Extra</h1>
-          <form
-            className="time-menu-form"
-            onSubmit={handleSubmit}
-          >
+          <form className="time-menu-form" onSubmit={handleSubmit}>
             <EditDate
               startDate={startDate}
               setStartDate={setStartDate}
-
               endDate={endDate}
               setEndDate={setEndDate}
-
               startTime={startTime}
               handleStartTimeChange={handleStartTimeChange}
-
               endTime={endTime}
               handleEndTimeChange={handleEndTimeChange}
             />
@@ -181,17 +134,13 @@ const EditHours = () => {
             <SendEditData
               jiraTask={jiraTask}
               observation={observation}
-              onJiraTaskChange={(e) =>
-                setJiraTask(e.target.value)
-              }
-              onObservationChange={(e) =>
-                setObservation(e.target.value)
-              }
+              onJiraTaskChange={(e) => setJiraTask(e.target.value)}
+              onObservationChange={(e) => setObservation(e.target.value)}
               message={message}
               isSubmitting={isSubmitting}
+              isRedirecting={isRedirecting}
             />
           </form>
-
         </div>
       </aside>
     </div>
