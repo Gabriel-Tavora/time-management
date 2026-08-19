@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { FaEnvelope, FaKey, FaLock } from "react-icons/fa";
+
+// Icons
+import {
+  FaEnvelope,
+  FaKey,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+
+// Hook
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
+
+// CSS
 import "./ForgotPassword.css";
 
 const STEPS = {
@@ -11,11 +23,16 @@ const STEPS = {
 
 const FormMessage = ({ message }) => {
   if (!message) return null;
+
   return (
     <p
       role="status"
       aria-live="polite"
-      className={message.type === "success" ? "form-success" : "form-error"}
+      className={
+        message.type === "success"
+          ? "form-success"
+          : "form-error"
+      }
     >
       {message.text}
     </p>
@@ -24,7 +41,12 @@ const FormMessage = ({ message }) => {
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+
   const [step, setStep] = useState(STEPS.EMAIL);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
 
   const {
     email,
@@ -37,29 +59,44 @@ const ForgotPassword = () => {
     setConfirmPassword,
     loading,
     message,
-    resetAll,
     sendCode,
     submitPassword,
     cleanup,
   } = usePasswordReset({
     maxAttempts: 4,
-    onSuccess: () => navigate("/"),
+
+    onSuccess: () => {
+      navigate("/");
+    },
   });
 
-  React.useEffect(() => cleanup, [cleanup]);
+  React.useEffect(() => {
+    return cleanup;
+  }, [cleanup]);
 
   const handleSendEmail = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
+
     const result = await sendCode(email);
-    if (result.success) {
+
+    if (result?.success) {
       setStep(STEPS.PASSWORD);
     }
   };
 
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
-    const result = await submitPassword(code, password);
-    if (result.reason === "max_attempts") {
+
+    if (loading) return;
+
+    const result = await submitPassword(
+      code,
+      password
+    );
+
+    if (result?.reason === "max_attempts") {
       setStep(STEPS.EMAIL);
     }
   };
@@ -67,25 +104,56 @@ const ForgotPassword = () => {
   return (
     <div className="Forgotlogin">
       <section className="Forgotlogin-section">
-        <h1>Esqueci a senha</h1>
+
+        {/* =========================
+            HEADER
+        ========================= */}
+
+        <div className="forgot-header">
+          <h1>
+            {step === STEPS.EMAIL
+              ? "Esqueci a senha"
+              : "Redefinir senha"}
+          </h1>
+
+          <p>
+            {step === STEPS.EMAIL
+              ? "Insira seu email para receber o código."
+              : "Insira o código e defina sua nova senha."}
+          </p>
+        </div>
+
+        {/* =========================
+            EMAIL
+        ========================= */}
 
         {step === STEPS.EMAIL && (
           <form onSubmit={handleSendEmail}>
+
             <div className="input-group">
               <FaEnvelope className="input-icon" />
               <input
                 type="email"
                 placeholder="Digite seu Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
                 disabled={loading}
                 required
+                autoComplete="email"
               />
             </div>
             <FormMessage message={message} />
-            <button type="submit" disabled={loading}>
-              {loading ? "Enviando..." : "Enviar"}
+            <button
+              type="submit"
+              disabled={loading}
+            >
+              {loading
+                ? "Enviando..."
+                : "Enviar código"}
             </button>
+
           </form>
         )}
 
@@ -93,47 +161,129 @@ const ForgotPassword = () => {
           <form onSubmit={handleSubmitPassword}>
             <div className="input-group">
               <FaKey className="input-icon" />
+
               <input
                 type="text"
-                placeholder="Digite o código enviado por email"
+                placeholder="Código enviado por email"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={(e) =>
+                  setCode(e.target.value)
+                }
                 disabled={loading}
                 required
+                autoComplete="one-time-code"
               />
             </div>
+
+
             <div className="input-group">
               <FaLock className="input-icon" />
               <input
-                type="password"
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Nova senha"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
                 disabled={loading}
                 required
+                minLength={8}
+                autoComplete="new-password"
               />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowPassword(
+                    (prev) => !prev
+                  )
+                }
+                disabled={loading}
+                aria-label={
+                  showPassword
+                    ? "Ocultar senha"
+                    : "Mostrar senha"
+                }
+              >
+                {showPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
             </div>
+
             <div className="input-group">
               <FaLock className="input-icon" />
+
               <input
-                type="password"
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Confirme a senha"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(
+                    e.target.value
+                  )
+                }
                 disabled={loading}
                 required
+                minLength={8}
+                autoComplete="new-password"
               />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowConfirmPassword(
+                    (prev) => !prev
+                  )
+                }
+                disabled={loading}
+                aria-label={
+                  showConfirmPassword
+                    ? "Ocultar confirmação"
+                    : "Mostrar confirmação"
+                }
+              >
+                {showConfirmPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
             </div>
+
             <FormMessage message={message} />
-            <button type="submit" disabled={loading}>
-              {loading ? "Enviando..." : "Confirmar"}
+
+            <button
+              type="submit"
+              disabled={loading}
+            >
+              {loading
+                ? "Alterando..."
+                : "Confirmar senha"}
             </button>
+
           </form>
         )}
 
-        <NavLink to="/" className="forgot-pass">
-          <span>Voltar para Login</span>
+        <NavLink
+          to="/"
+          className="forgot-pass"
+        >
+          Voltar para Login
         </NavLink>
+
       </section>
     </div>
   );

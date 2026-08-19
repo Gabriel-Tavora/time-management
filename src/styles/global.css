@@ -340,7 +340,7 @@
   border: 1px solid var(--border-card);
   box-shadow: var(--shadow-card);
 }
-
+/* pop up */
 .my-swal-popup {
   background-color: #0f172a !important;
   color: #ffffff !important;

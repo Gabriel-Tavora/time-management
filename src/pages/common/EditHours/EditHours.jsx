@@ -66,7 +66,6 @@ const EditHours = () => {
     setEndDate(endDateValue);
     setJiraTask(overtime.jira_task_identifier || "");
     setObservation(overtime.observation || "");
-
     setNightTime(isNightTime(start, end));
   }, [
     overtime,

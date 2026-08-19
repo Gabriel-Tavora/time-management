@@ -38,15 +38,12 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
         : "Os dados serão devolvidos para correção.",
 
       icon: isApprove ? "warning" : "question",
-
       showCancelButton: true,
-
       confirmButtonText: isApprove
         ? "Aprovar"
         : "Rejeitar",
 
       cancelButtonText: "Cancelar",
-
       reverseButtons: true,
     });
 

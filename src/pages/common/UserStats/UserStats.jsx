@@ -30,6 +30,10 @@ const UserStats = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const handleEditData = (path) => {
+    navigate(path);
+  };
+
   const {
     email,
     setEmail,
@@ -58,7 +62,6 @@ const UserStats = () => {
       setAvatarUrl(getAvatarByUser({ email: loadedEmail }));
     }
   };
-
 
   const handleCancelForm = () => {
     formDialogRef.current?.close();
@@ -157,14 +160,14 @@ const UserStats = () => {
           <div className="profile-buttons">
             <Button
               className="btn btn-medium"
-
-              disabled={!email}
+              onClick={() => handleEditData("/EditUserData")}
+              // disabled={!email}
               buttonText="Alterar Dados"
             />
             <Button
               className="btn btn-medium"
               onClick={handleOpenConfirm}
-              // disabled={!email}
+              disabled={!email}
               buttonText="Alterar Senha"
             />
           </div>
@@ -174,7 +177,7 @@ const UserStats = () => {
             <h2>Confirme o código e defina a nova senha</h2>
 
             <form onSubmit={handleSubmit}>
-              <div className="input-insert">
+              <div className="input-group">
                 <FaKey className="input-icon" />
 
                 <input
@@ -187,9 +190,8 @@ const UserStats = () => {
                 />
               </div>
 
-              <div className="input-insert">
+              <div className="input-group">
                 <FaLock className="input-icon" />
-
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Nova senha"
@@ -211,9 +213,8 @@ const UserStats = () => {
                 </span>
               </div>
 
-              <div className="input-insert">
+              <div className="input-group">
                 <FaLock className="input-icon" />
-
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirme a senha"
@@ -223,7 +224,6 @@ const UserStats = () => {
                   required
                   minLength={8}
                 />
-
                 <span
                   className="password-toggle"
                   onClick={() =>

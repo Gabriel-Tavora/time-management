@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 //componentes
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
+import Button from "../../../components/Layouts/Button/Button.jsx"
 //css
 import "./Calendary.css";
 //utils
@@ -114,9 +115,13 @@ const Calendary = () => {
 
       <div className="calendary-page">
         <header className="calendar-header">
-          <button type="button" className="month-btn" onClick={previousMonth} aria-label="Mês anterior">
-            ◀
-          </button>
+
+          <Button
+            className="change-btn"
+            onClick={previousMonth}
+            aria-label="Mês anterior"
+            buttonText="◀"
+          />
 
           <div>
             <h1>Calendário</h1>
@@ -129,9 +134,12 @@ const Calendary = () => {
             </h2>
           </div>
 
-          <button type="button" className="month-btn" onClick={nextMonth} aria-label="Próximo mês">
-            ▶
-          </button>
+          <Button
+            className="change-btn"
+            onClick={nextMonth}
+            aria-label="Próximo mês"
+            buttonText="▶"
+          />
         </header>
 
         {errorMessage && (

@@ -56,7 +56,7 @@ export async function editUserData(userData, token) {
   );
 
   const response = await fetch(`${API_URL}/users`, {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -64,9 +64,15 @@ export async function editUserData(userData, token) {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
+   if (!response.ok) {
     throw new Error(`Erro ao editar usuário ${userData?.name}`);
   }
 
-  return response.json();
+  const text = await response.text();
+
+  if (!text) {
+    return null;
+  }
+
+  return JSON.parse(text);
 }

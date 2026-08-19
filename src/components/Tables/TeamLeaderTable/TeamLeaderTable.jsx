@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 // css
 import "../tables.css";
 import Swal from "sweetalert2";
@@ -31,6 +31,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [editTime, setEditTime] = useState(null);
+
+  const editTimeoutRef = useRef(null);
 
   const navigate = useNavigate();
   const handleNavigate = (path) => {
@@ -110,6 +112,18 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     }
   };
 
+  const handleEditTime = (registerId) => {
+    if (editTimeoutRef.current) {
+      clearTimeout(editTimeoutRef.current);
+    }
+
+    setEditTime(registerId);
+
+    editTimeoutRef.current = setTimeout(() => {
+      setEditTime(null);
+      editTimeoutRef.current = null;
+    }, 5000);
+  };
   return (
     <div className="table-page table">
       <div>
@@ -230,7 +244,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                       key={register.id}
                       onClick={
                         isViewingOwnRecords
-                          ? () => setEditTime(register.id)
+                          ? () => handleEditTime(register.id)
                           : undefined
                       }
                     >
@@ -253,9 +267,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
 
                         {isViewingOwnRecords && (
                           <div
-                            className={`table-edit ${
-                              editTime === register.id ? "active" : ""
-                            }`}
+                            className={`table-edit ${editTime === register.id ? "active" : ""
+                              }`}
                           >
                             <Button
                               className="btn-table"

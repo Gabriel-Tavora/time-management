@@ -14,7 +14,9 @@ import { useAuthValue } from "../../../context/TokenContext";
 
 // Utils
 import { getCurrentDate } from "../../../utils/formatHours.js";
-
+import {
+  isNightTime,
+} from "../../../utils/editFormatTime.js";
 // Hooks
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
 import { useOvertimeRegistration } from "../../../hooks/useOvertimeRegistration";
@@ -75,9 +77,18 @@ const RegisterHours = () => {
     const value = e.target.value;
 
     setEndTime(value);
-    setNightTime(value >= "22:00");
-  };
 
+    setNightTime(
+      isNightTime(startTime, value)
+    );
+  };
+  const handleStartTimeChange = (value) => {
+    setStartTime(value);
+
+    setNightTime(
+      isNightTime(value, endTime)
+    );
+  };
   return (
     <div className="time-menu">
       <Sidebar />
@@ -93,7 +104,7 @@ const RegisterHours = () => {
               startDate={startDate}
               setStartDate={setStartDate}
               startTime={startTime}
-              setStartTime={setStartTime}
+              handleStartTimeChange={handleStartTimeChange}
               endTime={endTime}
               handleEndTimeChange={handleEndTimeChange}
             />

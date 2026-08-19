@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 //css
 import "../tables.css";
 import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
@@ -17,6 +17,17 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     navigate(path);
   };
 
+  const timeout = useRef(null);
+
+  const handleEditTime = (register) => {
+    setEditTime(register);
+
+    clearTimeout(timeout.current);
+
+    timeout.current = setTimeout(() => {
+      setEditTime(null);
+    }, 5000);
+  };
   const handleEditHours = (editTime, path) => {
     const record = filteredData?.find(
       (item) => item.overtime_records.id === editTime
@@ -164,7 +175,9 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                   return (
                     <tr
                       key={register.overtime_records.id}
-                      onClick={() => setEditTime(register.overtime_records.id)}
+                      onClick={() =>
+                        handleEditTime(register.overtime_records.id)
+                      }
                     >
                       <td >{formatDate(startTime)}</td>
                       <td>{formatDate(endTime)}</td>

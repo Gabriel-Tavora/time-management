@@ -35,8 +35,6 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
   const showMessage = (type, text) => {
     if (!isMountedRef.current) return;
 
-    // Cancela o timeout da mensagem anterior antes de agendar um novo —
-    // sem isso, uma mensagem antiga podia apagar uma mensagem nova.
     if (messageTimeoutRef.current) {
       clearTimeout(messageTimeoutRef.current);
     }
@@ -61,9 +59,9 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
 
     try {
       const { monthStart, monthEnd } = getCurrentDate();
-      const type = 1;
+      
       const validationError = validateOvertime({
-        type,
+        requireJira: true,
         endTime,
         endDate,
         startTime,
@@ -108,7 +106,6 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
         end_time: buildIsoDateTime(endDate, endTime),
         jira_task_identifier: jiraTask.trim().toUpperCase(),
         observation,
-        requireJira: true,
       };
 
       await createOvertime(token, overtimeData);

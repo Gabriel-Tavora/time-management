@@ -162,3 +162,108 @@
     width: 100%;
   }
 }
+
+/* Toast de feedback */
+.edit-toast {
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: slideDown 0.3s ease;
+}
+
+.edit-toast--success {
+  background: var(--bg-success);
+  color: var(--success-text);
+  border: 1px solid var(--border-success);
+}
+
+.edit-toast--error {
+  background: var(--bg-danger);
+  color: var(--danger-text);
+  border: 1px solid var(--border-danger);
+}
+
+/* Card em modo edição */
+.info-card--editing {
+  cursor: default;
+  border-color: var(--accent);
+  box-shadow: var(--input-focus-shadow);
+}
+
+/* Campo de edição inline */
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.edit-field label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.edit-field input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.edit-field input:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-focus-shadow);
+}
+
+/* Ações Salvar/Cancelar */
+.edit-actions {
+  display: flex;
+  align-self: center;
+  max-width: 220px;
+  gap: 10px;
+}
+
+/* Hint no modo leitura */
+.edit-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.info-card:hover .edit-hint {
+  opacity: 1;
+}
+
+/* Valor vazio */
+.empty-value {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Loading */
+.info-card--loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

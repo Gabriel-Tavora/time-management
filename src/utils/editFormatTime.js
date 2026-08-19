@@ -31,7 +31,8 @@ export const isNightTime = (startTime, endTime) => {
   }
 
   const toMinutes = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
+    const hhmm = time.includes("T") ? time.slice(11, 16) : time;
+    const [hours, minutes] = hhmm.split(":").map(Number);
     return hours * 60 + minutes;
   };
 
@@ -41,20 +42,11 @@ export const isNightTime = (startTime, endTime) => {
   const NIGHT_START = 22 * 60; // 22:00
   const NIGHT_END = 5 * 60;    // 05:00
 
-  // Começa às 22:00 ou depois
-  if (start >= NIGHT_START) {
+
+  const crossesMidnight = end <= start;
+  if (crossesMidnight) {
     return true;
   }
 
-  // Termina entre 00:00 e 05:00
-  if (end <= NIGHT_END) {
-    return true;
-  }
-
-  // Atravessou a meia-noite
-  if (start > end) {
-    return true;
-  }
-
-  return false;
+  return end > NIGHT_START || start < NIGHT_END;
 };

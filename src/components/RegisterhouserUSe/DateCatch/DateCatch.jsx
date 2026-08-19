@@ -9,7 +9,7 @@ const DateCatch = ({
   startDate,
   setStartDate,
   startTime,
-  setStartTime,
+  handleStartTimeChange,
   endTime,
   handleEndTimeChange,
 }) => {
@@ -31,7 +31,7 @@ const DateCatch = ({
           id="startTime"
           type="time"
           value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
+          onChange={(e) => handleStartTimeChange(e.target.value)}
           name="startTime"
         />
       </div>
