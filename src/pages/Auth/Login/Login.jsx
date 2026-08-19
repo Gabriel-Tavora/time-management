@@ -9,6 +9,7 @@ import "./Login.css";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 //components
 import AnalogClock from "../../../components/Layouts/AnalogClock/AnalogClock.jsx";
+import Input from "../../../components/Layouts/Inputs/Inputs.jsx"
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,7 +59,7 @@ const Login = () => {
         <form onSubmit={handleLogin}>
           <div className="input-group">
             <FaEnvelope className="input-icon" />
-            <input
+            <Input
               type="email"
               placeholder="Email"
               value={email}
@@ -68,7 +69,7 @@ const Login = () => {
 
           <div className="input-group">
             <FaLock className="input-icon" />
-            <input
+            <Input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}

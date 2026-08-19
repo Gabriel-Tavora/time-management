@@ -15,7 +15,9 @@ import { usePasswordReset } from "../../../hooks/usePasswordReset";
 
 // CSS
 import "./ForgotPassword.css";
-
+//components 
+import Input from "../../../components/Layouts/Inputs/Inputs.jsx"
+import Button from "../../../components/Layouts/Button/Button.jsx"
 const STEPS = {
   EMAIL: "email",
   PASSWORD: "password",
@@ -104,11 +106,6 @@ const ForgotPassword = () => {
   return (
     <div className="Forgotlogin">
       <section className="Forgotlogin-section">
-
-        {/* =========================
-            HEADER
-        ========================= */}
-
         <div className="forgot-header">
           <h1>
             {step === STEPS.EMAIL
@@ -123,16 +120,11 @@ const ForgotPassword = () => {
           </p>
         </div>
 
-        {/* =========================
-            EMAIL
-        ========================= */}
-
         {step === STEPS.EMAIL && (
           <form onSubmit={handleSendEmail}>
-
             <div className="input-group">
               <FaEnvelope className="input-icon" />
-              <input
+              <Input
                 type="email"
                 placeholder="Digite seu Email"
                 value={email}
@@ -145,14 +137,14 @@ const ForgotPassword = () => {
               />
             </div>
             <FormMessage message={message} />
-            <button
+            <Button
+              className="btn"
               type="submit"
               disabled={loading}
-            >
-              {loading
+              buttonText={loading
                 ? "Enviando..."
                 : "Enviar código"}
-            </button>
+            />
 
           </form>
         )}
@@ -161,8 +153,7 @@ const ForgotPassword = () => {
           <form onSubmit={handleSubmitPassword}>
             <div className="input-group">
               <FaKey className="input-icon" />
-
-              <input
+              <Input
                 type="text"
                 placeholder="Código enviado por email"
                 value={code}
@@ -178,7 +169,7 @@ const ForgotPassword = () => {
 
             <div className="input-group">
               <FaLock className="input-icon" />
-              <input
+              <Input
                 type={
                   showPassword
                     ? "text"
@@ -220,8 +211,7 @@ const ForgotPassword = () => {
 
             <div className="input-group">
               <FaLock className="input-icon" />
-
-              <input
+              <Input
                 type={
                   showConfirmPassword
                     ? "text"
@@ -239,7 +229,6 @@ const ForgotPassword = () => {
                 minLength={8}
                 autoComplete="new-password"
               />
-
               <button
                 type="button"
                 className="password-toggle"
@@ -264,7 +253,6 @@ const ForgotPassword = () => {
             </div>
 
             <FormMessage message={message} />
-
             <button
               type="submit"
               disabled={loading}
@@ -273,7 +261,6 @@ const ForgotPassword = () => {
                 ? "Alterando..."
                 : "Confirmar senha"}
             </button>
-
           </form>
         )}
 

@@ -89,49 +89,6 @@
   gap: 15px;
 }
 
-.input-group {
-  position: relative;
-}
-
-.input-group input {
-  width: 100%;
-  max-width: 373px;
-  height: 60px;
-  padding-left: 55px;
-  border-radius: 18px;
-  border: 1px solid rgba(148, 163, 184, .22);
-  background: rgba(255, 255, 255, .55);
-  color: #1f2937;
-  font-size: 16px;
-  outline: none;
-  transition: .3s;
-}
-
-.input-group input::placeholder {
-  color: #404f65;
-}
-
-.input-group input:focus {
-  background: rgba(255, 255, 255, .88);
-  border-color: #2563eb;
-
-  box-shadow: 0 0 18px rgba(37, 99, 235, .18);
-}
-
-.input-icon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #2563eb;
-  font-size: 20px;
-}
-
-.input-group input[type="password"]::-ms-reveal,
-.input-group input[type="password"]::-ms-clear,
-.input-group input[type="password"]::-webkit-password-reveal {
-  display: none;
-}
 
 /* OPTIONS */
 

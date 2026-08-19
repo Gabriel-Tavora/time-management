@@ -1,5 +1,6 @@
 import "../Inputs/Inputs.css";
 const Input = ({
+  placeholder,
   classNameIn,
   labelText,
   id,
@@ -16,6 +17,7 @@ const Input = ({
       <label htmlFor={id}>{labelText}</label>
       {Icon && <Icon />}
       <input
+      placeholder={placeholder}
         id={id}
         type={type}
         value={value}
