@@ -18,7 +18,8 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   };
 
   const timeout = useRef(null);
-
+  const [editTime, setEditTime] = useState(null);
+  
   const handleEditTime = (register) => {
     setEditTime(register);
 
@@ -28,6 +29,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
       setEditTime(null);
     }, 5000);
   };
+
   const handleEditHours = (editTime, path) => {
     const record = filteredData?.find(
       (item) => item.overtime_records.id === editTime
@@ -45,7 +47,6 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     });
   };
 
-  const [editTime, setEditTime] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 

@@ -39,10 +39,21 @@
 .btn:active:not(:disabled) {
   transform: scale(0.95);
 }
-/* Botão médio */
+
+
 .btn-medium{
   min-width: 145px;
   max-width: 195px;
+}
+
+
+.btn-large{
+  min-width: 245px;
+  max-width: 360px;
+  min-height: 45px;
+  max-height: 45px;
+  align-self: center;
+  margin-top: 0;
 }
 
 /* Botão pequeno circular */
@@ -89,6 +100,7 @@
   outline: 2px solid var(--accent-color, #7c5cff);
   outline-offset: 2px;
 }
+
 /* Botão verde ou vermelho estilizado */
 .approved-btn,
 .rejected-btn {
@@ -134,7 +146,7 @@
   transform: scale(.95);
 }
 
-/* botão tabelas */
+/* botão da tabela */
 
 .table-action-cell {
   position: relative;

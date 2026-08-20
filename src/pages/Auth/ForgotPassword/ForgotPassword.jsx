@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 
 // Icons
@@ -15,6 +15,7 @@ import { usePasswordReset } from "../../../hooks/usePasswordReset";
 
 // CSS
 import "./ForgotPassword.css";
+import "../../../styles/auth.css"
 //components 
 import Input from "../../../components/Layouts/Inputs/Inputs.jsx"
 import Button from "../../../components/Layouts/Button/Button.jsx"
@@ -23,8 +24,23 @@ const STEPS = {
   PASSWORD: "password",
 };
 
+
 const FormMessage = ({ message }) => {
-  if (!message) return null;
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!message) {
+      setVisible(false);
+      return;
+    }
+    setVisible(true);
+    const timeout = setTimeout(() => {
+      setVisible(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, [message]);
+
+  if (!visible) return null;
 
   return (
     <p
@@ -40,6 +56,7 @@ const FormMessage = ({ message }) => {
     </p>
   );
 };
+
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -92,7 +109,6 @@ const ForgotPassword = () => {
     e.preventDefault();
 
     if (loading) return;
-
     const result = await submitPassword(
       code,
       password
@@ -104,8 +120,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="Forgotlogin">
-      <section className="Forgotlogin-section">
+    <div className="login-page">
+      <section className="login-card">
         <div className="forgot-header">
           <h1>
             {step === STEPS.EMAIL
@@ -138,7 +154,7 @@ const ForgotPassword = () => {
             </div>
             <FormMessage message={message} />
             <Button
-              className="btn"
+              className="btn btn-large"
               type="submit"
               disabled={loading}
               buttonText={loading
@@ -253,14 +269,14 @@ const ForgotPassword = () => {
             </div>
 
             <FormMessage message={message} />
-            <button
+            <Button
+             className="btn btn-large"
               type="submit"
               disabled={loading}
-            >
-              {loading
+              buttonText= {loading
                 ? "Alterando..."
                 : "Confirmar senha"}
-            </button>
+            />
           </form>
         )}
 

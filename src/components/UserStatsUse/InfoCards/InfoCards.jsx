@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-//css
-import "./InfoCards.css";
 //services
 import { getCurrentUser } from "../../../services/userData.js";
 //context

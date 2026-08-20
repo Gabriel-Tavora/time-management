@@ -3,8 +3,13 @@ import { Messages } from "../utils/message.js";
 const MS_IN_HOUR = 1000 * 60 * 60;
 const MS_IN_DAY = MS_IN_HOUR * 24;
 
-export const FUTURE_TOLERANCE_HOURS = 36;
+export const FUTURE_TOLERANCE_HOURS = 0;
 export const MAX_OVERTIME_SPAN_DAYS = 7;
+
+const COMMERCIAL_START_HOUR = 8;
+const COMMERCIAL_END_HOUR = 17;
+const NIGHT_START_HOUR = 22;
+const NIGHT_END_HOUR = 5;
 
 export function buildIsoDateTime(date, time) {
   if (!date || !time) return null;
@@ -16,12 +21,8 @@ export function combineDateTime(date, time) {
   return iso ? new Date(iso) : null;
 }
 
-function nowAsUtcLabeled() {
-  const now = new Date();
-  const pad = (n) => String(n).padStart(2, "0");
-  const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-  const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-  return combineDateTime(date, time);
+function nowAsUtc() {
+  return new Date();
 }
 
 function normalizeToDate(value, fallbackTime = "00:00") {
@@ -35,6 +36,48 @@ function normalizeToDate(value, fallbackTime = "00:00") {
   return null;
 }
 
+function isWeekend(date) {
+  const day = date.getUTCDay();
+  return day === 0 || day === 6;
+}
+
+function isCommercialHour(date) {
+  const hour = date.getUTCHours();
+  return hour >= COMMERCIAL_START_HOUR && hour < COMMERCIAL_END_HOUR;
+}
+
+function isHoliday(date, holidays = []) {
+  const dateString = date.toISOString().slice(0, 10);
+  return holidays.includes(dateString);
+}
+
+function hasCommercialHoursOnWorkday(start, end, holidays = []) {
+  const cursor = new Date(start);
+  cursor.setUTCHours(0, 0, 0, 0);
+
+  const endDay = new Date(end);
+  endDay.setUTCHours(0, 0, 0, 0);
+
+  while (cursor <= endDay) {
+    if (!isWeekend(cursor) && !isHoliday(cursor, holidays)) {
+     
+      const dayStart = new Date(cursor);
+      dayStart.setUTCHours(COMMERCIAL_START_HOUR, 0, 0, 0);
+
+      const dayEnd = new Date(cursor);
+      dayEnd.setUTCHours(COMMERCIAL_END_HOUR, 0, 0, 0);
+
+      if (start < dayEnd && end > dayStart) {
+        return true;
+      }
+    }
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+
+  return false;
+}
+
+
 export function validateOvertime({
   requireJira,
   endTime,
@@ -44,6 +87,7 @@ export function validateOvertime({
   jiraTask,
   monthStart,
   monthEnd,
+  holidays = [],
 }) {
   if (!startDate || !endDate) {
     return Messages.REQUIRED_DATE;
@@ -60,8 +104,13 @@ export function validateOvertime({
   const start = combineDateTime(startDate, startTime);
   const end = combineDateTime(endDate, endTime);
 
+  if (!start || !end) {
+    return Messages.VALIDATION;
+  }
+
   const startDay = combineDateTime(startDate, "00:00");
   const endDay = combineDateTime(endDate, "00:00");
+
   const dayDiff = (endDay - startDay) / MS_IN_DAY;
 
   if (dayDiff < 0) {
@@ -76,8 +125,9 @@ export function validateOvertime({
     return Messages.INVALID_TIME;
   }
 
+  const now = nowAsUtc();
   const maxAllowedStart = new Date(
-    nowAsUtcLabeled().getTime() + FUTURE_TOLERANCE_HOURS * MS_IN_HOUR,
+    now.getTime() + FUTURE_TOLERANCE_HOURS * MS_IN_HOUR,
   );
 
   if (start > maxAllowedStart) {
@@ -91,8 +141,17 @@ export function validateOvertime({
   const periodStart = normalizeToDate(monthStart, "00:00");
   const periodEnd = normalizeToDate(monthEnd, "23:59");
 
-  if (!periodStart || !periodEnd || start < periodStart || end > periodEnd) {
+  if (
+    !periodStart ||
+    !periodEnd ||
+    start < periodStart ||
+    end > periodEnd
+  ) {
     return Messages.OUTSIDE_PERIOD;
+  }
+
+  if (hasCommercialHoursOnWorkday(start, end, holidays)) {
+    return Messages.INVALID_COMMERCIAL_HOURS;
   }
 
   const trimmedJira = jiraTask?.trim() ?? "";
@@ -104,6 +163,7 @@ export function validateOvertime({
   if (trimmedJira) {
     const normalizedJira = trimmedJira.toUpperCase();
     const jiraRegex = /^[A-Z]+-\d+$/;
+
     if (!jiraRegex.test(normalizedJira)) {
       return Messages.INVALID_JIRA;
     }
@@ -117,14 +177,19 @@ export function calculateNightHours(start, end) {
   const cursor = new Date(start);
 
   while (cursor < end) {
-    const next = new Date(
-      Math.min(cursor.getTime() + MS_IN_HOUR, end.getTime()),
-    );
     const hour = cursor.getUTCHours();
-    const isNight = hour >= 22 || hour < 5;
+    const isNight = hour >= NIGHT_START_HOUR || hour < NIGHT_END_HOUR;
+
+    // Próximo marco: próxima hora cheia ou fim do intervalo
+    const nextHour = new Date(cursor);
+    nextHour.setUTCMinutes(0, 0, 0);
+    nextHour.setUTCHours(nextHour.getUTCHours() + 1);
+
+    const next = new Date(Math.min(nextHour.getTime(), end.getTime()));
+    const blockDuration = next.getTime() - cursor.getTime();
 
     if (isNight) {
-      nightMs += next.getTime() - cursor.getTime();
+      nightMs += blockDuration;
     }
 
     cursor.setTime(next.getTime());

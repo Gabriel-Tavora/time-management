@@ -57,23 +57,93 @@ const NotFound = lazy(() =>
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
   { path: "/ForgotPassword", element: <ForgotPassword /> },
-  { path: "/userscreen", element: <UserScreen /> },
-  { path: "/registerhours", element: <RegisterHours /> },
-  { path: "/EditHours", element: <EditHours /> },
-  { path: "/UserStats", element: <UserStats /> },
-  { path: "/EditUserData", element: <EditUserData /> },
-  { path: "/calendary", element: <Calendary /> },
-  { path: "/Teamleader", element: <Teamleader /> },
-  { path: "/Coordinator", element: <Coordinator /> },
-  { path: "/Menager", element: <Menager /> },
-  { path: "/SuperAdmin", element: <SuperAdmin /> },
-  { path: "*", element: <NotFound /> },
+
+  {
+    path: "/userscreen",
+    element: (
+      <PrivateRoute>
+        <UserScreen />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/registerhours",
+    element: (
+      <PrivateRoute>
+        <RegisterHours />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/EditHours",
+    element: (
+      <PrivateRoute>
+        <EditHours />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/UserStats",
+    element: (
+      <PrivateRoute>
+        <UserStats />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/EditUserData",
+    element: (
+      <PrivateRoute>
+        <EditUserData />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/calendary",
+    element: (
+      <PrivateRoute>
+        <Calendary />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Teamleader",
+    element: (
+      <PrivateRoute>
+        <Teamleader />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Coordinator",
+    element: (
+      <PrivateRoute>
+        <Coordinator />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Menager",
+    element: (
+      <PrivateRoute>
+        <Menager />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/SuperAdmin",
+    element: (
+      <PrivateRoute>
+        <SuperAdmin />
+      </PrivateRoute>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <HelmetProvider>
     <AuthProvider>
-      <ThemeProvider> {/* <-- envolve tudo */}
+      <ThemeProvider>
         <Suspense fallback={<div>Carregando...</div>}>
           <RouterProvider router={router} />
         </Suspense>

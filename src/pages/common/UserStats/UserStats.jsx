@@ -161,7 +161,7 @@ const UserStats = () => {
             <Button
               className="btn btn-medium"
               onClick={() => handleEditData("/EditUserData")}
-              // disabled={!email}
+              disabled={!email}
               buttonText="Alterar Dados"
             />
             <Button

@@ -1,14 +1,6 @@
 /* Grupo principal */
 .input-time {
   display: grid;
-  grid-template-columns: repeat(2, 3fr);
-  min-width: 100%;
-  max-width: 600px;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-.input-time {
-  display: grid;
   grid-template-columns: repeat(2, 1fr);
   width: 600px;
   max-width: 100%;

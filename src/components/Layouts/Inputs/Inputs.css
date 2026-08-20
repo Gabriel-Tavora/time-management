@@ -3,31 +3,24 @@
    Unifica: Login | Forgot Password | Register
    ============================================ */
 
-/* ============================================
-   1. INPUT COM ÍCONE + TOGGLE (Login / Forgot)
-   ============================================ */
-
 .input-group {
   position: relative;
   width: 100%;
-  max-width: 373px;
+  max-width: 360px;
+  align-self: center;
 }
 
 .input-group input {
   box-sizing: border-box;
   width: 100%;
-  height: 60px;
-  padding: 0 50px 0 55px;
-
+  height: 50px;
+  padding: 0 0 0 55px;
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 18px;
-
   background: rgba(255, 255, 255, 0.55);
   color: #1f2937;
-
   font-size: 16px;
   font-weight: 500;
-
   outline: none;
 
   transition:
@@ -156,10 +149,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   width: 100%;
   max-width: 250px;
-
+  min-height: 40px;
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -218,18 +210,13 @@
   width: 100%;
   height: 60px;
   padding: 0 18px 0 55px;
-
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 18px;
-
   background: rgba(255, 255, 255, 0.55);
   color: #1f2937;
-
   font-size: 16px;
   font-weight: 500;
-
   outline: none;
-
   transition:
     background 0.3s ease,
     border-color 0.3s ease,

@@ -1,30 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-// components
+
+// Components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import Button from "../../../components/Layouts/Button/Button";
-// services
+
+// Services
 import { getCurrentUser, editUserData } from "../../../services/userData.js";
-// context
+
+// Context
 import { useAuthValue } from "../../../context/TokenContext";
-// css
+
+// CSS
 import "../UserStats/UserStats.css";
 import "../../../styles/global.css";
-import "../../../components/UserStatsUse/InfoCards/InfoCards.css";
+
+const MESSAGE_DURATION_MS = 3000;
+
+const FIELDS_CONFIG = [
+  { key: "name", label: "Nome", type: "text", placeholder: "Seu nome completo", maxLength: 100 },
+  { key: "display_name", label: "Apelido", type: "text", placeholder: "Como quer ser chamado", maxLength: 50 },
+  { key: "email", label: "E-mail", type: "email", placeholder: "seu@email.com", maxLength: 120 },
+  { key: "phone", label: "Telefone", type: "tel", placeholder: "(00) 00000-0000", maxLength: 20 },
+];
+
+const validateField = (field, value) => {
+  const trimmed = value?.trim() || "";
+  if (field === "email" && trimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+    return "E-mail inválido.";
+  }
+  if (field === "phone" && trimmed && !/^[\d\s\-\+\(\)]{8,}$/.test(trimmed)) {
+    return "Telefone inválido.";
+  }
+  if ((field === "name" || field === "display_name") && trimmed.length > 0 && trimmed.length < 2) {
+    return "Nome muito curto.";
+  }
+  return null;
+};
 
 const EditUserData = () => {
   const { token } = useAuthValue();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
 
-  const navigate = useNavigate();
-  const handleBack = (path) => {
-    navigate(path);
-  }
-  // Campos editáveis
   const [editingField, setEditingField] = useState(null);
   const [draftValues, setDraftValues] = useState({
     name: "",
@@ -33,11 +55,41 @@ const EditUserData = () => {
     display_name: "",
   });
 
-  async function loadUserData() {
+  const abortControllerRef = useRef(null);
+  const messageTimeoutRef = useRef(null);
+  const inputRefs = useRef({});
+  const isMountedRef = useRef(true);
+
+  // Cleanup ao desmontar
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (messageTimeoutRef.current) clearTimeout(messageTimeoutRef.current);
+      if (abortControllerRef.current) abortControllerRef.current.abort();
+    };
+  }, []);
+
+  const showMessage = useCallback((type, text) => {
+    if (!isMountedRef.current) return;
+    if (messageTimeoutRef.current) clearTimeout(messageTimeoutRef.current);
+
+    setMessage({ type, text });
+    messageTimeoutRef.current = setTimeout(() => {
+      if (isMountedRef.current) setMessage({ type: "", text: "" });
+    }, MESSAGE_DURATION_MS);
+  }, []);
+
+  const loadUserData = useCallback(async () => {
+    if (!token) return;
+
     setLoading(true);
-    setMessage({ type: "", text: "" });
+    showMessage("", "");
+    abortControllerRef.current = new AbortController();
+
     try {
-      const response = await getCurrentUser(token);
+      const response = await getCurrentUser(token, { signal: abortControllerRef.current.signal });
+      if (!isMountedRef.current) return;
+
       setUser(response);
       setDraftValues({
         name: response?.name || "",
@@ -46,98 +98,101 @@ const EditUserData = () => {
         display_name: response?.display_name || "",
       });
     } catch (e) {
+      if (e.name === "AbortError") return;
       console.error(e);
-      setMessage({ type: "error", text: "Erro ao carregar dados do usuário." });
+      showMessage("error", "Erro ao carregar dados do usuário.");
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) setLoading(false);
+      abortControllerRef.current = null;
     }
-  }
+  }, [token, showMessage]);
 
   useEffect(() => {
-    if (token) {
-      loadUserData();
-    }
-  }, [token]);
+    loadUserData();
+  }, [loadUserData]);
 
-  const startEditing = (field) => {
+  const startEditing = useCallback((field) => {
     if (!user) return;
     setEditingField(field);
-    setDraftValues((prev) => ({
-      ...prev,
-      [field]: user[field] || "",
-    }));
-    setMessage({ type: "", text: "" });
-  };
+    setDraftValues((prev) => ({ ...prev, [field]: user[field] || "" }));
+    showMessage("", "");
 
-  const cancelEditing = () => {
+    // Foca o input no próximo tick (depois do re-render)
+    requestAnimationFrame(() => {
+      inputRefs.current[field]?.focus();
+    });
+  }, [user, showMessage]);
+
+  const cancelEditing = useCallback(() => {
     setEditingField(null);
-    setMessage({ type: "", text: "" });
-  };
+    showMessage("", "");
+  }, [showMessage]);
 
-  const handleDraftChange = (field, value) => {
+  const handleDraftChange = useCallback((field, value) => {
     setDraftValues((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
-  const handleSaveField = async (field) => {
+  const handleSaveField = useCallback(async (field) => {
     if (!user || !token) return;
 
-    const originalValue = user[field] || "";
-    const newValue = draftValues[field]?.trim();
+    const originalValue = (user[field] || "").trim();
+    const newValue = (draftValues[field] || "").trim();
 
     if (newValue === originalValue) {
       setEditingField(null);
       return;
     }
 
-    // Validação básica
-    if (field === "email" && newValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newValue)) {
-      setMessage({ type: "error", text: "E-mail inválido." });
-      return;
-    }
-    if (field === "phone" && newValue && !/^[\d\s\-\+\(\)]{8,}$/.test(newValue)) {
-      setMessage({ type: "error", text: "Telefone inválido." });
-      return;
-    }
-    if ((field === "name" || field === "display_name") && newValue.length < 2) {
-      setMessage({ type: "error", text: "Nome muito curto." });
+    const error = validateField(field, newValue);
+    if (error) {
+      showMessage("error", error);
       return;
     }
 
     setSaving(true);
-    setMessage({ type: "", text: "" });
+    showMessage("", "");
+    abortControllerRef.current = new AbortController();
 
     try {
       const payload = { [field]: newValue };
-      await editUserData(payload, token);
+      await editUserData(payload, token, { signal: abortControllerRef.current.signal });
+
+      if (!isMountedRef.current) return;
 
       setUser((prev) => ({ ...prev, [field]: newValue }));
       setEditingField(null);
-      setMessage({ type: "success", text: "Dado atualizado com sucesso!" });
-
-      // Limpa mensagem após 3s
-      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+      showMessage("success", "Dado atualizado com sucesso!");
     } catch (e) {
+      if (e.name === "AbortError") return;
       console.error(e);
-      setMessage({ type: "error", text: "Erro ao salvar. Tente novamente." });
+      showMessage("error", e.message || "Erro ao salvar. Tente novamente.");
     } finally {
-      setSaving(false);
+      if (isMountedRef.current) setSaving(false);
+      abortControllerRef.current = null;
     }
-  };
+  }, [user, token, draftValues, showMessage]);
 
-  const handleKeyDown = (e, field) => {
+  const handleKeyDown = useCallback((e, field) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSaveField(field);
     } else if (e.key === "Escape") {
       cancelEditing();
     }
-  };
+  }, [handleSaveField, cancelEditing]);
 
-  const fieldsConfig = [
-    { key: "name", label: "Nome", type: "text", placeholder: "Seu nome completo" },
-    { key: "display_name", label: "Apelido", type: "text", placeholder: "Como quer ser chamado" },
-    { key: "email", label: "E-mail", type: "email", placeholder: "seu@email.com" },
-    { key: "phone", label: "Telefone", type: "tel", placeholder: "(00) 00000-0000" },
-  ];
+  const handleBack = useCallback(() => {
+    navigate("/UserStats");
+  }, [navigate]);
+
+  // Skeleton cards para loading
+  const skeletonCards = useMemo(() =>
+    Array.from({ length: 4 }).map((_, i) => (
+      <div key={`sk-${i}`} className="info-card info-card--skeleton">
+        <span className="skeleton-line skeleton-line--short" />
+        <h2 className="skeleton-line skeleton-line--long" />
+      </div>
+    )), []);
 
   return (
     <div className="stats">
@@ -147,52 +202,77 @@ const EditUserData = () => {
           <header className="profile-header">
             <div className="profile-info">
               <h1>Editar Dados</h1>
+              <p>Clique em um campo para editar</p>
             </div>
           </header>
 
           {message.text && (
-            <div className={`edit-toast edit-toast--${message.type}`}>
+            <div
+              className={`edit-toast edit-toast--${message.type}`}
+              role="alert"
+              aria-live="polite"
+            >
               {message.text}
             </div>
           )}
 
           <section className="menu-data">
             {loading && !user ? (
-              <div className="info-card info-card--loading">
-                <span>Carregando...</span>
-              </div>
+              skeletonCards
             ) : (
-              fieldsConfig.map(({ key, label, type, placeholder }) => {
+              FIELDS_CONFIG.map(({ key, label, type, placeholder, maxLength }) => {
                 const isEditing = editingField === key;
                 const value = user?.[key];
-                const showField = key !== "display_name" || value;
+                const hasValue = Boolean(value);
+                const showField = key !== "display_name" || hasValue || isEditing;
 
-                if (!showField && !isEditing) return null;
+                if (!showField) return null;
 
                 return (
                   <div
                     key={key}
                     className={`info-card ${isEditing ? "info-card--editing" : ""}`}
                     onClick={() => !isEditing && !saving && startEditing(key)}
+                    role={isEditing ? undefined : "button"}
+                    tabIndex={isEditing ? undefined : 0}
+                    onKeyDown={
+                      isEditing
+                        ? undefined
+                        : (e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            startEditing(key);
+                          }
+                        }
+                    }
                   >
                     {!isEditing ? (
                       <>
-                        <span>{label}</span>
-                        <h2>{value || <em className="empty-value">Não informado</em>}</h2>
-                        <small className="edit-hint">Clique para editar</small>
+                        <span className="info-card__label">{label}</span>
+                        <h2 className="info-card__value">
+                          {value || <em className="empty-value">Não informado</em>}
+                        </h2>
+                        <small className="edit-hint">
+                          {saving ? "Salvando..." : "Clique para editar"}
+                        </small>
                       </>
                     ) : (
-                      <div className="edit-field" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="edit-field"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <label htmlFor={`edit-${key}`}>{label}</label>
                         <input
+                          ref={(el) => (inputRefs.current[key] = el)}
                           id={`edit-${key}`}
                           type={type}
                           value={draftValues[key]}
                           onChange={(e) => handleDraftChange(key, e.target.value)}
                           onKeyDown={(e) => handleKeyDown(e, key)}
                           placeholder={placeholder}
-                          autoFocus
+                          maxLength={maxLength}
                           disabled={saving}
+                          autoComplete="off"
                         />
                         <div className="edit-actions">
                           <Button
@@ -214,13 +294,15 @@ const EditUserData = () => {
                 );
               })
             )}
-            <></>
+          </section>
+
+          <div className="profile-buttons">
             <Button
               buttonText="Voltar"
               className="btn-medium btn"
-              onClick={() => handleBack("/UserStats")}
+              onClick={handleBack}
             />
-          </section>
+          </div>
         </div>
       </main>
     </div>
