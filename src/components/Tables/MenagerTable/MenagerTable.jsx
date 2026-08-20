@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
 // css
-import "../tables.css";
+import "../../../styles/tables.css";
 
 // Utils
 import {

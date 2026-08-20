@@ -11,7 +11,6 @@
   display: grid;
   gap: 3rem;
   width: 100%;
-  min-width: 73rem;
   margin-top: 0;
   padding: 30px;
   padding-top: 20px;
@@ -300,12 +299,187 @@ Filter
     visibility 0s linear 0s;
 }
 
+/* ===========================
+   1200px
+=========================== */
+
+@media (max-width: 1200px) {
+  .table-page.table {
+    width: calc(100% - 40px);
+  }
+
+  .table-page {
+    padding: 25px;
+  }
+
+  .menu-information {
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    gap: 20px;
+  }
+
+  .app-table {
+    min-width: 850px;
+  }
+}
+
+/* ===========================
+   900px
+=========================== */
+
+@media (max-width: 900px) {
+  .table-page.table {
+    position: relative;
+
+    top: auto;
+    left: auto;
+
+    transform: none;
+
+    width: calc(100% - 30px);
+
+    margin: 100px auto 20px;
+  }
+
+  .table-page {
+    padding: 20px;
+    gap: 2rem;
+  }
+
+  .menu-information {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+
+  .date-filter {
+    flex-wrap: wrap;
+  }
+
+  .date-filter > * {
+    flex: 1 1 180px;
+  }
+}
+
+/* ===========================
+   700px
+=========================== */
+
+@media (max-width: 700px) {
+  .table-page.table {
+    width: calc(100% - 20px);
+  }
+
+  .table-page {
+    padding: 15px;
+    gap: 1.5rem;
+  }
+
+  .title-h2 {
+    font-size: 1.4rem;
+  }
+
+  .menu-information {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .menu-information li {
+    margin-top: 0;
+    max-width: 100%;
+  }
+
+  .date-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-filter > * {
+    width: 100%;
+    flex: none;
+  }
+
+  .date-filter input {
+    min-width: 0;
+  }
+
+  .table-container {
+    max-height: 400px;
+  }
+
+  .app-table {
+    min-width: 850px;
+  }
+}
+
+/* ===========================
+   480px
+=========================== */
+
+@media (max-width: 480px) {
+  .table-page.table {
+    width: calc(100% - 10px);
+
+    margin-top: 90px;
+  }
+
+  .table-page {
+    padding: 12px;
+    border-radius: var(--radius-md);
+  }
+
+  .title-h2 {
+    font-size: 1.2rem;
+  }
+
+  .menu-information li {
+    padding: 12px;
+  }
+
+  .menu-information li h1 {
+    font-size: 1rem;
+  }
+
+  .app-table {
+    min-width: 800px;
+  }
+
+  .app-table td {
+    padding: 11px 15px;
+    font-size: 0.85rem;
+  }
+
+  .app-table thead th {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+  }
+
+  .status {
+    min-width: 40px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ===========================
+   REDUCE MOTION
+=========================== */
+
 @media (prefers-reduced-motion: reduce) {
   .table-edit {
-    transition: opacity 0.15s ease, visibility 0s linear 0.15s;
+    transition:
+      opacity 0.15s ease,
+      visibility 0s linear 0.15s;
+
     transform: none;
   }
+
   .table-edit.active {
     transition: opacity 0.15s ease;
+  }
+
+  .app-table tbody tr:hover {
+    transform: none;
+  }
+
+  .menu-information li:hover {
+    transform: none;
   }
 }

@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
 // css
-import "../tables.css";
+import "../../../styles/tables.css";
 import Swal from "sweetalert2";
 
 // router-dom
@@ -16,14 +16,14 @@ import {
   formatTime,
 } from "../../../utils/formatHours.js";
 
-//hooks
+// hooks
 import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
 import { useTeamLeaderTable } from "../../../hooks/useTeamLeaderTable";
 
-//context
+// context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 
-//components
+// components
 import Input from "../../Layouts/Inputs/Inputs.jsx";
 import Button from "../../Layouts/Button/Button";
 
@@ -31,18 +31,20 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [editTime, setEditTime] = useState(null);
-
+  const [refreshKey, setRefreshKey] = useState(0);
   const editTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   const navigate = useNavigate();
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
 
   const { id: currentUserId } = useAuthValue();
 
+  const processedData = useMemo(() => {
+    return data?.map((item) => ({ ...item })) || [];
+  }, [data, refreshKey]);
+
   const { currentItem, currentEmployeePerformace, goNext, goPrev } =
-    useGroupUsers(data, idMonth);
+    useGroupUsers(processedData, idMonth);
 
   const isViewingOwnRecords =
     currentUserId != null &&
@@ -68,27 +70,47 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     });
   }, [currentItem, startDate, endDate, isFilterActive]);
 
-  const handleClearFilter = () => {
+  // Cleanup
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (editTimeoutRef.current) {
+        clearTimeout(editTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleNavigate = useCallback(
+    (path) => {
+      navigate(path);
+    },
+    [navigate],
+  );
+
+  const handleClearFilter = useCallback(() => {
     setStartDate("");
     setEndDate("");
-  };
+  }, []);
 
-  const handleEditHours = (overtimeId, path) => {
-    const record = filteredRecords.find((item) => item.id === overtimeId);
+  const handleEditHours = useCallback(
+    (overtimeId, path) => {
+      const record = filteredRecords.find((item) => item.id === overtimeId);
 
-    if (!record) {
-      console.warn("Hora extra não encontrada");
-      return;
-    }
+      if (!record) {
+        console.warn("Hora extra não encontrada");
+        return;
+      }
 
-    navigate(path, { state: { overtime: record } });
-  };
+      navigate(path, { state: { overtime: record } });
+    },
+    [filteredRecords, navigate],
+  );
 
   const { loading, handleConfirmAction } = useTeamLeaderTable({
     onApprove: handleCloseMonth,
   });
 
-  const handleOpenConfirm = async () => {
+  const handleOpenConfirm = useCallback(async () => {
     const result = await Swal.fire({
       title: "Deseja aprovar o fechamento do mês?",
       text: "Após confirmar, o período será enviado para aprovação.",
@@ -108,11 +130,18 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     });
 
     if (result.isConfirmed) {
-      await handleConfirmAction();
+      try {
+        await handleConfirmAction();
+        if (isMountedRef.current) {
+          setRefreshKey((k) => k + 1);
+        }
+      } catch (err) {
+        console.error("Erro ao aprovar mês:", err);
+      }
     }
-  };
+  }, [handleConfirmAction]);
 
-  const handleEditTime = (registerId) => {
+  const handleEditTime = useCallback((registerId) => {
     if (editTimeoutRef.current) {
       clearTimeout(editTimeoutRef.current);
     }
@@ -120,10 +149,15 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     setEditTime(registerId);
 
     editTimeoutRef.current = setTimeout(() => {
-      setEditTime(null);
+      if (isMountedRef.current) {
+        setEditTime(null);
+      }
       editTimeoutRef.current = null;
     }, 5000);
-  };
+  }, []);
+
+  const colSpan = isViewingOwnRecords ? 10 : 9;
+
   return (
     <div className="table-page table">
       <div>
@@ -174,7 +208,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 value={endDate}
                 min={startDate || undefined}
                 onChange={(e) => setEndDate(e.target.value)}
-                name="startDate"
+                name="endDate"
               />
 
               {isFilterActive && (
@@ -206,7 +240,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
           </div>
         </div>
 
-        <div className="table-container ">
+        <div className="table-container">
           <table className="app-table">
             <thead>
               <tr>
@@ -219,13 +253,15 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 <th>Horas Totais</th>
                 <th>50%</th>
                 <th>100%</th>
-                {isViewingOwnRecords && <th className="table-action-header"></th>}
+                {isViewingOwnRecords && (
+                  <th className="table-action-header"></th>
+                )}
               </tr>
             </thead>
             <tbody>
               {filteredRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={isViewingOwnRecords ? 10 : 9} className="empty-state">
+                  <td colSpan={colSpan} className="empty-state">
                     {isFilterActive
                       ? "Nenhum registro encontrado no período selecionado."
                       : "Nenhum registro encontrado."}
@@ -247,6 +283,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                           ? () => handleEditTime(register.id)
                           : undefined
                       }
+                      className={
+                        isViewingOwnRecords ? "table-row--clickable" : undefined
+                      }
                     >
                       <td>{currentItem?.name}</td>
                       <td>{formatDate(startTime)}</td>
@@ -260,7 +299,11 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                           {formatHours(type["1"] ?? 0)}
                         </span>
                       </td>
-                      <td className={isViewingOwnRecords ? "last-column" : undefined}>
+                      <td
+                        className={
+                          isViewingOwnRecords ? "last-column" : undefined
+                        }
+                      >
                         <span className="status approved">
                           {formatHours(type["2"] ?? 0)}
                         </span>

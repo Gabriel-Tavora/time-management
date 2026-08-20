@@ -7,16 +7,15 @@ import DateCatch from "../../../components/RegisterhouserUSe/DateCatch/DateCatch
 import RegisterInfo from "../../../components/RegisterhouserUSe/RegisterInfo/RegisterInfo.jsx";
 
 // CSS
-import "./RegisterHours.css";
+import "../../../styles/registerHours.css";
 
 // Context
 import { useAuthValue } from "../../../context/TokenContext";
 
 // Utils
 import { getCurrentDate } from "../../../utils/formatHours.js";
-import {
-  isNightTime,
-} from "../../../utils/editFormatTime.js";
+import { isNightTime } from "../../../utils/editFormatTime.js";
+
 // Hooks
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
 import { useOvertimeRegistration } from "../../../hooks/useOvertimeRegistration";
@@ -75,9 +74,7 @@ const RegisterHours = () => {
 
   const handleEndTimeChange = (e) => {
     const value = e.target.value;
-
     setEndTime(value);
-
     setNightTime(
       isNightTime(startTime, value)
     );

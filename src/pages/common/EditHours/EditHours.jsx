@@ -8,7 +8,7 @@ import EditDate from "../../../components/EditHoursInput/EditDate/EditDate.jsx";
 import SendEditData from "../../../components/EditHoursInput/SendEditData/SendEditData.jsx";
 
 // CSS
-import "./EditHours.css";
+import "../../../styles/registerHours.css";
 
 // Context
 import { useAuthValue } from "../../../context/TokenContext.jsx";

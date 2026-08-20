@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef } from "react";
 //css
-import "../tables.css";
+import "../../../styles/tables.css";
 import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
 //Utils
 import { formatHours, formatDate, formatTime } from "../../../utils/formatHours.js";
@@ -19,7 +19,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const timeout = useRef(null);
   const [editTime, setEditTime] = useState(null);
-  
+
   const handleEditTime = (register) => {
     setEditTime(register);
 
@@ -53,11 +53,13 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   const isFilterActive = Boolean(startDate || endDate);
 
   const filteredData = useMemo(() => {
-    if (!data) return data;
+    if (!data || !Array.isArray(data)) return [];
+
     if (!isFilterActive) return data;
 
     return data.filter((register) => {
       const workDate = register.overtime_records?.work_date;
+
       if (!workDate) return false;
 
       const dateOnly = workDate.slice(0, 10);
@@ -157,7 +159,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
             </thead>
 
             <tbody>
-              {filteredData && filteredData.length === 0 ? (
+              {filteredData.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="empty-state">
                     {isFilterActive
@@ -166,44 +168,47 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                   </td>
                 </tr>
               ) : (
-                filteredData?.map((register) => {
-                  const startTime = register.overtime_records.start_time;
-                  const endTime = register.overtime_records.end_time;
-                  const totalHours = register.overtime_records.total_hours ?? 0;
-                  const nightHours = register.overtime_records.nigth_hours ?? 0;
-                  const type = register.hours_by_type;
+                filteredData.map((register) => {
+                  const overtime = register.overtime_records;
+                  const startTime = overtime.start_time;
+                  const endTime = overtime.end_time;
+                  const totalHours = overtime.total_hours ?? 0;
+                  const nightHours = overtime.nigth_hours ?? 0;
+                  const type = register.hours_by_type ?? {};
 
                   return (
                     <tr
-                      key={register.overtime_records.id}
-                      onClick={() =>
-                        handleEditTime(register.overtime_records.id)
-                      }
+                      key={overtime.id}
+                      onClick={() => handleEditTime(overtime.id)}
                     >
-                      <td >{formatDate(startTime)}</td>
+                      <td>{formatDate(startTime)}</td>
                       <td>{formatDate(endTime)}</td>
                       <td>{formatTime(startTime)}</td>
                       <td>{formatTime(endTime)}</td>
                       <td>{nightHours ? formatHours(nightHours) : "0"}</td>
                       <td>{formatHours(totalHours)}</td>
                       <td>
-                        <span className="status pending">{formatHours(type["1"])}</span>
+                        <span className="status pending">
+                          {formatHours(type["1"] ?? 0)}
+                        </span>
                       </td>
                       <td className="last-column">
                         <span className="status approved">
-                          {formatHours(type["2"])}
+                          {formatHours(type["2"] ?? 0)}
                         </span>
                         <div
-                          className={`table-edit ${editTime === register.overtime_records.id ? "active" : ""
-                            }`}
-                        >
+                          className={`table-edit ${editTime === overtime.id ? "active" : ""}`}>
                           <Button
                             className="btn-table"
                             type="button"
                             icon={FaEdit}
+                            aria-label="Editar hora extra"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleEditHours(register.overtime_records.id, "/EditHours");
+                              handleEditHours(
+                                overtime.id,
+                                "/EditHours"
+                              );
                             }}
                           />
                         </div>
