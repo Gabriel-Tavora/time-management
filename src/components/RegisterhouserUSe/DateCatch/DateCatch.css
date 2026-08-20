@@ -1,37 +1,32 @@
-.time-menu-form-group {
+/* Grupo principal */
+.input-time {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  width: 600px;
+  max-width: 100%;
   gap: 30px;
   margin-bottom: 30px;
 }
 
-.time-menu-group {
+/* Grupo: data + horário */
+.date-time {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 1.15em;
-  font-weight: 600;
-  color: #2d3748;
+  gap: 20px;
 }
 
-.time-menu-group label {
-  align-self: flex-start;
-  cursor: pointer;
+/* Responsividade */
+@media (max-width: 700px) {
+  .input-time {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
-.time-menu-group input {
-  height: 3.5rem;
-  width: 100%;
-  padding: 0 18px;
-  font-size: 1.15em;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-  color: #2d3748;
-}
-
-.time-menu-group input:focus {
-  outline: none;
-  border-color: #4f46e5;
+/* Celulares */
+@media (max-width: 480px) {
+  .input-time {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
 }

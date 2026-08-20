@@ -1,0 +1,206 @@
+/* botão normal */
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 20px;
+  min-width: 195px;
+  max-width: 195;
+  padding: 12px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  background: var(--gradient-accent);
+  color: var(--white-color);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 12px 35px rgba(80, 110, 255, 0.45),
+    0 0 20px rgba(124, 92, 255, 0.25);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+
+.btn-medium{
+  min-width: 145px;
+  max-width: 195px;
+}
+
+
+.btn-large{
+  min-width: 245px;
+  max-width: 360px;
+  min-height: 45px;
+  max-height: 45px;
+  align-self: center;
+  margin-top: 0;
+}
+
+/* Botão pequeno circular */
+.change-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  min-width: 48px;
+  margin-top: 20px;
+  height: 48px;
+  border: 1px solid var(--border-card);
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--white-color);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+}
+
+.change-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 12px 35px rgba(80, 110, 255, 0.45),
+    0 0 20px rgba(124, 92, 255, 0.25);
+}
+
+.change-btn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.change-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:focus-visible,
+.clear-filter-btn:focus-visible,
+.change-btn:focus-visible {
+  outline: 2px solid var(--accent-color, #7c5cff);
+  outline-offset: 2px;
+}
+
+/* Botão verde ou vermelho estilizado */
+.approved-btn,
+.rejected-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  margin-top: 20px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--white-color);
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
+}
+
+.approved-btn {
+  background: var(--gradient-success);
+  border-color: var(--white-color);
+}
+
+.approved-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 35px var(--success-glow), 0 0 20px var(--success-glow-strong);
+}
+
+.rejected-btn {
+  background: var(--gradient-danger);
+  border-color: var(--white-color);
+}
+
+.rejected-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 35px var(--danger-glow), 0 0 20px var(--danger-glow-strong);
+}
+
+.approved-btn:active,
+.rejected-btn:active {
+  transform: scale(.95);
+}
+
+/* botão da tabela */
+
+.table-action-cell {
+  position: relative;
+  width: 0;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.table-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  background: var(--gradient-accent);
+  transform: translateX(100%);
+  transition:
+    width 0.35s ease,
+    transform 0.35s ease,
+    opacity 0.25s ease;
+
+  z-index: 20;
+}
+
+.table-edit.active {
+  width: 100%;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.btn-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--white-color);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+    font-size: 1.4em;
+}
+
+.btn-table:active:not(:disabled) {
+  transform: scale(0.8);
+}

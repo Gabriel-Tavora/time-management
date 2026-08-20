@@ -1,0 +1,63 @@
+import React from "react";
+//css
+import "./SendEditData.css";
+import { FaSave } from "react-icons/fa";
+
+const SendEditData = ({
+  jiraTask,
+  observation,
+  onJiraTaskChange,
+  onObservationChange,
+  message,
+  isSubmitting,
+  isRedirecting,
+}) => {
+  const isLocked = isSubmitting || isRedirecting;
+
+  return (
+    <div className="time-menu-send">
+      <div className="time-menu-send-obs">
+        <label htmlFor="jira">Identificação jira:</label>
+        <input
+          id="jira"
+          type="text"
+          value={jiraTask}
+          onChange={onJiraTaskChange}
+          name="jira"
+          placeholder="Insira a identificação Jira do trabalho"
+          disabled={isLocked}
+        />
+        <label htmlFor="observation">Observação:</label>
+        <textarea
+          id="observation"
+          name="observation"
+          rows="4"
+          value={observation}
+          onChange={onObservationChange}
+          placeholder="Descreva o motivo da hora extra (opcional)"
+          disabled={isLocked}
+        />
+      </div>
+
+      {message && (
+        <p
+          className={`time-menu-message time-menu-message-${message.type}`}
+          role={message.type === "error" ? "alert" : "status"}
+        >
+          {message.text}
+        </p>
+      )}
+
+      <button type="submit" className="time-menu-send-btn" disabled={isLocked}>
+        <FaSave className="src" />
+        {isSubmitting
+          ? "Alterando..."
+          : isRedirecting
+            ? "Salvo! Voltando..."
+            : "Alterar Hora Extra"}
+      </button>
+    </div>
+  );
+};
+
+export default SendEditData;

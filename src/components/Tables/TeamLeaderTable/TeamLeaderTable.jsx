@@ -1,108 +1,295 @@
-import React, { useRef, useState } from "react";
-//css
-import "./TeamLeaderTable.css";
+import React, { useState, useMemo, useRef } from "react";
+// css
 import "../tables.css";
-//Utils
-import { formatHours, formatDate } from "../../../utils/formatHours.js";
+import Swal from "sweetalert2";
 
-const TeamLeaderTable = ({ data, handleCloseMoth }) => {
-  const dialogRef = useRef(null);
-  const dialogAlert = useRef(null)
-  const [loading, setLoading] = useState(false);
+// router-dom
+import { useNavigate } from "react-router-dom";
 
-  async function handleApprove() {
+// icons
+import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
 
-    setLoading(true);
-    dialogAlert.current?.close();
+// Utils
+import {
+  formatHours,
+  formatDate,
+  formatTime,
+} from "../../../utils/formatHours.js";
 
-    try {
-      await handleCloseMoth();
-      dialogRef.current?.showModal();
-      setTimeout(() => {
-        dialogRef.current?.close();
-      }, 4000);
+//hooks
+import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
+import { useTeamLeaderTable } from "../../../hooks/useTeamLeaderTable";
 
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao fechar o mês. Tente novamente.");
+//context
+import { useAuthValue } from "../../../context/TokenContext.jsx";
 
-    } finally {
-      setLoading(false);
+//components
+import Input from "../../Layouts/Inputs/Inputs.jsx";
+import Button from "../../Layouts/Button/Button";
+
+const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [editTime, setEditTime] = useState(null);
+
+  const editTimeoutRef = useRef(null);
+
+  const navigate = useNavigate();
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  const { id: currentUserId } = useAuthValue();
+
+  const { currentItem, currentEmployeePerformace, goNext, goPrev } =
+    useGroupUsers(data, idMonth);
+
+  const isViewingOwnRecords =
+    currentUserId != null &&
+    currentItem?.id != null &&
+    String(currentItem.id) === String(currentUserId);
+
+  const isFilterActive = Boolean(startDate || endDate);
+
+  const filteredRecords = useMemo(() => {
+    const records = currentItem?.records ?? [];
+    if (!isFilterActive) return records;
+
+    return records.filter((record) => {
+      const workDate = record?.work_date;
+      if (!workDate) return false;
+
+      const dateOnly = workDate.slice(0, 10);
+
+      if (startDate && dateOnly < startDate) return false;
+      if (endDate && dateOnly > endDate) return false;
+
+      return true;
+    });
+  }, [currentItem, startDate, endDate, isFilterActive]);
+
+  const handleClearFilter = () => {
+    setStartDate("");
+    setEndDate("");
+  };
+
+  const handleEditHours = (overtimeId, path) => {
+    const record = filteredRecords.find((item) => item.id === overtimeId);
+
+    if (!record) {
+      console.warn("Hora extra não encontrada");
+      return;
     }
-  }
-  const closeDialog = () => {
-    dialogAlert.current?.close();
+
+    navigate(path, { state: { overtime: record } });
+  };
+
+  const { loading, handleConfirmAction } = useTeamLeaderTable({
+    onApprove: handleCloseMonth,
+  });
+
+  const handleOpenConfirm = async () => {
+    const result = await Swal.fire({
+      title: "Deseja aprovar o fechamento do mês?",
+      text: "Após confirmar, o período será enviado para aprovação.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aprovar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
+    });
+
+    if (result.isConfirmed) {
+      await handleConfirmAction();
+    }
+  };
+
+  const handleEditTime = (registerId) => {
+    if (editTimeoutRef.current) {
+      clearTimeout(editTimeoutRef.current);
+    }
+
+    setEditTime(registerId);
+
+    editTimeoutRef.current = setTimeout(() => {
+      setEditTime(null);
+      editTimeoutRef.current = null;
+    }, 5000);
   };
   return (
-    <div className="Leader-main">
-      <div className="Leader-title">
-        <h2>Registros de Horas Extras do Mês</h2>
-        <button
-          className="btn"
-          onClick={() => dialogAlert.current?.showModal()}
-          disabled={loading}
-        >
-          {loading ? "Carregando..." : "Aprovar Fechamento"}
-        </button>
-
-        <dialog ref={dialogAlert} className="close-dialog">
-          <h2>Deseja aprovar o fechamento do mês?</h2>
-          <p>Após confirmar, o período será enviado para aprovação.</p>
-          <div className="dialog-actions">
-            <button onClick={closeDialog} className="dialog-cancel-btn">
-              Cancelar
-            </button>
-            <button onClick={handleApprove} className="dialog-confirm-btn">
-              Aprovar
-            </button>
-          </div>
-        </dialog>
-
-        <dialog ref={dialogRef}>
-          <h2>Fechamento realizado com sucesso!</h2>
-          <button onClick={() => dialogRef.current.close()}>
-            Fechar
-          </button>
-        </dialog>
+    <div className="table-page table">
+      <div>
+        <h2 className="title-h2">Histórico de Horas Extras</h2>
+        <ul className="menu-information">
+          <li>
+            <h1>Total de Horas Extras</h1>
+            <h3 className="time">
+              {formatHours(currentEmployeePerformace?.total_hours)}
+            </h3>
+          </li>
+          <li>
+            <h1>Total de Horas Noturnas</h1>
+            <h3 className="night">
+              {formatHours(currentEmployeePerformace?.nigth_hours)}
+            </h3>
+          </li>
+          <li>
+            <h1>Quantidade no Mês</h1>
+            <h3>
+              {currentEmployeePerformace?.total_overtimes_mouth > 0
+                ? currentEmployeePerformace.total_overtimes_mouth
+                : "0"}
+            </h3>
+          </li>
+        </ul>
       </div>
 
-      <div className="Leader-table">
-        <table className="Leader-stats">
-          <thead>
-            <tr>
-              <th>Colaboradores</th>
-              <th>Data</th>
-              <th>Horas Totais</th>
-              <th>Horas Diurnas</th>
-              <th>Horas Noturnas</th>
-              <th>Tipo</th>
-            </tr>
-          </thead>
+      <div className="table-page">
+        <div className="table-header">
+          <div className="date-filter">
+            <div className="table-header">
+              <Input
+                className="btn"
+                labelText="Data Inicial"
+                id="filter-start-date"
+                type="date"
+                value={startDate}
+                max={endDate || undefined}
+                onChange={(e) => setStartDate(e.target.value)}
+                name="startDate"
+              />
+              <Input
+                classNameIn="filter-start-date"
+                labelText="Data Final"
+                id="filter-end-date"
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(e) => setEndDate(e.target.value)}
+                name="startDate"
+              />
 
-          <tbody >
-            {data?.map((register) => {
-              const record = register.overtime_records;
-              const totalHours = record?.total_hours ?? 0;
-              const nightHours = record?.nigth_hours ?? 0;
-              const dayHours = Math.max(totalHours - nightHours, 0);
+              {isFilterActive && (
+                <Button
+                  buttonText="Limpar"
+                  className="btn btn-medium"
+                  onClick={handleClearFilter}
+                  aria-label="Limpar filtro de data"
+                  icon={FaTimes}
+                />
+              )}
+            </div>
+            <div className="table-header">
+              <Button
+                className="btn"
+                buttonText="Registrar Hora Extra"
+                onClick={() => handleNavigate("/RegisterHours")}
+                icon={FaPlus}
+              />
+              <Button
+                className="btn-medium btn"
+                buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
+                onClick={handleOpenConfirm}
+                disabled={loading}
+              />
+              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+              <Button className="change-btn" onClick={goNext} buttonText="▶" />
+            </div>
+          </div>
+        </div>
 
-              return (
-                <tr key={record?.id}>
-                  <td>{register.users?.name}</td>
-                  <td>{record?.work_date ? formatDate(record.work_date) : "-"}</td>
-                  <td>{formatHours(totalHours)}</td>
-                  <td>{dayHours > 0 ? formatHours(dayHours) : "00:00"}</td>
-                  <td>{nightHours > 0 ? formatHours(nightHours) : "00:00"}</td>
-                  <td>
-                    {record?.overtime_type_id === 1
-                      ? <span className="status pending">50%</span>
-                      : <span className="status approved">100%</span>}
+        <div className="table-container ">
+          <table className="app-table">
+            <thead>
+              <tr>
+                <th>Colaboradores</th>
+                <th>Data Inicial</th>
+                <th>Data Final</th>
+                <th>Horário Inicial</th>
+                <th>Horário Final</th>
+                <th>Horas Noturnas</th>
+                <th>Horas Totais</th>
+                <th>50%</th>
+                <th>100%</th>
+                {isViewingOwnRecords && <th className="table-action-header"></th>}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRecords.length === 0 ? (
+                <tr>
+                  <td colSpan={isViewingOwnRecords ? 10 : 9} className="empty-state">
+                    {isFilterActive
+                      ? "Nenhum registro encontrado no período selecionado."
+                      : "Nenhum registro encontrado."}
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ) : (
+                filteredRecords.map((register) => {
+                  const totalHours = register.total_hours ?? 0;
+                  const nightHours = register.nigth_hours ?? 0;
+                  const startTime = register.start_time;
+                  const endTime = register.end_time;
+                  const type = register.hours_by_type ?? {};
+
+                  return (
+                    <tr
+                      key={register.id}
+                      onClick={
+                        isViewingOwnRecords
+                          ? () => handleEditTime(register.id)
+                          : undefined
+                      }
+                    >
+                      <td>{currentItem?.name}</td>
+                      <td>{formatDate(startTime)}</td>
+                      <td>{formatDate(endTime)}</td>
+                      <td>{formatTime(startTime)}</td>
+                      <td>{formatTime(endTime)}</td>
+                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
+                      <td>{formatHours(totalHours)}</td>
+                      <td>
+                        <span className="status pending">
+                          {formatHours(type["1"] ?? 0)}
+                        </span>
+                      </td>
+                      <td className={isViewingOwnRecords ? "last-column" : undefined}>
+                        <span className="status approved">
+                          {formatHours(type["2"] ?? 0)}
+                        </span>
+
+                        {isViewingOwnRecords && (
+                          <div
+                            className={`table-edit ${editTime === register.id ? "active" : ""
+                              }`}
+                          >
+                            <Button
+                              className="btn-table"
+                              type="button"
+                              icon={FaEdit}
+                              aria-label="Editar hora extra"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditHours(register.id, "/EditHours");
+                              }}
+                            />
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

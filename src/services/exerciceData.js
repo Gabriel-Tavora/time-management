@@ -1,5 +1,5 @@
 import { API_URL } from "./api";
-
+// usar ainda !!!!!!!!!!!!!!!!!!
 export async function employeeDataAll(token) {
   const response = await fetch(`${API_URL}/exercice`, {
     method: "GET",

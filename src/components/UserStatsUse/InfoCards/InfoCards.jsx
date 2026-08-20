@@ -1,22 +1,30 @@
-import React, { useEffect,useState } from "react";
-//css
-import "./InfoCards.css";
+import React, { useEffect, useState } from "react";
 //services
 import { getCurrentUser } from "../../../services/userData.js";
 //context
 import { useAuthValue } from "../../../context/TokenContext";
-const InfoCards = () => {
+const InfoCards = ({ onEmailLoaded }) => {
   const [user, setUser] = useState(null);
   const { token } = useAuthValue();
 
+  async function loadingData() {
+    try {
+      const data = await getCurrentUser(token);
+      setUser(data);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  
   useEffect(() => {
-    async function loadingData() {
-      try {
-        const data = getCurrentUser(token);
-        setUser(data);
-      } catch (e) {
-        console.error(error);
-      }
+    if (user?.email) {
+      onEmailLoaded?.(user.email);
+    }
+  }, [user, onEmailLoaded]);
+
+  useEffect(() => {
+    if (token) {
+      loadingData();
     }
   }, [token]);
 
@@ -27,10 +35,12 @@ const InfoCards = () => {
         <h2>{user?.name}</h2>
       </div>
 
-      <div className="info-card">
-        <span>Apelido</span>
-        <h2>{user?.display_name}</h2>
-      </div>
+      {user?.display_name && (
+        <div className="info-card">
+          <span>Apelido</span>
+          <h2>{user.display_name}</h2>
+        </div>
+      )}
 
       <div className="info-card">
         <span>Email</span>
@@ -40,16 +50,6 @@ const InfoCards = () => {
       <div className="info-card">
         <span>Telefone</span>
         <h2>{user?.phone}</h2>
-      </div>
-
-      <div className="info-card">
-        <span>Cargo</span>
-        <h2>Desenvolvedor Front-end</h2>
-      </div>
-
-      <div className="info-card">
-        <span>Data de Cadastro</span>
-        <h2>15/07/2026</h2>
       </div>
     </section>
   );

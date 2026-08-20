@@ -7,7 +7,6 @@ export async function getCurrentUser(token) {
       Authorization: `Bearer ${token}`,
     },
   });
-
   if (!response.ok) {
     throw new Error("Erro ao buscar usuário");
   }
@@ -38,4 +37,42 @@ export async function createUser(userData, token) {
   }
 
   return response.json();
+}
+
+export async function editUserData(userData, token) {
+  const data = Object.fromEntries(
+    Object.entries({
+      name: userData?.name,
+      display_name: userData?.display_name,
+      email: userData?.email,
+      cpf: userData?.cpf,
+      phone: userData?.phone,
+    }).filter(
+      ([_, value]) =>
+        value !== undefined &&
+        value !== null &&
+        String(value).trim() !== ""
+    )
+  );
+
+  const response = await fetch(`${API_URL}/users`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+   if (!response.ok) {
+    throw new Error(`Erro ao editar usuário ${userData?.name}`);
+  }
+
+  const text = await response.text();
+
+  if (!text) {
+    return null;
+  }
+
+  return JSON.parse(text);
 }

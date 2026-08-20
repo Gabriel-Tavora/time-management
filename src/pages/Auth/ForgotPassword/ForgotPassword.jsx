@@ -1,190 +1,292 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { FaEnvelope, FaKey, FaLock } from "react-icons/fa";
-//css
-import "./ForgotPassword.css";
-//services
-import { sendEmail, resetPassword } from '../../../services/login';
 
+// Icons
+import {
+  FaEnvelope,
+  FaKey,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+
+// Hook
+import { usePasswordReset } from "../../../hooks/usePasswordReset";
+
+// CSS
+import "./ForgotPassword.css";
+import "../../../styles/auth.css"
+//components 
+import Input from "../../../components/Layouts/Inputs/Inputs.jsx"
+import Button from "../../../components/Layouts/Button/Button.jsx"
 const STEPS = {
   EMAIL: "email",
   PASSWORD: "password",
 };
 
-const MAX_ATTEMPTS = 4;
 
 const FormMessage = ({ message }) => {
-  if (!message) return null;
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!message) {
+      setVisible(false);
+      return;
+    }
+    setVisible(true);
+    const timeout = setTimeout(() => {
+      setVisible(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, [message]);
+
+  if (!visible) return null;
+
   return (
     <p
       role="status"
       aria-live="polite"
-      className={message.type === "success" ? "form-success" : "form-error"}
+      className={
+        message.type === "success"
+          ? "form-success"
+          : "form-error"
+      }
     >
       {message.text}
     </p>
   );
 };
 
+
 const ForgotPassword = () => {
-  const [step, setStep] = useState(STEPS.EMAIL);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [attempts, setAttempts] = useState(0);
-
-  // Dados do formulário
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
   const navigate = useNavigate();
 
-  const showSuccess = (text) => setMessage({ type: "success", text });
-  const showError = (text) => setMessage({ type: "error", text });
+  const [step, setStep] = useState(STEPS.EMAIL);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
+  const {
+    email,
+    setEmail,
+    code,
+    setCode,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    loading,
+    message,
+    sendCode,
+    submitPassword,
+    cleanup,
+  } = usePasswordReset({
+    maxAttempts: 4,
+
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
+
+  React.useEffect(() => {
+    return cleanup;
+  }, [cleanup]);
 
   const handleSendEmail = async (e) => {
     e.preventDefault();
-    setMessage(null);
-    setLoading(true);
 
-    try {
-      await sendEmail(email.trim());
+    if (loading) return;
 
-      showSuccess(
-        "Se o email existir, você receberá um código para redefinir sua senha."
-      );
+    const result = await sendCode(email);
 
+    if (result?.success) {
       setStep(STEPS.PASSWORD);
-    } catch (err) {
-      showError(
-        err.message ||
-        "Não foi possível enviar o email de recuperação."
-      );
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
-    setMessage(null);
 
-    if (password !== confirmPassword) {
-      showError("As senhas não coincidem.");
-      return;
-    }
+    if (loading) return;
+    const result = await submitPassword(
+      code,
+      password
+    );
 
-    setLoading(true);
-
-    try {
-      await resetPassword(code.trim(), password);
-
-      setAttempts(0);
-
-      showSuccess("Senha redefinida com sucesso.");
-
-      setTimeout(() => navigate("/"), 2000);
-    } catch (err) {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
-
-      if (newAttempts >= MAX_ATTEMPTS) {
-        showError(
-          "Você excedeu o número máximo de tentativas. Reinicie o processo."
-        );
-
-        setAttempts(0);
-        setPassword("");
-        setConfirmPassword("");
-        setCode("");
-        setStep(STEPS.EMAIL);
-
-        return;
-      }
-
-      showError(
-        `${err.message || "Código inválido ou expirado."} Restam ${MAX_ATTEMPTS - newAttempts
-        } tentativa(s).`
-      );
-    } finally {
-      setLoading(false);
+    if (result?.reason === "max_attempts") {
+      setStep(STEPS.EMAIL);
     }
   };
+
   return (
-    <div className="Forgotlogin">
-      <section className="Forgotlogin-section">
-        <h1>Esqueci a senha</h1>
+    <div className="login-page">
+      <section className="login-card">
+        <div className="forgot-header">
+          <h1>
+            {step === STEPS.EMAIL
+              ? "Esqueci a senha"
+              : "Redefinir senha"}
+          </h1>
+
+          <p>
+            {step === STEPS.EMAIL
+              ? "Insira seu email para receber o código."
+              : "Insira o código e defina sua nova senha."}
+          </p>
+        </div>
 
         {step === STEPS.EMAIL && (
           <form onSubmit={handleSendEmail}>
             <div className="input-group">
               <FaEnvelope className="input-icon" />
-              <input
+              <Input
                 type="email"
                 placeholder="Digite seu Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
                 disabled={loading}
                 required
+                autoComplete="email"
               />
             </div>
             <FormMessage message={message} />
-            <button type="submit" disabled={loading}>
-              {loading ? "Enviando..." : "Enviar"}
-            </button>
+            <Button
+              className="btn btn-large"
+              type="submit"
+              disabled={loading}
+              buttonText={loading
+                ? "Enviando..."
+                : "Enviar código"}
+            />
+
           </form>
         )}
-
-
 
         {step === STEPS.PASSWORD && (
           <form onSubmit={handleSubmitPassword}>
             <div className="input-group">
               <FaKey className="input-icon" />
-              <input
+              <Input
                 type="text"
-                placeholder="Digite o código enviado por email"
+                placeholder="Código enviado por email"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={(e) =>
+                  setCode(e.target.value)
+                }
                 disabled={loading}
                 required
+                autoComplete="one-time-code"
               />
             </div>
 
+
             <div className="input-group">
               <FaLock className="input-icon" />
-              <input
-                type="password"
+              <Input
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Nova senha"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
                 disabled={loading}
                 required
+                minLength={8}
+                autoComplete="new-password"
               />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowPassword(
+                    (prev) => !prev
+                  )
+                }
+                disabled={loading}
+                aria-label={
+                  showPassword
+                    ? "Ocultar senha"
+                    : "Mostrar senha"
+                }
+              >
+                {showPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
             </div>
 
             <div className="input-group">
               <FaLock className="input-icon" />
-              <input
-                type="password"
+              <Input
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Confirme a senha"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(
+                    e.target.value
+                  )
+                }
                 disabled={loading}
                 required
+                minLength={8}
+                autoComplete="new-password"
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowConfirmPassword(
+                    (prev) => !prev
+                  )
+                }
+                disabled={loading}
+                aria-label={
+                  showConfirmPassword
+                    ? "Ocultar confirmação"
+                    : "Mostrar confirmação"
+                }
+              >
+                {showConfirmPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
             </div>
+
             <FormMessage message={message} />
-            <button type="submit" disabled={loading}>
-              {loading ? "Enviando..." : "Confirmar"}
-            </button>
+            <Button
+             className="btn btn-large"
+              type="submit"
+              disabled={loading}
+              buttonText= {loading
+                ? "Alterando..."
+                : "Confirmar senha"}
+            />
           </form>
         )}
 
-        <NavLink to="/" className="forgot-pass">
-          <span>Voltar para Login</span>
+        <NavLink
+          to="/"
+          className="forgot-pass"
+        >
+          Voltar para Login
         </NavLink>
+
       </section>
     </div>
   );

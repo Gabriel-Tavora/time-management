@@ -1,21 +1,53 @@
 import React, { useState, useEffect } from "react";
-//compone
+//componentes
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
+import Button from "../../../components/Layouts/Button/Button.jsx"
 //css
 import "./Calendary.css";
 //utils
 import { calendaryGet } from '../../../utils/calendaryget';
-import { formatDate } from '../../../utils/formatHours';
 // services
 import { getUserHours } from '../../../services/overtimeData.js';
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx"
+
 const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+function getUtcDateKey(dateValue) {
+  const d = new Date(dateValue);
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const year = d.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+// Deriva os dias com hora extra a partir de start_time/end_time, não de
+// work_date — isso garante que turnos de múltiplos dias marquem TODOS os
+// dias cobertos, não só o dia de início.
+function buildWorkDatesSet(records) {
+  const dates = new Set();
+
+  records.forEach((item) => {
+    const { start_time, end_time } = item.overtime_records;
+    if (!start_time || !end_time) return;
+
+    const cursor = new Date(start_time);
+    const end = new Date(end_time);
+
+    while (cursor <= end) {
+      dates.add(getUtcDateKey(cursor));
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+  });
+
+  return dates;
+}
 
 const Calendary = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [userCurrentDate, setUserCurrentDate] = useState(null);
   const [workDates, setWorkDates] = useState(new Set());
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const { token } = useAuthValue();
 
@@ -30,24 +62,37 @@ const Calendary = () => {
   const calendarDays = [];
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadingData() {
-      const userData = await getUserHours(token);
-      setUserCurrentDate(userData);
+      setErrorMessage(null);
 
-      const dates = new Set(
-        userData.map(item => formatDate(item.overtime_records.work_date))
-      );
+      try {
+        const userData = await getUserHours(token);
+        if (cancelled) return;
 
-      setWorkDates(dates);
+        setUserCurrentDate(userData);
+        setWorkDates(buildWorkDatesSet(userData));
+      } catch (error) {
+        if (cancelled) return;
+        console.error(error);
+        setErrorMessage(error?.message || "Erro ao carregar horas extras.");
+      }
     }
 
     if (token) {
       loadingData();
     }
+
+    return () => {
+      cancelled = true;
+    };
   }, [token]);
+
   const previousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
   };
+
   const nextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
@@ -70,9 +115,13 @@ const Calendary = () => {
 
       <div className="calendary-page">
         <header className="calendar-header">
-          <button className="month-btn" onClick={previousMonth}>
-            ◀
-          </button>
+
+          <Button
+            className="change-btn"
+            onClick={previousMonth}
+            aria-label="Mês anterior"
+            buttonText="◀"
+          />
 
           <div>
             <h1>Calendário</h1>
@@ -84,10 +133,20 @@ const Calendary = () => {
               })}
             </h2>
           </div>
-          <button className="month-btn" onClick={nextMonth}>
-            ▶
-          </button>
+
+          <Button
+            className="change-btn"
+            onClick={nextMonth}
+            aria-label="Próximo mês"
+            buttonText="▶"
+          />
         </header>
+
+        {errorMessage && (
+          <p className="form-message error" role="alert">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="week-days">
           {weekDays.map((day) => (
@@ -97,32 +156,49 @@ const Calendary = () => {
 
         <div className="calendar-grid">
           {calendarDays.map((day, index) => {
+            if (!day) {
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  className="day empty"
+                  disabled
+                />
+              );
+            }
+
             const isToday =
-              day &&
               today.getDate() === day &&
               today.getMonth() === month &&
               today.getFullYear() === year;
+
             const currentDay = String(day).padStart(2, "0");
             const currentMonth = String(month + 1).padStart(2, "0");
-            const currentYear = year;
-
-            const buttonDate = `${currentDay}/${currentMonth}/${currentYear}`;
+            const buttonDate = `${currentDay}/${currentMonth}/${year}`;
 
             const hasOvertime = workDates.has(buttonDate);
+
+            const classNames = [
+              "day",
+              isToday && "today",
+              hasOvertime && "overtime-day",
+            ]
+              .filter(Boolean)
+              .join(" ");
+
             return (
               <button
                 key={index}
-                className={`day
-                  ${!day ? "empty" : ""}
-                  ${isToday ? "today" : ""}
-                  ${hasOvertime ? "overtime-day" : ""}
-                  `}>
+                type="button"
+                className={classNames}
+                aria-current={isToday ? "date" : undefined}
+                aria-label={`${buttonDate}${hasOvertime ? ", com hora extra registrada" : ""}`}
+              >
                 {day}
               </button>
             );
           })}
         </div>
-
       </div>
     </div>
   );

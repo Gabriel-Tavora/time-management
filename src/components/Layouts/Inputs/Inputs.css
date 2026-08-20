@@ -1,0 +1,327 @@
+/* ============================================
+   GLOBAL INPUT SYSTEM
+   Unifica: Login | Forgot Password | Register
+   ============================================ */
+
+.input-group {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  align-self: center;
+}
+
+.input-group input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  padding: 0 0 0 55px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.input-group input::placeholder {
+  color: #404f65;
+  opacity: 0.85;
+}
+
+.input-group input:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.45);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.input-group input:focus {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1),
+    0 0 18px rgba(37, 99, 235, 0.18);
+}
+
+.input-group input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Ícone esquerdo */
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  z-index: 2;
+
+  width: 20px;
+  height: 20px;
+
+  transform: translateY(-50%);
+
+  color: #2563eb;
+
+  pointer-events: none;
+
+  transition: color 0.3s ease;
+}
+
+.input-group:focus-within .input-icon {
+  color: #1d4ed8;
+}
+
+/* Toggle mostrar/ocultar senha */
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  transform: translateY(-50%);
+
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.password-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Remove controles nativos de senha */
+.input-group input[type="password"]::-ms-reveal,
+.input-group input[type="password"]::-ms-clear,
+.input-group input[type="password"]::-webkit-password-reveal {
+  display: none;
+}
+
+/* Autofill Chrome */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #211f37;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* ============================================
+   2. INPUT SIMPLES — SEM ÍCONE (Register / Forms)
+   ============================================ */
+
+.commun-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 250px;
+  min-height: 40px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.commun-input label {
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.commun-input input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 18px;
+
+  font-size: 1rem;
+  color: var(--text-primary);
+
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 18px;
+
+  outline: none;
+
+  transition: 0.3s;
+}
+
+.commun-input input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.commun-input input:focus {
+  background: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-focus-shadow);
+}
+
+.commun-input input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================================
+   3. INPUT COM ÍCONE SÓ À ESQUERDA (Insert / Search)
+   ============================================ */
+
+.input-insert {
+  position: relative;
+  width: 100%;
+  max-width: 373px;
+}
+
+.input-insert input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  padding: 0 18px 0 55px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.input-insert input::placeholder {
+  color: #404f65;
+  opacity: 0.85;
+}
+
+.input-insert input:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.45);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.input-insert input:focus {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1),
+    0 0 18px rgba(37, 99, 235, 0.18);
+}
+
+.input-insert input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input-insert .input-icon {
+  left: 20px;
+}
+
+/* ============================================
+   4. ESTADOS DE VALIDAÇÃO
+   ============================================ */
+
+.input-group input.input--error,
+.input-insert input.input--error,
+.commun-input input.input--error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px hsl(var(--hue-danger) 85% 60% / 0.15);
+}
+
+.input-group input.input--error:focus,
+.input-insert input.input--error:focus,
+.commun-input input.input--error:focus {
+  border-color: var(--danger);
+  box-shadow:
+    0 0 0 3px hsl(var(--hue-danger) 85% 60% / 0.15),
+    0 0 18px hsl(var(--hue-danger) 85% 60% / 0.18);
+}
+
+.input-group input.input--success,
+.input-insert input.input--success,
+.commun-input input.input--success {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px hsl(var(--hue-success) 70% 45% / 0.15);
+}
+
+/* ============================================
+   5. DATE / TIME PICKER INDICATOR
+   ============================================ */
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter:
+    invert(38%) sepia(90%) saturate(2500%) hue-rotate(195deg);
+  cursor: pointer;
+}
+
+/* ============================================
+   6. RESPONSIVIDADE
+   ============================================ */
+
+@media (max-width: 500px) {
+
+  .input-group,
+  .input-insert {
+    max-width: 100%;
+  }
+
+  .input-group input,
+  .input-insert input {
+    height: 56px;
+    border-radius: 16px;
+    font-size: 15px;
+  }
+
+  .input-icon {
+    left: 17px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .password-toggle {
+    right: 15px;
+  }
+
+  .commun-input {
+    max-width: 100%;
+  }
+
+  .commun-input input {
+    height: 3.2rem;
+    border-radius: 16px;
+  }
+}

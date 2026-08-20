@@ -1,0 +1,81 @@
+/* ============================
+ PAGE
+============================ */
+
+.login-page {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(37, 99, 235, .08), transparent 35%),
+    radial-gradient(circle at 85% 10%, rgba(96, 165, 250, .08), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(147, 197, 253, .10), transparent 45%),
+    linear-gradient(135deg, #f8fbff 0%, #ffffff 45%, #eef6ff 100%);
+}
+
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(37, 99, 235, .05), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(96, 165, 250, .05), transparent 30%);
+  z-index: 0;
+}
+
+/* ============================
+   CARD
+============================ */
+
+.login-card {
+  position: relative;
+  z-index: 10;
+  min-width: 440px;
+  min-height: 420px;
+  padding: 50px 45px;
+  box-sizing: border-box;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  box-shadow:
+    0 15px 40px rgba(15, 23, 42, 0.08),
+    0 0 20px rgba(37, 99, 235, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+/* ============================
+   messages error/good
+============================ */
+
+.form-success,
+.form-error {
+  align-self: center;
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-success {
+  color: #166534;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.form-error {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}

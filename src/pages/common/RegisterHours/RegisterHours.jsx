@@ -14,7 +14,9 @@ import { useAuthValue } from "../../../context/TokenContext";
 
 // Utils
 import { getCurrentDate } from "../../../utils/formatHours.js";
-
+import {
+  isNightTime,
+} from "../../../utils/editFormatTime.js";
 // Hooks
 import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
 import { useOvertimeRegistration } from "../../../hooks/useOvertimeRegistration";
@@ -27,8 +29,10 @@ const RegisterHours = () => {
     setEndTime,
     nightTime,
     setNightTime,
-    workDate,
-    setWorkDate,
+    endDate,
+    setEndDate,
+    startDate,
+    setStartDate,
   } = useRegisterHours();
 
   const [jiraTask, setJiraTask] = useState("");
@@ -38,7 +42,8 @@ const RegisterHours = () => {
 
   const loadTodayDate = () => {
     const { formattedPost } = getCurrentDate();
-    setWorkDate(formattedPost);
+    setEndDate(formattedPost);
+    setStartDate(formattedPost);
   };
 
   useEffect(() => {
@@ -54,18 +59,15 @@ const RegisterHours = () => {
   };
 
   const form = {
-    workDate,
-    startTime,
     endTime,
+    endDate,
+    startTime,
+    startDate,
     jiraTask,
     observation,
   };
 
-  const {
-    handleSubmit,
-    message,
-    isSubmitting,
-  } = useOvertimeRegistration({
+  const { handleSubmit, message, isSubmitting } = useOvertimeRegistration({
     token,
     form,
     clearForm,
@@ -75,9 +77,18 @@ const RegisterHours = () => {
     const value = e.target.value;
 
     setEndTime(value);
-    setNightTime(value >= "22:00");
-  };
 
+    setNightTime(
+      isNightTime(startTime, value)
+    );
+  };
+  const handleStartTimeChange = (value) => {
+    setStartTime(value);
+
+    setNightTime(
+      isNightTime(value, endTime)
+    );
+  };
   return (
     <div className="time-menu">
       <Sidebar />
@@ -86,15 +97,14 @@ const RegisterHours = () => {
         <div className="time-menu-container">
           <h1>Registrar Hora Extra</h1>
 
-          <form
-            className="time-menu-form"
-            onSubmit={handleSubmit}
-          >
+          <form className="time-menu-form" onSubmit={handleSubmit}>
             <DateCatch
-              workDate={workDate}
-              setWorkDate={setWorkDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              startDate={startDate}
+              setStartDate={setStartDate}
               startTime={startTime}
-              setStartTime={setStartTime}
+              handleStartTimeChange={handleStartTimeChange}
               endTime={endTime}
               handleEndTimeChange={handleEndTimeChange}
             />
@@ -108,12 +118,8 @@ const RegisterHours = () => {
             <RegisterInfo
               jiraTask={jiraTask}
               observation={observation}
-              onJiraTaskChange={(e) =>
-                setJiraTask(e.target.value)
-              }
-              onObservationChange={(e) =>
-                setObservation(e.target.value)
-              }
+              onJiraTaskChange={(e) => setJiraTask(e.target.value)}
+              onObservationChange={(e) => setObservation(e.target.value)}
               message={message}
               isSubmitting={isSubmitting}
             />

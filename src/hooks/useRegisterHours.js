@@ -4,7 +4,8 @@ export function useRegisterHours() {
   const [startTime, setStartTime] = useState("17:00");
   const [endTime, setEndTime] = useState("");
   const [nightTime, setNightTime] = useState(false);
-  const [workDate, setWorkDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState("");
 
   return {
     startTime,
@@ -13,7 +14,9 @@ export function useRegisterHours() {
     setEndTime,
     nightTime,
     setNightTime,
-    workDate,
-    setWorkDate,
+    endDate,
+    setEndDate,
+    startDate,
+    setStartDate,
   };
 }

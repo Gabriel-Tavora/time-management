@@ -1,97 +1,38 @@
 import React, { useEffect, useState } from "react";
-
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderTable.jsx';
-
-// CSS
-import "./Teamleader.css";
-
-//Context
-import { useAuthValue } from "../../context/TokenContext";
-
-// Services
-import { getCurrentUser } from "../../services/userData.js";
-import { employeeDataAll, employeeDataMonth, closeMonth } from '../../services/exerciceData.js';
-import { employeeDataRecord, getUserHours } from '../../services/overtimeData.js';
-
-//Utils
-import { getCurrentDate } from "../../utils/formatHours.js";
-
+//hooks
+import { useTeamLeader } from '../../hooks/useTeamLeaderInfo.js';
 const Teamleader = () => {
-  const [user, setUser] = useState(null);
-  const [dataTime, setDataTime] = useState([]);
-  const [colaboratorData, setColaboratorData] = useState([]);
-  const [message, setMessage] = useState(null);
-  const [idMonth, setIdMonth] = useState([]);
-  const { formatted } = getCurrentDate();
-  const { token } = useAuthValue();
-
-  const loadData = async () => {
-    try {
-      const infoMonth = await employeeDataMonth(token);
-      setIdMonth(infoMonth);
-
-      const responseData = await employeeDataRecord(token, infoMonth?.id);
-      setColaboratorData(responseData);
-
-      const userInformations = await getCurrentUser(token);
-      setUser(userInformations);
-
-      const dataUserTime = await getUserHours(token);
-      setDataTime(dataUserTime);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      loadData();
-    }
-  }, [token]);
-  const handleCloseMoth = async () => {
-    setMessage(null);
-
-    try {
-      await closeMonth(token, idMonth?.id);
-
-      await loadData();
-
-      setMessage({
-        type: "success",
-        text: "Mês fechado com sucesso.",
-      });
-      return true;
-    } catch (error) {
-      console.error(error);
-
-      setMessage({
-        type: "error",
-        text: error.message || "Erro ao fechar o mês.",
-      });
-      
-      return false;
-    }
-  };
+  const {
+    handleCloseMonth,
+    loadData,
+    formatted,
+    idMonth,
+    message,
+    colaboratorData,
+    dataTime,
+    user,
+  } = useTeamLeader();
   return (
-    <div className="Leader-screen">
+    <div className="dashboard-screen">
       <Sidebar />
+
       <main className="main-informations">
-        <DashboardHeader user={user} formatted={formatted} />
+        <DashboardHeader
+          user={user}
+          formatted={formatted}
+        />
 
-        <ul className="main-menu">
-          <li>
-            <h2>Team-Leader</h2>
-          </li>
-        </ul>
 
-        <div className="Leader-tables">
+        <div className="Leader-tables main-menu">
           <TeamLeaderTable
             data={colaboratorData}
-            handleCloseMoth={handleCloseMoth}
+            handleCloseMonth={handleCloseMonth}
             reloadData={loadData}
+            idMonth={idMonth}
           />
         </div>
       </main>

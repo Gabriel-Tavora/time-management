@@ -3,12 +3,9 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
 import UserTable from "../../components/Tables/UserTable/UserTable.jsx";
-// CSS
-import "./UserScreen.css";
-
 // services
 import { getCurrentUser } from "../../services/userData.js";
-import { getUserHours } from "../../services/overtimeData.js";
+import { getUserHours, getUserPerformance } from "../../services/overtimeData.js";
 
 //context
 import { useAuthValue } from "../../context/TokenContext.jsx";
@@ -19,41 +16,41 @@ import { getCurrentDate } from "../../utils/formatHours.js";
 const UserScreen = () => {
   const [user, setUser] = useState(null);
   const [dataTime, setDataTime] = useState([]);
-  const { formatted } = getCurrentDate();
+  const [monthPerf, setMonthPerf] = useState([]);
+  const { formatted, monthStart, monthEnd } = getCurrentDate();
   const { token } = useAuthValue();
 
-  useEffect(() => {
-    async function loadingData() {
-      try {
-        const userInformations = await getCurrentUser(token);
-        setUser(userInformations);
-        
-        const dataUserTime = await getUserHours(token);
-        setDataTime(dataUserTime);
-        
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  async function loadingData() {
+    try {
+      const userInformations = await getCurrentUser(token);
+      setUser(userInformations);
 
+      const dataUserTime = await getUserHours(token);
+      setDataTime(dataUserTime);
+
+      const monthPerformace = await getUserPerformance(token, monthStart, monthEnd)
+      setMonthPerf(monthPerformace);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
     if (token) {
       loadingData();
     }
   }, [token]);
 
   return (
-    <div className="user-screen">
+    <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
         <DashboardHeader user={user} formatted={formatted} />
 
-        <ul className="main-menu">
-          <li>
-            <h2>Usuário</h2>
-          </li>
-        </ul>
+        <div className="main-menu">
+          <UserTable data={dataTime} monthPerf={monthPerf} token={token} />
+        </div>
 
-        <UserTable data={dataTime} />
       </main>
     </div>
   );

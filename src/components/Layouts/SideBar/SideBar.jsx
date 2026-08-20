@@ -16,7 +16,8 @@ import {
 } from "react-icons/fa";
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
-
+//components
+import Button from "../Button/Button"
 //services
 import { getCurrentUser } from '../../../services/userData.js';
 
@@ -25,8 +26,8 @@ function Sidebar() {
   const [user, setUser] = useState(null)
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout, token, employee, roleId } = useAuthValue();
   const dialogRef = useRef(null);
+  const { logout, token, employee, roleId } = useAuthValue();
 
   useEffect(() => {
     const getData = async () => {
@@ -107,10 +108,10 @@ function Sidebar() {
           <dialog ref={dialogRef} className="logout-dialog">
             <h2>Tem certeza que deseja sair?</h2>
             <div className="dialog-actions">
-              <button onClick={closeDialog} className="dialog-cancel-btn">
+              <button onClick={closeDialog} className="rejected-btn">
                 Cancelar
               </button>
-              <button onClick={handleLogout} className="dialog-confirm-btn">
+              <button onClick={handleLogout} className="btn btn-medium">
                 Sair
               </button>
             </div>
