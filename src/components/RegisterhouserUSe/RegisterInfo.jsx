@@ -1,8 +1,9 @@
 import React from "react";
 //css
-import "./RegisterInfo.css";
+import "../../styles/RegisterInfo.css";
 import { FaPlus } from "react-icons/fa";
-
+//components
+import Input from "../Layouts/Inputs/Inputs.jsx"
 const RegisterInfo = ({
   jiraTask,
   observation,
@@ -15,7 +16,7 @@ const RegisterInfo = ({
     <div className="time-menu-send">
       <div className="time-menu-send-obs">
         <label htmlFor="jira">Identificação jira:</label>
-        <input
+        <Input
           id="jira"
           type="text"
           value={jiraTask}

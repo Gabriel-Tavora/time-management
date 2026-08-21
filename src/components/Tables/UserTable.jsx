@@ -1,14 +1,14 @@
 import React, { useMemo, useState, useRef } from "react";
 //css
-import "../../../styles/tables.css";
+import "../../styles/tables.css";
 import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
 //Utils
-import { formatHours, formatDate, formatTime } from "../../../utils/formatHours.js";
+import { formatHours, formatDate, formatTime } from "../../utils/formatHours.js";
 //router-dom
 import { useNavigate } from "react-router-dom";
 //hooks
-import Input from "../../Layouts/Inputs/Inputs.jsx";
-import Button from '../../Layouts/Button/Button';
+import Input from "../Layouts/Inputs/Inputs.jsx";
+import Button from '../Layouts/Button/Button.jsx';
 
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 

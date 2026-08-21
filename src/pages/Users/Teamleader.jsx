@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
-import TeamLeaderTable from '../../components/Tables/TeamLeaderTable/TeamLeaderTable.jsx';
+import TeamLeaderTable from '../../components/Tables/TeamLeaderTable.jsx';
 //hooks
 import { useTeamLeader } from '../../hooks/useTeamLeaderInfo.js';
 const Teamleader = () => {

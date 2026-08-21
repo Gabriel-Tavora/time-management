@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
-import CoordinatorTable from "../../components/Tables/CoordinatorTable/CoordinatorTable.jsx";
+import CoordinatorTable from "../../components/Tables/CoordinatorTable.jsx";
 
 //hooks
 import { useCoordinator } from '../../hooks/useCoordinatorInfo.js';

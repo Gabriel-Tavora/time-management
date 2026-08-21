@@ -23,7 +23,7 @@
 .time-menu-send-obs label {
   align-self: flex-start;
   cursor: pointer;
-  color: var(--input-label);
+  color: var(--text-primary);
 }
 
 .time-menu-send-obs input {
@@ -38,9 +38,6 @@
   transition: .3s;
 }
 
-.time-menu-send-obs input::placeholder {
-  color: var(--input-label);
-}
 
 .time-menu-send-obs input:focus {
   color: var(--input-label);
@@ -63,15 +60,28 @@
   transition: .3s;
 }
 
-.time-menu-send-obs textarea::placeholder {
-  color: var(--text-primary);
-}
 
 .time-menu-send-obs textarea:focus {
   outline: none;
   background: var(--input-bg-focus);
   border-color: var(--input-border-focus);
   box-shadow: var(--input-focus-shadow);
+}
+
+.time-menu-send-obs input,
+.time-menu-send-obs textarea {
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+}
+
+.time-menu-send-obs input::placeholder,
+.time-menu-send-obs textarea::placeholder {
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+  color: var(--text-primary);
+  opacity: 1;
 }
 
 /* Mensagem */
@@ -104,16 +114,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   align-self: center;
+  gap: 10px;
   width: 260px;
   height: 52px;
   border: none;
   border-radius: 18px;
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
   background: var(--gradient-accent);
   color: #fff;
-  font-size: .95rem;
-  font-weight: 700;
   cursor: pointer;
   transition: .35s;
 }

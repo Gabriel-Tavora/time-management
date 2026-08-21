@@ -1,7 +1,7 @@
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
-import MenagerTable from "../../components/Tables/MenagerTable/MenagerTable.jsx"
+import MenagerTable from "../../components/Tables/MenagerTable.jsx"
 
 //hooks
 import { useMenager } from '../../hooks/useMenagerInfo.js';

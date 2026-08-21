@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar.jsx";
-import EditDate from "../../../components/EditHoursInput/EditDate/EditDate.jsx";
-import SendEditData from "../../../components/EditHoursInput/SendEditData/SendEditData.jsx";
+import EditDate from "../../../components/EditHoursInput//EditDate.jsx";
+import SendEditData from "../../../components/EditHoursInput//SendEditData.jsx";
 
 // CSS
 import "../../../styles/registerHours.css";

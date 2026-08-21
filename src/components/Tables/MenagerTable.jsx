@@ -1,21 +1,21 @@
 import Swal from "sweetalert2";
 
 // css
-import "../../../styles/tables.css";
+import "../../styles/tables.css";
 
 // Utils
 import {
   formatHours,
   formatDate,
   formatTime,
-} from "../../../utils/formatHours.js";
+} from "../../utils/formatHours.js";
 
 // Hook
-import { useMenagerTable } from "../../../hooks/useMenagerTable";
-import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
+import { useMenagerTable } from "../../hooks/useMenagerTable.js";
+import { useGroupUsers } from "../../hooks/useFilterUserById.js";
 
 // Components
-import Button from "../../Layouts/Button/Button";
+import Button from "../Layouts/Button/Button.jsx";
 
 const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
   const {

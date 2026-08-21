@@ -127,6 +127,9 @@
   --input-border: hsl(0 0% 100% / 0.08);
   --input-border-focus: var(--accent-bright);
   --input-focus-shadow: 0 0 20px hsl(var(--h) 100% 68% / 0.25);
+  --input-font-family: "Nunito", sans-serif;
+  --input-font-size: 1rem;
+  --input-font-weight: 600;
 
   /* === SIDEBAR === */
   --button-text: hsl(220 20% 18%);
@@ -286,6 +289,8 @@
 .dashboard-screen {
   display: flex;
   min-height: 100vh;
+  overflow-x: hidden;
+  /* rede de segurança: evita scroll horizontal em telas estreitas */
   background:
     radial-gradient(circle at 15% 15%,
       var(--bg-radial-purple),
@@ -298,6 +303,8 @@
 .main-informations {
   position: relative;
   flex: 1;
+  min-width: 0;
+  /* essencial: sem isso, um filho flex não encolhe abaixo do conteúdo, forçando overflow lateral */
   min-height: 100vh;
   overflow: hidden;
 }
@@ -321,8 +328,12 @@
   z-index: 2;
   display: grid;
   justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto clamp(24px, 6vw, 60px);
+  padding: 0 clamp(12px, 4vw, 20px);
   list-style: none;
-  margin-bottom: 60px;
+  box-sizing: border-box;
 }
 
 .main-menu li {
@@ -330,18 +341,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 260px;
+
+  width: min(260px, 100%);
   min-height: 10px;
-  padding: 14px 22px;
+
+  padding: clamp(10px, 3vw, 14px) clamp(16px, 4vw, 22px);
+
+  box-sizing: border-box;
+
   color: var(--text-primary);
+
   border-radius: var(--radius-md);
+
   background: var(--bg-card);
   backdrop-filter: blur(18px);
+
   border: 1px solid var(--border-card);
+
   box-shadow: var(--shadow-card);
 }
 
+
 /* pop up */
+
 .my-swal-popup {
   background-color: #0f172a !important;
   color: #ffffff !important;
@@ -440,4 +462,42 @@
 dialog::backdrop {
   background: var(--dialog-backdrop);
   backdrop-filter: blur(4px);
+}
+
+
+/* ===========================
+   TABLET (≤ 1024px)
+=========================== */
+@media (max-width: 1024px) {
+  .main-menu {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-screen {
+    flex-direction: column;
+    min-height: auto;
+    /* evita somar 100vh do wrapper + 100vh do conteúdo empilhado */
+  }
+
+  .main-informations {
+    min-height: auto;
+    width: 100%;
+  }
+}
+
+/* ===========================
+   CELULARES PEQUENOS (≤ 480px)
+=========================== */
+@media (max-width: 480px) {
+  .main-menu {
+    padding: 0 12px;
+    margin-bottom: 24px;
+  }
+
+  .main-menu li {
+    width: 100%;
+    padding: 12px 16px;
+  }
 }

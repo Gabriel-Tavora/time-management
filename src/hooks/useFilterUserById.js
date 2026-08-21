@@ -86,7 +86,6 @@ export function useGroupUsers(records, idMonth) {
       Math.max(index - 1, 0)
     );
   }, []);
-
   return {
     currentItem,
     total,

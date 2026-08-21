@@ -329,14 +329,10 @@ Filter
 @media (max-width: 900px) {
   .table-page.table {
     position: relative;
-
     top: auto;
     left: auto;
-
     transform: none;
-
     width: calc(100% - 30px);
-
     margin: 100px auto 20px;
   }
 

@@ -1,23 +1,22 @@
 import React from "react";
 import Swal from "sweetalert2";
 //css
-import "../../../styles/tables.css";
+import "../../styles/tables.css";
 //Utils
 import {
   formatHours,
   formatDate,
   formatTime,
-} from "../../../utils/formatHours.js";
+} from "../../utils/formatHours.js";
 //components
-import Button from "../../Layouts/Button/Button";
+import Button from "../Layouts/Button/Button.jsx";
 //hooks
-import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
-import { useCoordinatorTable } from "../../../hooks/useCoordinatorTable";
+import { useGroupUsers } from "../../hooks/useFilterUserById.js";
+import { useCoordinatorTable } from "../../hooks/useCoordinatorTable.js";
 
 const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
   const { currentItem, currentEmployeePerformace, goNext, goPrev } =
-    useGroupUsers(data);
-
+    useGroupUsers(data, disabled);
   const {
     loading,
     handleConfirmAction,
@@ -133,7 +132,6 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
                   const startTime = record.start_time;
                   const endTime = record.end_time;
                   const type = record.hours_by_type ?? {};
-
                   return (
                     <tr key={record.id}>
                       <td>{currentItem.name}</td>

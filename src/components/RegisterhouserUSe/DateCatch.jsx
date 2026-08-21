@@ -1,8 +1,9 @@
 import React from "react";
-import "./EditDate.css";
-import Input from "../../Layouts/Inputs/Inputs.jsx";
-
-const EditDate = ({
+//css
+import "../../styles/DateCatch.css";
+//components
+import Input from "../Layouts/Inputs/Inputs.jsx";
+const DateCatch = ({
   endDate,
   setEndDate,
   startDate,
@@ -24,7 +25,6 @@ const EditDate = ({
           onChange={(e) => setStartDate(e.target.value)}
           name="startDate"
         />
-
         <Input
           classNameIn="commun-input"
           labelText="Horário Inicial"
@@ -46,7 +46,6 @@ const EditDate = ({
           onChange={(e) => setEndDate(e.target.value)}
           name="endDate"
         />
-
         <Input
           classNameIn="commun-input"
           labelText="Horário de Saída"
@@ -61,4 +60,4 @@ const EditDate = ({
   );
 };
 
-export default EditDate;
+export default DateCatch;

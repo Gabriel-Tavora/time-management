@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 
 // Components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar.jsx";
-import DateCatch from "../../../components/RegisterhouserUSe/DateCatch/DateCatch.jsx";
-import RegisterInfo from "../../../components/RegisterhouserUSe/RegisterInfo/RegisterInfo.jsx";
+import DateCatch from "../../../components/RegisterhouserUSe//DateCatch.jsx";
+import RegisterInfo from "../../../components/RegisterhouserUSe//RegisterInfo.jsx";
 
 // CSS
 import "../../../styles/registerHours.css";
@@ -72,20 +72,16 @@ const RegisterHours = () => {
     clearForm,
   });
 
-  const handleEndTimeChange = (e) => {
-    const value = e.target.value;
-    setEndTime(value);
-    setNightTime(
-      isNightTime(startTime, value)
-    );
-  };
   const handleStartTimeChange = (value) => {
     setStartTime(value);
-
-    setNightTime(
-      isNightTime(value, endTime)
-    );
+    setNightTime(isNightTime(value, endTime));
   };
+
+  const handleEndTimeChange = (value) => {
+    setEndTime(value);
+    setNightTime(isNightTime(startTime, value));
+  };
+
   return (
     <div className="time-menu">
       <Sidebar />
@@ -96,10 +92,10 @@ const RegisterHours = () => {
 
           <form className="time-menu-form" onSubmit={handleSubmit}>
             <DateCatch
-              endDate={endDate}
-              setEndDate={setEndDate}
               startDate={startDate}
               setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
               startTime={startTime}
               handleStartTimeChange={handleStartTimeChange}
               endTime={endTime}

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
 // css
-import "../../../styles/tables.css";
+import "../../styles/tables.css";
 import Swal from "sweetalert2";
 
 // router-dom
@@ -14,18 +14,18 @@ import {
   formatHours,
   formatDate,
   formatTime,
-} from "../../../utils/formatHours.js";
+} from "../../utils/formatHours.js";
 
 // hooks
-import { useGroupUsers } from "../../../hooks/useFilterUserById.js";
-import { useTeamLeaderTable } from "../../../hooks/useTeamLeaderTable";
+import { useGroupUsers } from "../../hooks/useFilterUserById";
+import { useTeamLeaderTable } from "../../hooks/useTeamLeaderTable";
 
 // context
-import { useAuthValue } from "../../../context/TokenContext.jsx";
+import { useAuthValue } from "../../context/TokenContext.jsx";
 
 // components
-import Input from "../../Layouts/Inputs/Inputs.jsx";
-import Button from "../../Layouts/Button/Button";
+import Input from "../Layouts/Inputs/Inputs.jsx";
+import Button from "../Layouts/Button/Button";
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const [startDate, setStartDate] = useState("");

@@ -1,6 +1,6 @@
 import React from "react";
 //css
-import "./SendEditData.css";
+import "../../styles/RegisterInfo.css";
 import { FaSave } from "react-icons/fa";
 
 const SendEditData = ({

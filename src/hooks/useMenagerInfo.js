@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-
 //Utils
 import { getCurrentDate } from "../utils/formatHours.js";
-
 //Context
 import { useAuthValue } from "../context/TokenContext.jsx";
-
 // Services
 import { getCurrentUser } from "../services/userData.js";
 import {

@@ -9,7 +9,7 @@ import { useAuthValue } from "../../../context/TokenContext.jsx";
 
 // css
 import "./Login.css";
-import "../../../styles/auth.css"
+import "../../../styles/auth.css";
 
 // icons
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -41,9 +41,8 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     if (submitting) return;
-
+    
     setSubmitting(true);
     setMessage(null);
 

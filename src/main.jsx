@@ -22,10 +22,10 @@ const Login = lazy(() => import("./pages/Auth/Login/Login.jsx"));
 const ForgotPassword = lazy(() =>
   import("./pages/Auth/ForgotPassword/ForgotPassword.jsx")
 );
-const UserScreen = lazy(() => import("./pages/user/UserScreen.jsx"));
-const RegisterHours = lazy(() =>
-  import("./pages/common/RegisterHours/RegisterHours.jsx")
-);
+const UserScreen = lazy(() => import("./pages/Users/UserScreen.jsx"));
+
+const RegisterHours = lazy(() => import("./pages/common/RegisterHours/RegisterHours.jsx"));
+
 const EditHours = lazy(() =>
   import("./pages/common/EditHours/EditHours.jsx")
 );
@@ -39,16 +39,16 @@ const Calendary = lazy(() =>
   import("./pages/common/Calendary/Calendary.jsx")
 );
 const Teamleader = lazy(() =>
-  import("./pages/teamleader/Teamleader.jsx")
+  import("./pages/Users/Teamleader.jsx")
 );
 const Coordinator = lazy(() =>
-  import("./pages/coordinator/Coordinator.jsx")
+  import("./pages/Users/Coordinator.jsx")
 );
 const Menager = lazy(() =>
-  import("./pages/Menager/Menager.jsx")
+  import("./pages/Users/Menager.jsx")
 );
 const SuperAdmin = lazy(() =>
-  import("./pages/superAdmin/SuperAdmin.jsx")
+  import("./pages/Users/SuperAdmin.jsx")
 );
 const NotFound = lazy(() =>
   import("./pages/common/NotFound/NotFound.jsx")
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
   {
     path: "/userscreen",
     element: (
-      <PrivateRoute>
+       <PrivateRoute>
         <UserScreen />
       </PrivateRoute>
     ),
