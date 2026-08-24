@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState, useRef, useEffect, useCallback } from "react";
 //css
 import "../../styles/tables.css";
 import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Input from "../Layouts/Inputs/Inputs.jsx";
 import Button from '../Layouts/Button/Button.jsx';
 
+const EDIT_AUTO_CLOSE_MS = 5000;
+
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const navigate = useNavigate();
@@ -18,21 +20,42 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   };
 
   const timeout = useRef(null);
+  const containerRef = useRef(null);
   const [editTime, setEditTime] = useState(null);
 
-  const handleEditTime = (register) => {
-    setEditTime(register);
-
+  const closeEdit = useCallback(() => {
     clearTimeout(timeout.current);
+    setEditTime(null);
+  }, []);
 
+  const handleEditTime = (id) => {
+    setEditTime(id);
+    clearTimeout(timeout.current);
     timeout.current = setTimeout(() => {
       setEditTime(null);
-    }, 5000);
+    }, EDIT_AUTO_CLOSE_MS);
   };
 
-  const handleEditHours = (editTime, path) => {
+  useEffect(() => {
+    if (!editTime) return;
+
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        closeEdit();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [editTime, closeEdit]);
+
+  useEffect(() => {
+    return () => clearTimeout(timeout.current);
+  }, []);
+
+  const handleEditHours = (editTimeId, path) => {
     const record = filteredData?.find(
-      (item) => item.overtime_records.id === editTime
+      (item) => item.overtime_records.id === editTimeId
     );
 
     if (!record) {
@@ -75,8 +98,9 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     setStartDate("");
     setEndDate("");
   };
+
   return (
-    <div className="table-page table ">
+    <div className="table-page table" ref={containerRef}>
       <div>
 
         <h2 className="title-h2">Histórico de Horas Extras</h2>

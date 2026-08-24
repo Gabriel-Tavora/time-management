@@ -260,6 +260,7 @@ Filter
   border-color: var(--input-border-focus);
   box-shadow: var(--input-focus-shadow);
 }
+
 /* table edit*/
 .last-column {
   position: relative;
@@ -276,7 +277,6 @@ Filter
   border-radius: inherit;
 
   opacity: 0;
-  visibility: hidden;
   transform: translateX(100%);
   pointer-events: none;
 
@@ -284,19 +284,13 @@ Filter
   will-change: transform, opacity;
   transition:
     transform 0.35s ease,
-    opacity 0.25s ease,
-    visibility 0s linear 0.35s;
+    opacity 0.25s ease;
 }
 
 .table-edit.active {
   opacity: 1;
-  visibility: visible;
   transform: translateX(0);
   pointer-events: auto;
-  transition:
-    transform 0.35s ease,
-    opacity 0.25s ease,
-    visibility 0s linear 0s;
 }
 
 /* ===========================
@@ -461,8 +455,7 @@ Filter
 @media (prefers-reduced-motion: reduce) {
   .table-edit {
     transition:
-      opacity 0.15s ease,
-      visibility 0s linear 0.15s;
+      opacity 0.15s ease;
 
     transform: none;
   }
