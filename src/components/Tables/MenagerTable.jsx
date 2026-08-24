@@ -11,13 +11,12 @@ import {
 } from "../../utils/formatHours.js";
 
 // Hook
-import { useMenagerTable } from "../../hooks/useMenagerTable.js";
-import { useGroupUsers } from "../../hooks/useFilterUserById.js";
-
+import { useMenagerTable } from "../../hooks/useMenager/useMenagerTable.js";
+import { useCoordinatorUsers } from '../../hooks/useCoordinator/useCoordinatorUsers';
 // Components
 import Button from "../Layouts/Button/Button.jsx";
 
-const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
+const MenagerTable = ({ data, onApprove, onReject, idMonth }) => {
   const {
     loading,
     handleConfirmAction,
@@ -27,13 +26,16 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
   });
 
   const {
-    currentItem,
+    currentUser,
+    total,
     currentEmployeePerformace,
     goNext,
     goPrev,
-  } = useGroupUsers(data);
-
-  const records = currentItem?.records ?? [];
+  } = useCoordinatorUsers(
+    data,
+    idMonth
+  );
+  const records = currentUser?.records ?? [];
 
   const handleOpenConfirm = async (mode) => {
     const isApprove = mode === "approve";
@@ -48,16 +50,21 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
         : "Os dados serão devolvidos para correção.",
 
       icon: isApprove ? "warning" : "question",
-
       showCancelButton: true,
-
       confirmButtonText: isApprove
         ? "Aprovar"
         : "Rejeitar",
 
       cancelButtonText: "Cancelar",
-
       reverseButtons: true,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
     });
 
     if (result.isConfirmed) {
@@ -69,27 +76,21 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
     <div className="table-page table">
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
-
         <ul className="menu-information">
           <li>
             <h1>Total de Horas Extras</h1>
-
             <h3 className="time">
               {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
             </h3>
           </li>
-
           <li>
             <h1>Total de Horas Noturnas</h1>
-
             <h3 className="night">
               {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
             </h3>
           </li>
-
           <li>
             <h1>Quantidade no Mês</h1>
-
             <h3>
               {currentEmployeePerformace?.total_overtimes_mouth > 0
                 ? currentEmployeePerformace.total_overtimes_mouth
@@ -101,39 +102,41 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
 
       <div className="table-page">
         <div className="table-header">
-          <div className="date-filter">
+          {data && (
+            <div className="date-filter">
 
-            <div className="table-header">
-              <Button
-                className="approved-btn"
-                onClick={() => handleOpenConfirm("approve")}
-                disabled={disabled || loading}
-                buttonText={loading ? "Processando..." : "Aprovar"}
-              />
+              <div className="table-header">
+                <Button
+                  className="approved-btn"
+                  onClick={() => handleOpenConfirm("approve")}
+                  disabled={loading}
+                  buttonText={loading ? "Processando..." : "Aprovar"}
+                />
 
-              <Button
-                className="rejected-btn"
-                onClick={() => handleOpenConfirm("reject")}
-                disabled={disabled || loading}
-                buttonText={loading ? "Processando..." : "Rejeitar"}
-              />
+                <Button
+                  className="rejected-btn"
+                  onClick={() => handleOpenConfirm("reject")}
+                  disabled={loading}
+                  buttonText={loading ? "Processando..." : "Rejeitar"}
+                />
+              </div>
+
+              <div className="table-header">
+                <Button
+                  className="change-btn"
+                  onClick={goPrev}
+                  buttonText="◀"
+                />
+
+                <Button
+                  className="change-btn"
+                  onClick={goNext}
+                  buttonText="▶"
+                />
+              </div>
+
             </div>
-
-            <div className="table-header">
-              <Button
-                className="change-btn"
-                onClick={goPrev}
-                buttonText="◀"
-              />
-
-              <Button
-                className="change-btn"
-                onClick={goNext}
-                buttonText="▶"
-              />
-            </div>
-
-          </div>
+          )}
         </div>
 
         <div className="table-container">
@@ -169,24 +172,17 @@ const MenagerTable = ({ data, onApprove, onReject, disabled }) => {
 
                   return (
                     <tr key={record.id}>
-                      <td>{currentItem?.name}</td>
-
+                      <td>{currentUser?.name}</td>
                       <td>{formatDate(startTime)}</td>
-
                       <td>{formatDate(endTime)}</td>
-
                       <td>{formatTime(startTime)}</td>
-
                       <td>{formatTime(endTime)}</td>
-
                       <td>
                         {nightHours
                           ? formatHours(nightHours)
                           : "0"}
                       </td>
-
                       <td>{formatHours(totalHours)}</td>
-
                       <td>
                         <span className="status pending">
                           {formatHours(type["1"] ?? 0)}

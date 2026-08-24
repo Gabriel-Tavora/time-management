@@ -50,6 +50,8 @@ const RegisterHours = () => {
   }, []);
 
   const clearForm = () => {
+    
+    setStartTime("17:00");
     setEndTime("");
     setObservation("");
     setJiraTask("");

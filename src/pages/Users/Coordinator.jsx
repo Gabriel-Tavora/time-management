@@ -5,7 +5,7 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import CoordinatorTable from "../../components/Tables/CoordinatorTable.jsx";
 
 //hooks
-import { useCoordinator } from '../../hooks/useCoordinatorInfo.js';
+import { useCoordinator } from '../../hooks/useCoordinator/useCoordinatorInfo.js';
 const Coordinator = () => {
   const {
     loadData,
@@ -14,7 +14,10 @@ const Coordinator = () => {
     user,
     colaboratorData,
     formatted,
-    idMonth
+    idClosure,
+    idMonth,
+    closedData,
+    isSubmitting,
   } = useCoordinator();
   return (
     <div className="dashboard-screen">
@@ -25,9 +28,9 @@ const Coordinator = () => {
         <div className="Coordinator-tables">
           <CoordinatorTable
             data={colaboratorData}
+            idMonth={idMonth}
             Approval={Approval}
             Rejected={Rejected}
-            disabled={!idMonth}
           />
         </div>
       </main>

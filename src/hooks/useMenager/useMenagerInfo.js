@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from "react";
 //Utils
-import { getCurrentDate } from "../utils/formatHours.js";
+import { getCurrentDate } from "../../utils/formatHours.js";
 //Context
-import { useAuthValue } from "../context/TokenContext.jsx";
+import { useAuthValue } from "../../context/TokenContext.jsx";
 // Services
-import { getCurrentUser } from "../services/userData.js";
+import { getCurrentUser } from "../../services/userData.js";
 import {
   getClousedMonthRecords,
   getClousedMonthManager,
   closeApprovedMonthManager,
   closeRejectedMonthManager,
-} from "../services/clousedData.js";
+} from "../../services/clousedData.js";
 
 export function useMenager() {
   const [user, setUser] = useState(null);
   const [colaboratorData, setColaboratorData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [closedMonth, setClosedMonth] = useState(null);
+  const [idMonth, setIdMonth] = useState(null);
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
 
   const loadingData = async () => {
     try {
       const closedList = await getClousedMonthManager(token);
+
+      if (!closedList) {
+        setIdMonth(null);
+        setClosedMonth(null);
+        setColaboratorData([]);
+        return;
+      }
+
       setClosedMonth(closedList);
+      setIdMonth(closedList?.exercice_id ?? null);
 
       if (closedList?.id) {
         const records = await getClousedMonthRecords(
@@ -32,12 +42,15 @@ export function useMenager() {
         );
         setColaboratorData(records);
       }
+
       const userInformations = await getCurrentUser(token);
       setUser(userInformations);
+
     } catch (error) {
       console.error(error);
     }
   }
+
   useEffect(() => {
     if (token) {
       loadingData();
@@ -49,7 +62,7 @@ export function useMenager() {
     setIsSubmitting(true);
 
     try {
-      await closeApprovedMonthManager(token, closedMonth.exercice_id);
+      const response = await closeApprovedMonthManager(token, closedMonth.exercice_id);
       setClosedMonth(null);
       setColaboratorData([]);
 
@@ -66,10 +79,12 @@ export function useMenager() {
     setIsSubmitting(true);
 
     try {
-      await closeRejectedMonthManager(token, closedMonth.exercice_id);
+      const response = await closeRejectedMonthManager(token, closedMonth.exercice_id);
 
       setClosedMonth(null);
       setColaboratorData([]);
+      return response;
+      
     } catch (e) {
       console.error(e.message);
     } finally {
@@ -86,5 +101,6 @@ export function useMenager() {
     isSubmitting,
     closedMonth,
     formatted,
+    idMonth,
   }
 }

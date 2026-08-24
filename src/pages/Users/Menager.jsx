@@ -4,7 +4,7 @@ import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.
 import MenagerTable from "../../components/Tables/MenagerTable.jsx"
 
 //hooks
-import { useMenager } from '../../hooks/useMenagerInfo.js';
+import { useMenager } from '../../hooks/useMenager/useMenagerInfo.js';
 
 const Menager = () => {
   const {
@@ -16,6 +16,7 @@ const Menager = () => {
     isSubmitting,
     closedMonth,
     formatted,
+    idMonth,
   } = useMenager();
   return (
     <div className="dashboard-screen">
@@ -28,7 +29,7 @@ const Menager = () => {
             data={colaboratorData}
             onApprove={Approval}
             onReject={Rejected}
-            disabled={!closedMonth?.exercice_id}
+            idMonth={idMonth}
           />
         </div>
       </main>

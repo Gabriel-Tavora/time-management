@@ -69,7 +69,6 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
       setIsSubmitting(true);
       setMessage(null);
 
-      // AbortController para cancelar requests se o componente desmontar
       abortControllerRef.current = new AbortController();
       const { signal } = abortControllerRef.current;
 

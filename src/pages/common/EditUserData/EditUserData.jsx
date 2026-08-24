@@ -248,13 +248,10 @@ const EditUserData = () => {
                   >
                     {!isEditing ? (
                       <>
-                        <span className="info-card__label">{label}</span>
-                        <h2 className="info-card__value">
+                        <span className="info-card__label change">{label}</span>
+                        <h2 className="info-card__value change">
                           {value || <em className="empty-value">Não informado</em>}
                         </h2>
-                        <small className="edit-hint">
-                          {saving ? "Salvando..." : "Clique para editar"}
-                        </small>
                       </>
                     ) : (
                       <div

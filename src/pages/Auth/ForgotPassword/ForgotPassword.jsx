@@ -171,7 +171,7 @@ const ForgotPassword = () => {
               <FaKey className="input-icon" />
               <Input
                 type="text"
-                placeholder="Código enviado por email"
+                placeholder="Código enviado ao email"
                 value={code}
                 onChange={(e) =>
                   setCode(e.target.value)
@@ -181,8 +181,7 @@ const ForgotPassword = () => {
                 autoComplete="one-time-code"
               />
             </div>
-
-
+            
             <div className="input-group">
               <FaLock className="input-icon" />
               <Input

@@ -16,11 +16,16 @@ export const useMenagerTable = ({ onApprove, onReject }) => {
           : "Rejeitando...",
 
         text: "Aguarde enquanto a operação é processada.",
-
         allowOutsideClick: false,
         allowEscapeKey: false,
-
         showConfirmButton: false,
+        customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
 
         didOpen: () => {
           Swal.showLoading();
@@ -41,8 +46,14 @@ export const useMenagerTable = ({ onApprove, onReject }) => {
             : "O fechamento foi rejeitado com sucesso.",
 
           icon: "success",
-
-          confirmButtonText: "Fechar",
+          confirmButtonText: "OK",
+          customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
         });
 
       } catch (error) {
@@ -56,8 +67,14 @@ export const useMenagerTable = ({ onApprove, onReject }) => {
             : "Erro ao rejeitar. Tente novamente.",
 
           icon: "error",
-
-          confirmButtonText: "Fechar",
+          confirmButtonText: "OK",
+          customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
         });
 
       } finally {

@@ -27,7 +27,7 @@ export const useTeamLeaderTable = ({ onApprove }) => {
         title: "Fechamento realizado!",
         text: "O período foi enviado para aprovação.",
         icon: "success",
-        confirmButtonText: "Fechar",
+        confirmButtonText: "OK",
         customClass: {
           popup: "my-swal-popup",
           title: "my-swal-title",
@@ -44,7 +44,7 @@ export const useTeamLeaderTable = ({ onApprove }) => {
         text:
           error?.message || "Não foi possível fechar o mês. Tente novamente.",
         icon: "error",
-        confirmButtonText: "Fechar",
+        confirmButtonText: "OK",
         customClass: {
           popup: "my-swal-popup",
           title: "my-swal-title",

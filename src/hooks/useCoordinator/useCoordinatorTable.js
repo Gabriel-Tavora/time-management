@@ -35,7 +35,14 @@ export const useCoordinatorTable = ({ onApprove, onReject }) => {
               ? "O fechamento foi aprovado com sucesso."
               : "O fechamento foi rejeitado com sucesso.",
           icon: "success",
-          confirmButtonText: "Fechar",
+          confirmButtonText: "OK",
+          customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
         });
       } catch (error) {
         console.error(error);
@@ -47,7 +54,14 @@ export const useCoordinatorTable = ({ onApprove, onReject }) => {
               ? "Erro ao aprovar. Tente novamente."
               : "Erro ao rejeitar. Tente novamente.",
           icon: "error",
-          confirmButtonText: "Fechar",
+          confirmButtonText: "OK",
+          customClass: {
+          popup: "my-swal-popup",
+          title: "my-swal-title",
+          htmlContainer: "my-swal-text",
+          confirmButtonText: "my-swal-confirm",
+          icon: "my-swal-icon",
+        },
         });
       } finally {
         setLoading(false);

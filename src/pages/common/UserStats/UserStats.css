@@ -75,15 +75,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 48px;
   height: 48px;
-
   border: 2px solid var(--border-icon-stats);
   border-radius: 50%;
-
   cursor: pointer;
-
   transition: background .3s ease;
 }
 
@@ -232,18 +228,6 @@
   gap: 10px;
 }
 
-/* Hint no modo leitura */
-.edit-hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.info-card:hover .edit-hint {
-  opacity: 1;
-}
-
 /* Valor vazio */
 .empty-value {
   color: var(--text-muted);
@@ -274,6 +258,10 @@
   transition: .35s;
 }
 
+.info-card .change {
+  cursor: pointer;
+}
+
 .info-card:hover {
   border-color: var(--border-card);
   box-shadow: var(--shadow-table);
@@ -295,6 +283,7 @@
   opacity: 0.6;
   pointer-events: none;
 }
+
 @keyframes slideDown {
   from {
     opacity: 0;

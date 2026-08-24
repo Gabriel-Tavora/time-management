@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 //components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
-import InfoCards from "../../../components/UserStatsUse/InfoCards/InfoCards";
+import InfoCards from "../../../components/UserStatsUse/InfoCards";
 import Button from "../../../components/Layouts/Button/Button";
 //hooks
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
@@ -17,6 +17,7 @@ import { getAvatarUrl, getAvatarByUser } from "../../../utils/avatarUtils";
 //css
 import "./UserStats.css";
 import "../../../styles/global.css";
+import "../../../styles/auth.css";
 import { FaKey, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FiSun, FiMoon } from "react-icons/fi";
 
@@ -79,8 +80,8 @@ const UserStats = () => {
       text: `Um código será enviado para ${email}. Deseja continuar?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Enviar código",
       cancelButtonText: "Cancelar",
+      confirmButtonText: "Enviar código",
       showLoaderOnConfirm: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
@@ -173,16 +174,16 @@ const UserStats = () => {
           </div>
 
           {/* Dialog 2: código + nova senha */}
-          <dialog ref={formDialogRef} className="close-dialog">
-            <h2>Confirme o código e defina a nova senha</h2>
-
+          <dialog ref={formDialogRef} className="login-card close-dialog">
             <form onSubmit={handleSubmit}>
               <div className="input-group">
+                <h2>Defina a nova senha</h2>
+                </div>
+              <div className="input-group">
                 <FaKey className="input-icon" />
-
                 <input
                   type="text"
-                  placeholder="Digite o código"
+                  placeholder="Insira o código"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   disabled={loading}

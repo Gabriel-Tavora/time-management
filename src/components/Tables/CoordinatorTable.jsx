@@ -11,12 +11,27 @@ import {
 //components
 import Button from "../Layouts/Button/Button.jsx";
 //hooks
-import { useGroupUsers } from "../../hooks/useFilterUserById.js";
-import { useCoordinatorTable } from "../../hooks/useCoordinatorTable.js";
+import { useCoordinatorTable } from "../../hooks/useCoordinator/useCoordinatorTable.js";
+import { useCoordinatorUsers } from '../../hooks/useCoordinator/useCoordinatorUsers';
 
-const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
-  const { currentItem, currentEmployeePerformace, goNext, goPrev } =
-    useGroupUsers(data, disabled);
+const CoordinatorTable = ({
+  data,
+  idMonth,
+  Approval,
+  Rejected,
+}) => {
+
+  const {
+    currentUser,
+    total,
+    currentEmployeePerformace,
+    goNext,
+    goPrev,
+  } = useCoordinatorUsers(
+    data,
+    idMonth
+  );
+
   const {
     loading,
     handleConfirmAction,
@@ -44,6 +59,14 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
 
       cancelButtonText: "Cancelar",
       reverseButtons: true,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
     });
 
     if (result.isConfirmed) {
@@ -80,26 +103,26 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
 
       <div className="table-page">
         <div className="table-header ">
-          <div className="date-filter">
-            <div className="table-header">
-              <Button
-                className="approved-btn"
-                onClick={() => handleOpenConfirm("approve")}
-                disabled={disabled || loading}
-                buttonText={loading ? "Processando..." : "Aprovar"}
-              />
-              <Button
-                className="rejected-btn"
-                onClick={() => handleOpenConfirm("reject")}
-                disabled={disabled || loading}
-                buttonText={loading ? "Processando..." : "Rejeitar"}
-              />
+          {data && (
+            <div className="date-filter">
+              <div className="table-header">
+                <Button
+                  className="approved-btn"
+                  onClick={() => handleOpenConfirm("approve")}
+                  buttonText={loading ? "Processando..." : "Aprovar"}
+                />
+                <Button
+                  className="rejected-btn"
+                  onClick={() => handleOpenConfirm("reject")}
+                  buttonText={loading ? "Processando..." : "Rejeitar"}
+                />
+              </div>
+              <div className="table-header">
+                <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+                <Button className="change-btn" onClick={goNext} buttonText="▶" />
+              </div>
             </div>
-            <div className="table-header">
-              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-              <Button className="change-btn" onClick={goNext} buttonText="▶" />
-            </div>
-          </div>
+          )}
         </div>
 
         <div className="table-container">
@@ -119,22 +142,22 @@ const CoordinatorTable = ({ data, Approval, Rejected, disabled }) => {
             </thead>
 
             <tbody>
-              {!currentItem?.records?.length ? (
+              {!currentUser?.records?.length ? (
                 <tr>
                   <td colSpan={9} className="empty-state">
                     Nenhum registro encontrado.
                   </td>
                 </tr>
               ) : (
-                currentItem.records.map((record) => {
-                  const totalHours = record.total_hours ?? 0;
-                  const nightHours = record.nigth_hours ?? 0;
-                  const startTime = record.start_time;
-                  const endTime = record.end_time;
-                  const type = record.hours_by_type ?? {};
+                currentUser.records.map((records) => {
+                  const totalHours = records.total_hours ?? 0;
+                  const nightHours = records.nigth_hours ?? 0;
+                  const startTime = records.start_time;
+                  const endTime = records.end_time;
+                  const type = records.hours_by_type ?? {};
                   return (
-                    <tr key={record.id}>
-                      <td>{currentItem.name}</td>
+                    <tr key={records.id}>
+                      <td>{currentUser.name}</td>
                       <td>{formatDate(startTime)}</td>
                       <td>{formatDate(endTime)}</td>
                       <td>{formatTime(startTime)}</td>

@@ -17,8 +17,8 @@ import {
 } from "../../utils/formatHours.js";
 
 // hooks
-import { useGroupUsers } from "../../hooks/useFilterUserById";
-import { useTeamLeaderTable } from "../../hooks/useTeamLeaderTable";
+import { useTeamLeaderUsers } from "../../hooks/useTeamLeader/useTeamLeaderUsers.js";
+import { useTeamLeaderTable } from "../../hooks/useTeamLeader/useTeamLeaderTable.js";
 
 // context
 import { useAuthValue } from "../../context/TokenContext.jsx";
@@ -44,7 +44,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   }, [data, refreshKey]);
 
   const { currentItem, currentEmployeePerformace, goNext, goPrev } =
-    useGroupUsers(processedData, idMonth);
+    useTeamLeaderUsers(processedData, idMonth);
 
   const isViewingOwnRecords =
     currentUserId != null &&
@@ -189,38 +189,40 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
       <div className="table-page">
         <div className="table-header">
           <div className="date-filter">
-            <div className="table-header">
-              <Input
-                className="btn"
-                labelText="Data Inicial"
-                id="filter-start-date"
-                type="date"
-                value={startDate}
-                max={endDate || undefined}
-                onChange={(e) => setStartDate(e.target.value)}
-                name="startDate"
-              />
-              <Input
-                classNameIn="filter-start-date"
-                labelText="Data Final"
-                id="filter-end-date"
-                type="date"
-                value={endDate}
-                min={startDate || undefined}
-                onChange={(e) => setEndDate(e.target.value)}
-                name="endDate"
-              />
-
-              {isFilterActive && (
-                <Button
-                  buttonText="Limpar"
-                  className="btn btn-medium"
-                  onClick={handleClearFilter}
-                  aria-label="Limpar filtro de data"
-                  icon={FaTimes}
+            {data && (
+              <div className="table-header">
+                <Input
+                  className="btn"
+                  labelText="Data Inicial"
+                  id="filter-start-date"
+                  type="date"
+                  value={startDate}
+                  max={endDate || undefined}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  name="startDate"
                 />
-              )}
-            </div>
+                <Input
+                  classNameIn="filter-start-date"
+                  labelText="Data Final"
+                  id="filter-end-date"
+                  type="date"
+                  value={endDate}
+                  min={startDate || undefined}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  name="endDate"
+                />
+
+                {isFilterActive && (
+                  <Button
+                    buttonText="Limpar"
+                    className="btn btn-medium"
+                    onClick={handleClearFilter}
+                    aria-label="Limpar filtro de data"
+                    icon={FaTimes}
+                  />
+                )}
+              </div>
+            )}
             <div className="table-header">
               <Button
                 className="btn"
@@ -228,14 +230,17 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 onClick={() => handleNavigate("/RegisterHours")}
                 icon={FaPlus}
               />
-              <Button
-                className="btn-medium btn"
-                buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
-                onClick={handleOpenConfirm}
-                disabled={loading}
-              />
-              <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-              <Button className="change-btn" onClick={goNext} buttonText="▶" />
+              {data && (
+                <>
+                  <Button
+                    className="btn-medium btn"
+                    buttonText={loading ? "Carregando..." : "Aprovar Fechamento"}
+                    onClick={handleOpenConfirm}
+                    disabled={loading}
+                  />
+                  <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+                  <Button className="change-btn" onClick={goNext} buttonText="▶" /></>
+              )}
             </div>
           </div>
         </div>

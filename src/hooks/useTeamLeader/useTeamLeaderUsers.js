@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { getEmployeePerformance } from "../services/overtimeData";
-import { useAuthValue } from "../context/TokenContext.jsx";
+import { getEmployeePerformance } from "../../services/overtimeData";
+import { useAuthValue } from "../../context/TokenContext.jsx";
 
-export function useGroupUsers(records, idMonth) {
+export function useTeamLeaderUsers(records, idMonth) {
   const { token } = useAuthValue();
-
   const items = useMemo(() => {
     const filterUserById = records.reduce((acc, data) => {
       const userId = data.users.id;
@@ -27,6 +26,7 @@ export function useGroupUsers(records, idMonth) {
 
     return Object.values(filterUserById);
   }, [records]);
+
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentEmployeePerformace, setCurrentEmployeePerformace] =

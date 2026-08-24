@@ -464,6 +464,10 @@ dialog::backdrop {
   backdrop-filter: blur(4px);
 }
 
+.pass-dialog{
+  
+}
+
 
 /* ===========================
    TABLET (≤ 1024px)

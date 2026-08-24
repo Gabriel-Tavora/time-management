@@ -106,7 +106,7 @@ export async function getClousedMonthManager(token) {
 
 async function updateMonthStatusManager(token, exerciceId, state) {
   const response = await fetch(`${API_URL}/cloused/menager`, {
-    method: "PATCH",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ async function updateMonthStatusManager(token, exerciceId, state) {
     throw new Error(`${message} (status ${response.status})`);
   }
   console.log(response)
-  return response.json();
+  return response;
 }
 
 export const closeApprovedMonthManager = (token, id) =>
