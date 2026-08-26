@@ -1,9 +1,11 @@
 import React from "react";
 //css
-import "../../styles/RegisterInfo.css";
-import { FaSave } from "react-icons/fa";
-
-const SendEditData = ({
+import "../../../styles/registerInfo.css";
+import { FaPlus, FaSave } from "react-icons/fa";
+//components
+import Input from "../Inputs/Inputs.jsx";
+const RegisterInfo = ({
+  mode = "register", // edit or register
   jiraTask,
   observation,
   onJiraTaskChange,
@@ -12,13 +14,15 @@ const SendEditData = ({
   isSubmitting,
   isRedirecting,
 }) => {
-  const isLocked = isSubmitting || isRedirecting;
+
+  const isLocked =
+    isSubmitting || (mode === "edit" && isRedirecting);
 
   return (
     <div className="time-menu-send">
       <div className="time-menu-send-obs">
         <label htmlFor="jira">Identificação jira:</label>
-        <input
+        <Input
           id="jira"
           type="text"
           value={jiraTask}
@@ -48,16 +52,29 @@ const SendEditData = ({
         </p>
       )}
 
-      <button type="submit" className="time-menu-send-btn" disabled={isLocked}>
-        <FaSave className="src" />
-        {isSubmitting
-          ? "Alterando..."
-          : isRedirecting
-            ? "Salvo! Voltando..."
-            : "Alterar Hora Extra"}
+      <button
+        type="submit"
+        className="time-menu-send-btn"
+        disabled={isLocked}
+      >
+        {mode === "register" ? (
+          <>
+            <FaPlus className="src" />
+            {isSubmitting ? "Registrando..." : "Registrar Hora Extra"}
+          </>) :
+          (
+            <>
+              <FaSave className="src" />
+              {isSubmitting
+                ? "Alterando..."
+                : isRedirecting
+                  ? "Salvo! Voltando..."
+                  : "Alterar Hora Extra"}
+            </>
+          )}
       </button>
     </div>
   );
 };
 
-export default SendEditData;
+export default RegisterInfo;

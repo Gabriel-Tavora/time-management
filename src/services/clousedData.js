@@ -1,4 +1,5 @@
 import { API_URL } from "./api";
+// recebe pdf na rota cloused
 
 async function parseErrorMessage(response, fallback) {
   try {
@@ -38,22 +39,7 @@ export async function getClousedMonth(token) {
 }
 */
 
-export async function getClousedMonthRecords(token, idCloused) {
-  const response = await fetch(`${API_URL}/cloused/${idCloused}`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!response.ok) {
-    const message = await parseErrorMessage(
-      response,
-      `Erro ao buscar horas do período fechado (id: ${idCloused})`
-    );
-    throw new Error(`${message} (status ${response.status})`);
-  }
-
-  return await response.json();
-}
+// uso exclusivo do cordenador
 
 async function updateMonthStatus(token, exerciceId, state) {
   const response = await fetch(`${API_URL}/cloused`, {
@@ -82,9 +68,24 @@ export const closeApprovedMonth = (token, id) =>
 export const closeRejectedMonth = (token, id) =>
   updateMonthStatus(token, id, "REJECTED");
 
+export async function getClousedMonthRecords(token, idCloused) {
+  const response = await fetch(`${API_URL}/cloused/${idCloused}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
+  if (!response.ok) {
+    const message = await parseErrorMessage(
+      response,
+      `Erro ao buscar horas do período fechado (id: ${idCloused})`
+    );
+    throw new Error(`${message} (status ${response.status})`);
+  }
 
-// manager
+  return await response.json();
+}
+
+// uso exclusivo do manager
 
 export async function getClousedMonthManager(token) {
   const response = await fetch(`${API_URL}/cloused/menager`, {

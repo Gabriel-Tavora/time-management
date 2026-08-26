@@ -50,7 +50,7 @@ const UserScreen = () => {
         <div className="main-menu">
           <UserTable data={dataTime} monthPerf={monthPerf} token={token} />
         </div>
-
+        
       </main>
     </div>
   );

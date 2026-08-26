@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar.jsx";
-import EditDate from "../../../components/EditHoursInput//EditDate.jsx";
-import SendEditData from "../../../components/EditHoursInput//SendEditData.jsx";
+import DateCatch from "../../../components/Layouts/HoursComponents/DateCatch.jsx";
+import RegisterInfo from "../../../components/Layouts/HoursComponents/RegisterInfo.jsx";
 
 // CSS
 import "../../../styles/registerHours.css";
@@ -113,7 +113,7 @@ const EditHours = () => {
         <div className="time-menu-container">
           <h1>Editar Hora Extra</h1>
           <form className="time-menu-form" onSubmit={handleSubmit}>
-            <EditDate
+            <DateCatch
               startDate={startDate}
               setStartDate={setStartDate}
               endDate={endDate}
@@ -130,7 +130,8 @@ const EditHours = () => {
               </div>
             )}
 
-            <SendEditData
+            <RegisterInfo
+              mode={"edit"}
               jiraTask={jiraTask}
               observation={observation}
               onJiraTaskChange={(e) => setJiraTask(e.target.value)}

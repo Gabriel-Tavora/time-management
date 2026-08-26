@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 //services
-import { getCurrentUser } from "../../services/userData.js";
+import { getCurrentUser } from "../../../services/userData.js";
 //context
-import { useAuthValue } from "../../context/TokenContext.jsx";
+import { useAuthValue } from "../../../context/TokenContext.jsx";
 const InfoCards = ({ onEmailLoaded }) => {
   const [user, setUser] = useState(null);
   const { token } = useAuthValue();

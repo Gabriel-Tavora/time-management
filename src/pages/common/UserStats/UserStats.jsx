@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 //components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
-import InfoCards from "../../../components/UserStatsUse/InfoCards";
+import InfoCards from "../../../components/Layouts/UserStats/InfoCards.jsx";
 import Button from "../../../components/Layouts/Button/Button";
 //hooks
 import { usePasswordReset } from "../../../hooks/usePasswordReset";

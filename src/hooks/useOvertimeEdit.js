@@ -111,7 +111,7 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
           jiraTask,
           monthStart,
           monthEnd,
-          requireJira: false,
+          requireJira: true,
         });
 
         if (validationError) {

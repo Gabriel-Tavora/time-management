@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 
 // Components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar.jsx";
-import DateCatch from "../../../components/RegisterhouserUSe//DateCatch.jsx";
-import RegisterInfo from "../../../components/RegisterhouserUSe//RegisterInfo.jsx";
+import DateCatch from "../../../components/Layouts/HoursComponents/DateCatch.jsx";
+import RegisterInfo from "../../../components/Layouts/HoursComponents/RegisterInfo.jsx";
 
 // CSS
 import "../../../styles/registerHours.css";
@@ -50,7 +50,7 @@ const RegisterHours = () => {
   }, []);
 
   const clearForm = () => {
-    
+
     setStartTime("17:00");
     setEndTime("");
     setObservation("");
@@ -111,6 +111,7 @@ const RegisterHours = () => {
             )}
 
             <RegisterInfo
+              mode={"register"}
               jiraTask={jiraTask}
               observation={observation}
               onJiraTaskChange={(e) => setJiraTask(e.target.value)}

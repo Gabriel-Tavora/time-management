@@ -19,67 +19,17 @@ import {
 // hooks
 import { useTeamLeaderUsers } from "../../hooks/useTeamLeader/useTeamLeaderUsers.js";
 import { useTeamLeaderTable } from "../../hooks/useTeamLeader/useTeamLeaderTable.js";
-
+import { useEditTimeout } from "../../hooks/useEditTimeout";
 // context
 import { useAuthValue } from "../../context/TokenContext.jsx";
 
 // components
 import Input from "../Layouts/Inputs/Inputs.jsx";
 import Button from "../Layouts/Button/Button";
+import OncallTable from './Oncall/OncallTable';
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [editTime, setEditTime] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0);
-  const editTimeoutRef = useRef(null);
-  const isMountedRef = useRef(true);
-
   const navigate = useNavigate();
-
-  const { id: currentUserId } = useAuthValue();
-
-  const processedData = useMemo(() => {
-    return data?.map((item) => ({ ...item })) || [];
-  }, [data, refreshKey]);
-
-  const { currentItem, currentEmployeePerformace, goNext, goPrev } =
-    useTeamLeaderUsers(processedData, idMonth);
-
-  const isViewingOwnRecords =
-    currentUserId != null &&
-    currentItem?.id != null &&
-    String(currentItem.id) === String(currentUserId);
-
-  const isFilterActive = Boolean(startDate || endDate);
-
-  const filteredRecords = useMemo(() => {
-    const records = currentItem?.records ?? [];
-    if (!isFilterActive) return records;
-
-    return records.filter((record) => {
-      const workDate = record?.work_date;
-      if (!workDate) return false;
-
-      const dateOnly = workDate.slice(0, 10);
-
-      if (startDate && dateOnly < startDate) return false;
-      if (endDate && dateOnly > endDate) return false;
-
-      return true;
-    });
-  }, [currentItem, startDate, endDate, isFilterActive]);
-
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      isMountedRef.current = false;
-      if (editTimeoutRef.current) {
-        clearTimeout(editTimeoutRef.current);
-      }
-    };
-  }, []);
-
   const handleNavigate = useCallback(
     (path) => {
       navigate(path);
@@ -92,17 +42,70 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     setEndDate("");
   }, []);
 
-  const handleEditHours = useCallback(
-    (overtimeId, path) => {
-      const record = filteredRecords.find((item) => item.id === overtimeId);
+  const { id: currentUserId } = useAuthValue();
+  const [refreshKey, setRefreshKey] = useState(0);
 
-      if (!record) {
-        console.warn("Hora extra não encontrada");
-        return;
-      }
+  const isMountedRef = useRef(true);
 
-      navigate(path, { state: { overtime: record } });
-    },
+  const {
+    editTime,
+    containerRef,
+    handleEditTime,
+  } = useEditTimeout();
+
+  const processedData = useMemo(() => { return data?.map((item) => ({ ...item })) || []; }, [data, refreshKey]);
+
+  const {
+    currentItem,
+    currentEmployeePerformace,
+    goNext,
+    goPrev } =
+    useTeamLeaderUsers(
+      processedData,
+      idMonth
+    );
+
+  const isViewingOwnRecords =
+    currentUserId != null &&
+    currentItem?.id != null &&
+    String(currentItem.id) === String(currentUserId);
+
+  const colSpan = isViewingOwnRecords ? 10 : 9;
+
+  //filtro 
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const isFilterActive = Boolean(startDate || endDate);
+
+  const filteredRecords = useMemo(() => {
+    const records = currentItem?.records ?? [];
+
+    if (!isFilterActive) return records;
+
+    return records.filter((record) => {
+      const dateOnly = record?.work_date?.slice(0, 10);
+
+      if (!dateOnly) return false;
+
+      if (startDate && dateOnly < startDate) return false;
+      if (endDate && dateOnly > endDate) return false;
+
+      return true;
+    });
+  }, [currentItem, startDate, endDate, isFilterActive]);
+
+  const handleEditHours = useCallback((overtimeId, path) => {
+    const record = filteredRecords.find((item) => item.id === overtimeId);
+
+    if (!record) {
+      console.warn("Hora extra não encontrada");
+      return;
+    }
+
+    navigate(path, { state: { overtime: record } });
+  },
     [filteredRecords, navigate],
   );
 
@@ -141,25 +144,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     }
   }, [handleConfirmAction]);
 
-  const handleEditTime = useCallback((registerId) => {
-    if (editTimeoutRef.current) {
-      clearTimeout(editTimeoutRef.current);
-    }
-
-    setEditTime(registerId);
-
-    editTimeoutRef.current = setTimeout(() => {
-      if (isMountedRef.current) {
-        setEditTime(null);
-      }
-      editTimeoutRef.current = null;
-    }, 5000);
-  }, []);
-
-  const colSpan = isViewingOwnRecords ? 10 : 9;
-
   return (
-    <div className="table-page table">
+    <div className="table-page table" ref={containerRef}>
       <div>
         <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">
@@ -337,6 +323,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
               )}
             </tbody>
           </table>
+          <OncallTable 
+          idMonth={idMonth}/>
         </div>
       </div>
     </div>

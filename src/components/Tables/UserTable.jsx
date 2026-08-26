@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useEffect, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 //css
 import "../../styles/tables.css";
 import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
@@ -7,11 +7,10 @@ import { formatHours, formatDate, formatTime } from "../../utils/formatHours.js"
 //router-dom
 import { useNavigate } from "react-router-dom";
 //hooks
+import { useEditTimeout } from "../../hooks/useEditTimeout";
+//components
 import Input from "../Layouts/Inputs/Inputs.jsx";
 import Button from '../Layouts/Button/Button.jsx';
-
-const EDIT_AUTO_CLOSE_MS = 5000;
-
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const navigate = useNavigate();
@@ -19,39 +18,16 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     navigate(path);
   };
 
-  const timeout = useRef(null);
-  const containerRef = useRef(null);
-  const [editTime, setEditTime] = useState(null);
-
-  const closeEdit = useCallback(() => {
-    clearTimeout(timeout.current);
-    setEditTime(null);
-  }, []);
-
-  const handleEditTime = (id) => {
-    setEditTime(id);
-    clearTimeout(timeout.current);
-    timeout.current = setTimeout(() => {
-      setEditTime(null);
-    }, EDIT_AUTO_CLOSE_MS);
+  const handleClearFilter = () => {
+    setStartDate("");
+    setEndDate("");
   };
 
-  useEffect(() => {
-    if (!editTime) return;
-
-    const handleClickOutside = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        closeEdit();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [editTime, closeEdit]);
-
-  useEffect(() => {
-    return () => clearTimeout(timeout.current);
-  }, []);
+  const {
+    editTime,
+    containerRef,
+    handleEditTime,
+  } = useEditTimeout();
 
   const handleEditHours = (editTimeId, path) => {
     const record = filteredData?.find(
@@ -93,11 +69,6 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
       return true;
     });
   }, [data, startDate, endDate, isFilterActive]);
-
-  const handleClearFilter = () => {
-    setStartDate("");
-    setEndDate("");
-  };
 
   return (
     <div className="table-page table" ref={containerRef}>
@@ -220,8 +191,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                         <span className="status approved">
                           {formatHours(type["2"] ?? 0)}
                         </span>
-                        <div
-                          className={`table-edit ${editTime === overtime.id ? "active" : ""}`}>
+                        <div className={`table-edit ${editTime === overtime.id ? "active" : ""}`}>
                           <Button
                             className="btn-table"
                             type="button"
