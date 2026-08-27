@@ -1,6 +1,11 @@
 import React from 'react'
+//components
+import OncallTable from "../../Tables/Oncall/OncallTable.jsx"
+//utils
+import { formatHours } from "../../../utils/formatHours.js"
 
-const Tableheader = () => {
+const TableHeader = ({ data, idExercice }) => {
+
   return (
     <div>
       <h2 className="title-h2">Histórico de Horas Extras</h2>
@@ -8,29 +13,31 @@ const Tableheader = () => {
         <li>
           <h1>Total de Horas Extras</h1>
           <h3 className="time">
-            {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
+            {formatHours(data?.total_hours ?? 0)}
           </h3>
         </li>
         <li>
           <h1>Total de Horas Noturnas</h1>
           <h3 className="night">
-            {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
+            {formatHours(data?.nigth_hours ?? 0)}
           </h3>
         </li>
         <li>
           <h1>Quantidade no Mês</h1>
           <h3>
-            {currentEmployeePerformace?.total_overtimes_mouth > 0
-              ? currentEmployeePerformace?.total_overtimes_mouth
+            {data?.total_overtimes_mouth > 0
+              ? data?.total_overtimes_mouth
               : "0"}
           </h3>
         </li>
-        <OncallTable
-          idMonth={idExercice}
-        />
+        {idExercice && (
+          <OncallTable
+            idMonth={idExercice}
+          />
+        )}
       </ul>
     </div>
   )
 }
 
-export default Tableheader
+export default TableHeader;

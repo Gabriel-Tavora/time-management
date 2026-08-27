@@ -11,6 +11,8 @@ import { useEditTimeout } from "../../hooks/useEditTimeout";
 //components
 import Input from "../common/Inputs/Inputs.jsx";
 import Button from '../common/Button/Button.jsx';
+import TableHeader from '../Layouts/Tableheader/Tableheader';
+
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const navigate = useNavigate();
@@ -72,27 +74,10 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   return (
     <div className="table-page table" ref={containerRef}>
-      <div>
-        <h2 className="title-h2">Histórico de Horas Extras</h2>
-        <ul className="menu-information">
-          <li>
-            <h1>Total de Horas Extras</h1>
-            <h3 className="time">{formatHours(monthPerf.total_hours)}</h3>
-          </li>
-          <li>
-            <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">{formatHours(monthPerf.nigth_hours)}</h3>
-          </li>
-          <li>
-            <h1>Quantidade no Mês</h1>
-            <h3>
-              {monthPerf?.total_overtimes_mouth > 0
-                ? monthPerf.total_overtimes_mouth
-                : "0"}
-            </h3>
-          </li>
-        </ul>
-      </div>
+      <TableHeader 
+      data={monthPerf}
+      />
+      
       <div className="table-page content">
         <div className="table-header">
           <div className="date-filter">

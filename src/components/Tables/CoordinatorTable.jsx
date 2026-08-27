@@ -11,6 +11,7 @@ import {
 //components
 import Button from "../common/Button/Button.jsx";
 import OncallTable from './Oncall/OncallTable';
+import TableHeader from '../Layouts/TableHeader/TableHeader';
 //hooks
 import { useCoordinatorTable } from "../../hooks/useCoordinator/useCoordinatorTable.js";
 import { useCoordinatorUsers } from '../../hooks/useCoordinator/useCoordinatorUsers';
@@ -77,35 +78,12 @@ const CoordinatorTable = ({
   };
   return (
     <div className="table-page table">
-      <div>
-        <h2 className="title-h2">Histórico de Horas Extras</h2>
-        <ul className="menu-information">
-          <li>
-            <h1>Total de Horas Extras</h1>
-            <h3 className="time">
-              {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
-            </h3>
-          </li>
-          <li>
-            <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">
-              {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
-            </h3>
-          </li>
-          <li>
-            <h1>Quantidade no Mês</h1>
-            <h3>
-              {currentEmployeePerformace?.total_overtimes_mouth > 0
-                ? currentEmployeePerformace?.total_overtimes_mouth
-                : "0"}
-            </h3>
-          </li>
-          <OncallTable 
-            idMonth={idExercice}
-            />
-        </ul>
-      </div>
-
+      
+      <TableHeader 
+      data={currentEmployeePerformace}
+      idExercice={idExercice}
+      />
+  
       <div className="table-page">
         <div className="table-header ">
           {data && (

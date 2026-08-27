@@ -15,7 +15,7 @@ import { useMenagerTable } from "../../hooks/useMenager/useMenagerTable.js";
 import { useCoordinatorUsers } from '../../hooks/useCoordinator/useCoordinatorUsers';
 // Components
 import Button from "../common/Button/Button.jsx";
-
+import TableHeader from "../Layouts/TableHeader/TableHeader.jsx"
 const MenagerTable = ({ data, onApprove, onReject, idMonth }) => {
   const {
     loading,
@@ -74,31 +74,9 @@ const MenagerTable = ({ data, onApprove, onReject, idMonth }) => {
 
   return (
     <div className="table-page table">
-      <div>
-        <h2 className="title-h2">Histórico de Horas Extras</h2>
-        <ul className="menu-information">
-          <li>
-            <h1>Total de Horas Extras</h1>
-            <h3 className="time">
-              {formatHours(currentEmployeePerformace?.total_hours ?? 0)}
-            </h3>
-          </li>
-          <li>
-            <h1>Total de Horas Noturnas</h1>
-            <h3 className="night">
-              {formatHours(currentEmployeePerformace?.nigth_hours ?? 0)}
-            </h3>
-          </li>
-          <li>
-            <h1>Quantidade no Mês</h1>
-            <h3>
-              {currentEmployeePerformace?.total_overtimes_mouth > 0
-                ? currentEmployeePerformace.total_overtimes_mouth
-                : "0"}
-            </h3>
-          </li>
-        </ul>
-      </div>
+      <TableHeader 
+      data={currentEmployeePerformace}
+      />
 
       <div className="table-page">
         <div className="table-header">
