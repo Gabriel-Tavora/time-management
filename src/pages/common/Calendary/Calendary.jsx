@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 //componentes
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
-import Button from "../../../components/Layouts/Button/Button.jsx"
+import Button from "../../../components/common/Button/Button.jsx"
 //css
 import "./Calendary.css";
 //utils

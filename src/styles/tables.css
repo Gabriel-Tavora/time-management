@@ -9,7 +9,7 @@
 
 .table-page {
   display: grid;
-  gap: 3rem;
+  gap: 1.5rem;
   width: 100%;
   margin-top: 0;
   padding: 30px;
@@ -23,6 +23,15 @@
 
 .table-page .content {
   gap: 1rem;
+}
+
+.table-page-small {
+  padding: 15px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border-card-soft);
+  box-shadow: var(--shadow-table);
 }
 
 .table-header {
@@ -53,7 +62,7 @@
   max-height: 410px;
   overflow-y: auto;
   overflow-x: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
 }
 
 .table-container::-webkit-scrollbar {
@@ -106,15 +115,11 @@
   font-size: 0.95rem;
   border: 1px solid var(--border-table);
   background: var(--bg-glass);
-  transition:
-    background 0.3s,
-    color 0.3s;
 }
 
 .app-table tbody tr {
   transition:
     transform 0.3s,
-    background 0.3s;
 }
 
 .app-table tbody tr:hover {
@@ -343,7 +348,7 @@ Filter
     flex-wrap: wrap;
   }
 
-  .date-filter > * {
+  .date-filter>* {
     flex: 1 1 180px;
   }
 }
@@ -381,7 +386,7 @@ Filter
     align-items: stretch;
   }
 
-  .date-filter > * {
+  .date-filter>* {
     width: 100%;
     flex: none;
   }

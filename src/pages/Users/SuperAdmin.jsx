@@ -41,18 +41,15 @@ const SuperAdmin = () => {
   }, [token]);
 
   return (
-    <div className="user-screen">
+    <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
         <DashboardHeader user={user} formatted={formatted} />
 
-        <ul className="main-menu">
-          <li>
-            <h2>SuperAdmin</h2>
-          </li>
-        </ul>
+        <div className="main-menu">
+          <UserTable data={dataTime} monthPerf={monthPerf} token={token} />
+        </div>
 
-        <OvertimeTable data={dataTime} />
       </main>
     </div>
   );

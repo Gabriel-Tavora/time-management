@@ -1,5 +1,4 @@
 import { API_URL } from "./api";
-// recebe pdf na rota cloused
 
 async function parseErrorMessage(response, fallback) {
   try {

@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 //components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/Layouts/UserStats/InfoCards.jsx";
-import Button from "../../../components/Layouts/Button/Button";
+import Button from "../../../components/common/Button/Button";
 //hooks
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
 

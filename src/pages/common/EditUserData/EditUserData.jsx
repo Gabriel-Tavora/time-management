@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 // Components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
-import Button from "../../../components/Layouts/Button/Button";
+import Button from "../../../components/common/Button/Button";
 
 // CSS
 import "../UserStats/UserStats.css";

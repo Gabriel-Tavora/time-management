@@ -14,7 +14,7 @@ import {
 import { useMenagerTable } from "../../hooks/useMenager/useMenagerTable.js";
 import { useCoordinatorUsers } from '../../hooks/useCoordinator/useCoordinatorUsers';
 // Components
-import Button from "../Layouts/Button/Button.jsx";
+import Button from "../common/Button/Button.jsx";
 
 const MenagerTable = ({ data, onApprove, onReject, idMonth }) => {
   const {

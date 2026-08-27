@@ -16,8 +16,8 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 // components
 import AnalogClock from "../../../components/Layouts/AnalogClock/AnalogClock.jsx";
-import Input from "../../../components/Layouts/Inputs/Inputs.jsx";
-import Button from "../../../components/Layouts/Button/Button.jsx";
+import Input from "../../../components/common/Inputs/Inputs.jsx";
+import Button from "../../../components/common/Button/Button.jsx";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -65,7 +65,6 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
-
       setMessage({
         type: "error",
         text: error?.message || "Email ou senha inválidos.",

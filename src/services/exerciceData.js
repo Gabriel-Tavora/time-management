@@ -15,7 +15,7 @@ export async function employeeDataAll(token) {
   return await response.json();
 }
 
-export async function employeeDataMonth(token) {
+export async function MonthExerciceAtual(token) {
   const response = await fetch(`${API_URL}/exercice/actual`, {
     method: "GET",
     headers: {

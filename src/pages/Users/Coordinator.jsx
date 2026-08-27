@@ -15,7 +15,7 @@ const Coordinator = () => {
     colaboratorData,
     formatted,
     idClosure,
-    idMonth,
+    idExercice,
     closedData,
     isSubmitting,
   } = useCoordinator();
@@ -28,9 +28,10 @@ const Coordinator = () => {
         <div className="Coordinator-tables">
           <CoordinatorTable
             data={colaboratorData}
-            idMonth={idMonth}
+            idMonth={idClosure}
             Approval={Approval}
             Rejected={Rejected}
+            idExercice={idExercice}
           />
         </div>
       </main>

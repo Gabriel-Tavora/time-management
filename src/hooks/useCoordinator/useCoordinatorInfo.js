@@ -19,11 +19,10 @@ export function useCoordinator() {
   const [user, setUser] = useState(null);
   const [closedData, setClosedData] = useState([]);
   const [colaboratorData, setColaboratorData] = useState([]);
-
   // ID do fechamento
   const [idClosure, setIdClosure] = useState(null);
   // ID da competência/exercício
-  const [idMonth, setIdMonth] = useState(null);
+  const [idExercice, setIdExercice] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { formatted } = getCurrentDate();
@@ -33,19 +32,17 @@ export function useCoordinator() {
     if (!token) return;
 
     try {
-      const closedList = await getClousedMonth(token);
-      setClosedData(closedList ?? []);
-      const currentClosure = closedList?.[0];
+      const closedMonth = await getClousedMonth(token);
+      setClosedData(closedMonth ?? []);
+      const currentClosure = closedMonth?.[0];
 
       if (!currentClosure) {
         setIdClosure(null);
-        setIdMonth(null);
         setColaboratorData([]);
         return;
       }
 
       setIdClosure(currentClosure.exercice_id ?? null);
-      setIdMonth(currentClosure.exercice_id ?? null);
 
       if (currentClosure.id) {
         const records = await getClousedMonthRecords(
@@ -85,7 +82,6 @@ export function useCoordinator() {
       setColaboratorData([]);
 
       setIdClosure(null);
-      setIdMonth(null);
     } catch (error) {
       console.error("Erro ao aprovar fechamento:", error);
     } finally {
@@ -108,7 +104,6 @@ export function useCoordinator() {
       setColaboratorData([]);
 
       setIdClosure(null);
-      setIdMonth(null);
     } catch (error) {
       console.error("Erro ao rejeitar fechamento:", error);
     } finally {
@@ -124,7 +119,7 @@ export function useCoordinator() {
     colaboratorData,
     formatted,
     idClosure,
-    idMonth,
+    idExercice,
     closedData,
     isSubmitting,
   };

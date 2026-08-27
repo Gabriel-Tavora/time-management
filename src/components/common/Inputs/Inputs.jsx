@@ -1,4 +1,4 @@
-import "../Inputs/Inputs.css";
+import "./Inputs.css";
 const Input = ({
   placeholder,
   classNameIn,

@@ -3,6 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { getEmployeePerformance } from "../../services/overtimeData";
 //context
 import { useAuthValue } from "../../context/TokenContext.jsx";
+
+import { getMonthOncall } from '../../services/contractData'
 export function useTeamLeaderUsers(records, idMonth) {
 
   const { token } = useAuthValue();
@@ -62,6 +64,7 @@ export function useTeamLeaderUsers(records, idMonth) {
 
     const getPerformance = async () => {
       try {
+
         const performance = await getEmployeePerformance(
           token,
           currentItem.id,
@@ -76,7 +79,7 @@ export function useTeamLeaderUsers(records, idMonth) {
     };
 
     getPerformance();
-  }, [currentItem, token, idExercice]);
+  }, [currentItem, token, idExercice, idMonth]);
 
   const goNext = useCallback(() => {
     setCurrentIndex((index) =>

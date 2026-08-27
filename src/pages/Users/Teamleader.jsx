@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
-import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
+import DashboardHeader from "../../components/common/Dashboard/DashboardHeader.jsx";
 import TeamLeaderTable from '../../components/Tables/TeamLeaderTable.jsx';
+import OncallTable from '../../components/Tables/Oncall/OncallTable.jsx';
 //hooks
 import { useTeamLeader } from '../../hooks/useTeamLeader/useTeamLeaderInfo.js';
 const Teamleader = () => {
@@ -26,8 +27,7 @@ const Teamleader = () => {
           formatted={formatted}
         />
 
-
-        <div className="Leader-tables main-menu">
+        <div className="main-menu">
           <TeamLeaderTable
             data={colaboratorData}
             handleCloseMonth={handleCloseMonth}

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const TokenContext = createContext();
 
 const ROLE_TO_EMPLOYEE = {
+  5: "SuperAdmin",
   6: "userscreen",
   7: "Teamleader",
   8: "Coordinator",

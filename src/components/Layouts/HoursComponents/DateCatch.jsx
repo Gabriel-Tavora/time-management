@@ -2,7 +2,7 @@ import React from "react";
 //css
 import "../../../styles/dateCatch.css";
 //components
-import Input from "../Inputs/Inputs.jsx";
+import Input from "../../common/Inputs/Inputs.jsx";
 const DateCatch = ({
   endDate,
   setEndDate,

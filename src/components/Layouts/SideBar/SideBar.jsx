@@ -17,7 +17,7 @@ import {
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 //components
-import Button from "../Button/Button"
+import Button from "../../common/Button/Button"
 //services
 import { getCurrentUser } from '../../../services/userData.js';
 

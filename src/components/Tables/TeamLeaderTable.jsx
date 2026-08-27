@@ -24,8 +24,8 @@ import { useEditTimeout } from "../../hooks/useEditTimeout";
 import { useAuthValue } from "../../context/TokenContext.jsx";
 
 // components
-import Input from "../Layouts/Inputs/Inputs.jsx";
-import Button from "../Layouts/Button/Button";
+import Input from "../common/Inputs/Inputs.jsx";
+import Button from "../common/Button/Button.jsx";
 import OncallTable from './Oncall/OncallTable';
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
@@ -169,6 +169,9 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 : "0"}
             </h3>
           </li>
+          <OncallTable 
+            idMonth={idMonth}
+            />
         </ul>
       </div>
 
@@ -323,8 +326,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
               )}
             </tbody>
           </table>
-          <OncallTable 
-          idMonth={idMonth}/>
         </div>
       </div>
     </div>

@@ -304,7 +304,6 @@
   position: relative;
   flex: 1;
   min-width: 0;
-  /* essencial: sem isso, um filho flex não encolhe abaixo do conteúdo, forçando overflow lateral */
   min-height: 100vh;
   overflow: hidden;
 }
@@ -341,23 +340,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: min(260px, 100%);
   min-height: 10px;
-
   padding: clamp(10px, 3vw, 14px) clamp(16px, 4vw, 22px);
-
   box-sizing: border-box;
-
   color: var(--text-primary);
-
   border-radius: var(--radius-md);
-
   background: var(--bg-card);
   backdrop-filter: blur(18px);
-
   border: 1px solid var(--border-card);
-
   box-shadow: var(--shadow-card);
 }
 

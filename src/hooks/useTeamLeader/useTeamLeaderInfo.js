@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // Services
-import { employeeDataMonth, closeMonth } from '../../services/exerciceData.js';
+import { MonthExerciceAtual, closeMonth } from '../../services/exerciceData.js';
 import { employeeDataRecord } from '../../services/overtimeData.js';
 import {getCurrentUser} from "../../services/userData.js"
 //utils
@@ -21,7 +21,7 @@ export function useTeamLeader() {
       const userInformations = await getCurrentUser(token);
       setUser(userInformations);
       
-      const infoMonth = await employeeDataMonth(token);
+      const infoMonth = await MonthExerciceAtual(token);
       setIdMonth(infoMonth);
 
       const responseData = await employeeDataRecord(token, infoMonth?.id);

@@ -9,7 +9,8 @@ import {
   formatTime,
 } from "../../utils/formatHours.js";
 //components
-import Button from "../Layouts/Button/Button.jsx";
+import Button from "../common/Button/Button.jsx";
+import OncallTable from './Oncall/OncallTable';
 //hooks
 import { useCoordinatorTable } from "../../hooks/useCoordinator/useCoordinatorTable.js";
 import { useCoordinatorUsers } from '../../hooks/useCoordinator/useCoordinatorUsers';
@@ -19,6 +20,7 @@ const CoordinatorTable = ({
   idMonth,
   Approval,
   Rejected,
+  idExercice,
 }) => {
 
   const {
@@ -98,6 +100,9 @@ const CoordinatorTable = ({
                 : "0"}
             </h3>
           </li>
+          <OncallTable 
+            idMonth={idExercice}
+            />
         </ul>
       </div>
 

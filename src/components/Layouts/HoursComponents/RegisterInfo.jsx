@@ -3,7 +3,7 @@ import React from "react";
 import "../../../styles/registerInfo.css";
 import { FaPlus, FaSave } from "react-icons/fa";
 //components
-import Input from "../Inputs/Inputs.jsx";
+import Input from "../../common/Inputs/Inputs.jsx";
 const RegisterInfo = ({
   mode = "register", // edit or register
   jiraTask,

@@ -17,8 +17,8 @@ import { usePasswordReset } from "../../../hooks/usePasswordReset";
 import "./ForgotPassword.css";
 import "../../../styles/auth.css"
 //components 
-import Input from "../../../components/Layouts/Inputs/Inputs.jsx"
-import Button from "../../../components/Layouts/Button/Button.jsx"
+import Input from "../../../components/common/Inputs/Inputs.jsx"
+import Button from "../../../components/common/Button/Button.jsx"
 const STEPS = {
   EMAIL: "email",
   PASSWORD: "password",

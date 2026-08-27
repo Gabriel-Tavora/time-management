@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 //hooks
 import { useEditTimeout } from "../../hooks/useEditTimeout";
 //components
-import Input from "../Layouts/Inputs/Inputs.jsx";
-import Button from '../Layouts/Button/Button.jsx';
+import Input from "../common/Inputs/Inputs.jsx";
+import Button from '../common/Button/Button.jsx';
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const navigate = useNavigate();
@@ -73,7 +73,6 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   return (
     <div className="table-page table" ref={containerRef}>
       <div>
-
         <h2 className="title-h2">Histórico de Horas Extras</h2>
         <ul className="menu-information">
           <li>
