@@ -11,7 +11,6 @@ import { useAuthValue } from "../../context/TokenContext.jsx";
 export function useTeamLeader() {
   const [user, setUser] = useState(null);
   const [colaboratorData, setColaboratorData] = useState([]);
-  const [message, setMessage] = useState(null);
   const [idMonth, setIdMonth] = useState(null);
   const { token } = useAuthValue();
   const { formatted} = getCurrentDate();
@@ -40,27 +39,13 @@ export function useTeamLeader() {
   }, [token]);
 
   const handleCloseMonth = async () => {
-    setMessage(null);
-
     try {
       await closeMonth(token, idMonth?.id);
-
       await loadData();
-
-      setMessage({
-        type: "success",
-        text: "Mês fechado com sucesso.",
-      });
 
       return true;
     } catch (error) {
       console.error(error);
-
-      setMessage({
-        type: "error",
-        text: error.message || "Erro ao fechar o mês.",
-      });
-
       throw error;
     }
   };
@@ -70,7 +55,6 @@ export function useTeamLeader() {
     loadData,
     formatted,
     idMonth,
-    message,
     colaboratorData,
     user,
   };

@@ -1,6 +1,6 @@
 import React from 'react'
 //components
-import OncallTable from "../../Tables/Oncall/OncallTable.jsx"
+import OncallTable from "../Oncall/OncallTable.jsx"
 //utils
 import { formatHours } from "../../../utils/formatHours.js"
 

@@ -115,11 +115,15 @@
   font-size: 0.95rem;
   border: 1px solid var(--border-table);
   background: var(--bg-glass);
+  transition:
+    background 0.3s,
+    color 0.3s;
 }
 
 .app-table tbody tr {
   transition:
     transform 0.3s,
+    background 0.3s;
 }
 
 .app-table tbody tr:hover {
@@ -148,7 +152,7 @@
   justify-content: center;
   align-items: center;
   min-width: 50px;
-  padding: 8px 18px;
+  padding: 4px 12px;
   border-radius: var(--radius-pill);
   font-size: 0.9rem;
   font-weight: 700;
@@ -173,8 +177,14 @@
   box-shadow: var(--shadow-success);
 }
 
+.indicatorBar{
+  padding: 5px;
+}
+.indicatorBar::before{
+  color: red;
+}
 /* 
-MENU - TABLE
+MENU - TABLE HEADER
 */
 .menu-information {
   position: relative;

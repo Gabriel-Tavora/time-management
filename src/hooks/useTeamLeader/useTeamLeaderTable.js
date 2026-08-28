@@ -58,8 +58,39 @@ export const useTeamLeaderTable = ({ onApprove }) => {
     }
   }, [loading, onApprove]);
 
+  const handleOpenConfirm = useCallback(async () => {
+    const result = await Swal.fire({
+      title: "Deseja aprovar o fechamento do mês?",
+      text: "Após confirmar, o período será enviado para aprovação.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aprovar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButton: "my-swal-confirm",
+        cancelButton: "my-swal-cancel",
+        icon: "my-swal-icon",
+      },
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await handleConfirmAction();
+        if (isMountedRef.current) {
+          setRefreshKey((k) => k + 1);
+        }
+      } catch (err) {
+        console.error("Erro ao aprovar mês:", err);
+      }
+    }
+  }, [handleConfirmAction]);
+
   return {
     loading,
-    handleConfirmAction,
+    handleOpenConfirm,
   };
 };

@@ -1,21 +1,10 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 // css
 import "../../styles/tables.css";
-import Swal from "sweetalert2";
-
 // router-dom
 import { useNavigate } from "react-router-dom";
-
 // icons
-import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
-
-// Utils
-import {
-  formatHours,
-  formatDate,
-  formatTime,
-} from "../../utils/formatHours.js";
-
+import { FaPlus, FaTimes } from "react-icons/fa";
 // hooks
 import { useTeamLeaderUsers } from "../../hooks/useTeamLeader/useTeamLeaderUsers.js";
 import { useTeamLeaderTable } from "../../hooks/useTeamLeader/useTeamLeaderTable.js";
@@ -26,7 +15,8 @@ import { useAuthValue } from "../../context/TokenContext.jsx";
 // components
 import Input from "../common/Inputs/Inputs.jsx";
 import Button from "../common/Button/Button.jsx";
-import TableHeader from '../Layouts/TableHeader/TableHeader';
+import TableHeader from './TableHeader/TableHeader.jsx';
+import Tablebody from './Tablebody/Tablebody';
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const navigate = useNavigate();
@@ -88,7 +78,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
       const dateOnly = record?.work_date?.slice(0, 10);
 
       if (!dateOnly) return false;
-
       if (startDate && dateOnly < startDate) return false;
       if (endDate && dateOnly > endDate) return false;
 
@@ -109,46 +98,28 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     [filteredRecords, navigate],
   );
 
-  const { loading, handleConfirmAction } = useTeamLeaderTable({
-    onApprove: handleCloseMonth,
-  });
-
-  const handleOpenConfirm = useCallback(async () => {
-    const result = await Swal.fire({
-      title: "Deseja aprovar o fechamento do mês?",
-      text: "Após confirmar, o período será enviado para aprovação.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Aprovar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true,
-      customClass: {
-        popup: "my-swal-popup",
-        title: "my-swal-title",
-        htmlContainer: "my-swal-text",
-        confirmButton: "my-swal-confirm",
-        cancelButton: "my-swal-cancel",
-        icon: "my-swal-icon",
-      },
+  const {
+    loading,
+    handleOpenConfirm }
+    = useTeamLeaderTable({
+      onApprove: handleCloseMonth,
     });
 
-    if (result.isConfirmed) {
-      try {
-        await handleConfirmAction();
-        if (isMountedRef.current) {
-          setRefreshKey((k) => k + 1);
-        }
-      } catch (err) {
-        console.error("Erro ao aprovar mês:", err);
-      }
-    }
-  }, [handleConfirmAction]);
+  const tableData = filteredRecords.map((register) => ({
+    id: register.id,
+    start_time: register.start_time,
+    end_time: register.end_time,
+    total_hours: register.total_hours,
+    nigth_hours: register.nigth_hours,
+    hours_by_type: register.hours_by_type,
+    employee_name: currentItem?.name ?? "",
+  }));
 
   return (
     <div className="table-page table" ref={containerRef}>
-      <TableHeader 
-      data={currentEmployeePerformace}
-      idExercice={idMonth}
+      <TableHeader
+        data={currentEmployeePerformace}
+        idExercice={idMonth}
       />
 
       <div className="table-page">
@@ -209,100 +180,15 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
             </div>
           </div>
         </div>
-
-        <div className="table-container">
-          <table className="app-table">
-            <thead>
-              <tr>
-                <th>Colaboradores</th>
-                <th>Data Inicial</th>
-                <th>Data Final</th>
-                <th>Horário Inicial</th>
-                <th>Horário Final</th>
-                <th>Horas Noturnas</th>
-                <th>Horas Totais</th>
-                <th>50%</th>
-                <th>100%</th>
-                {isViewingOwnRecords && (
-                  <th className="table-action-header"></th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRecords.length === 0 ? (
-                <tr>
-                  <td colSpan={colSpan} className="empty-state">
-                    {isFilterActive
-                      ? "Nenhum registro encontrado no período selecionado."
-                      : "Nenhum registro encontrado."}
-                  </td>
-                </tr>
-              ) : (
-                filteredRecords.map((register) => {
-                  const totalHours = register.total_hours ?? 0;
-                  const nightHours = register.nigth_hours ?? 0;
-                  const startTime = register.start_time;
-                  const endTime = register.end_time;
-                  const type = register.hours_by_type ?? {};
-
-                  return (
-                    <tr
-                      key={register.id}
-                      onClick={
-                        isViewingOwnRecords
-                          ? () => handleEditTime(register.id)
-                          : undefined
-                      }
-                      className={
-                        isViewingOwnRecords ? "table-row--clickable" : undefined
-                      }
-                    >
-                      <td>{currentItem?.name}</td>
-                      <td>{formatDate(startTime)}</td>
-                      <td>{formatDate(endTime)}</td>
-                      <td>{formatTime(startTime)}</td>
-                      <td>{formatTime(endTime)}</td>
-                      <td>{nightHours ? formatHours(nightHours) : "0"}</td>
-                      <td>{formatHours(totalHours)}</td>
-                      <td>
-                        <span className="status pending">
-                          {formatHours(type["1"] ?? 0)}
-                        </span>
-                      </td>
-                      <td
-                        className={
-                          isViewingOwnRecords ? "last-column" : undefined
-                        }
-                      >
-                        <span className="status approved">
-                          {formatHours(type["2"] ?? 0)}
-                        </span>
-
-                        {isViewingOwnRecords && (
-                          <div
-                            className={`table-edit ${editTime === register.id ? "active" : ""
-                              }`}
-                          >
-                            <Button
-                              className="btn-table"
-                              type="button"
-                              icon={FaEdit}
-                              aria-label="Editar hora extra"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleEditHours(register.id, "/EditHours");
-                              }}
-                            />
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+        <div className="indicatorBar"></div>
+        <Tablebody
+          data={tableData}
+          isFilterActive={isFilterActive}
+          isViewingOwnRecords={isViewingOwnRecords}
+          editTime={editTime}
+          handleEditTime={handleEditTime}
+          handleEditHours={handleEditHours}
+        />
       </div>
     </div>
   );

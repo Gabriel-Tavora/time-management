@@ -1,7 +1,7 @@
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/common/Dashboard/DashboardHeader.jsx";
-import MenagerTable from "../../components/Tables/MenagerTable.jsx"
+import TableMenagerAndCoordinator from "../../components/Tables/TableMenagerAndCoordinator.jsx"
 
 //hooks
 import { useMenager } from '../../hooks/useMenager/useMenagerInfo.js';
@@ -25,10 +25,10 @@ const Menager = () => {
         <DashboardHeader user={user} formatted={formatted} />
 
         <div className="Manager-tables">
-          <MenagerTable
+          <TableMenagerAndCoordinator
             data={colaboratorData}
-            onApprove={Approval}
-            onReject={Rejected}
+            Approval={Approval}
+            Rejected={Rejected}
             idMonth={idMonth}
           />
         </div>

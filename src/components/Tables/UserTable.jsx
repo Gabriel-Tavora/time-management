@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 //css
 import "../../styles/tables.css";
 import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
@@ -11,8 +11,7 @@ import { useEditTimeout } from "../../hooks/useEditTimeout";
 //components
 import Input from "../common/Inputs/Inputs.jsx";
 import Button from '../common/Button/Button.jsx';
-import TableHeader from '../Layouts/Tableheader/Tableheader';
-
+import TableHeader from './Tableheader/Tableheader';
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const navigate = useNavigate();
@@ -74,10 +73,10 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   return (
     <div className="table-page table" ref={containerRef}>
-      <TableHeader 
-      data={monthPerf}
+      <TableHeader
+        data={monthPerf}
       />
-      
+
       <div className="table-page content">
         <div className="table-header">
           <div className="date-filter">

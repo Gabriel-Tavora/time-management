@@ -8,7 +8,7 @@ import {
 import { useAuthValue } from "../../context/TokenContext.jsx";
 import { getEmployeePerformance } from "../../services/overtimeData.js";
 
-export function useCoordinatorUsers(records, idMonth) {
+export function useUsersMenagerACoordinator(records, idMonth) {
   const { token } = useAuthValue();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -65,12 +65,9 @@ export function useCoordinatorUsers(records, idMonth) {
     );
   }, [total]);
 
+  // Busca performance
   useEffect(() => {
-    if (
-      !currentUser ||
-      !token ||
-      !idMonth
-    ) {
+    if (!currentUser || !token || !idMonth) {
       setCurrentEmployeePerformace(null);
       return;
     }
@@ -111,6 +108,21 @@ export function useCoordinatorUsers(records, idMonth) {
     idMonth,
   ]);
 
+  const tableData = useMemo(() => {
+    if (!currentUser?.records) {
+      return [];
+    }
+    return currentUser.records.map((register) => ({
+      id: register.id,
+      start_time: register.start_time,
+      end_time: register.end_time,
+      total_hours: register.total_hours,
+      nigth_hours: register.nigth_hours,
+      hours_by_type: register.hours_by_type,
+      employee_name: currentUser.name ?? "",
+    }));
+  }, [currentUser]);
+
   const goNext = useCallback(() => {
     setCurrentIndex((index) =>
       Math.min(index + 1, total - 1)
@@ -122,10 +134,9 @@ export function useCoordinatorUsers(records, idMonth) {
       Math.max(index - 1, 0)
     );
   }, []);
-
   return {
     users,
-    currentUser,
+    tableData,
     total,
     currentIndex,
     currentEmployeePerformace,

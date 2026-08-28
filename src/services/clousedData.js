@@ -28,16 +28,6 @@ export async function getClousedMonth(token) {
   return await response.json();
 }
 
-/* 
-{
-  "id": 2,
-  "exercice_id": 1,
-  "state": "PENDING_COORDINATOR_APPROVAL",
-  "cloused_by": 7,
-  "cloused_at": "2026-07-22T16:44:28Z"
-}
-*/
-
 // uso exclusivo do cordenador
 
 async function updateMonthStatus(token, exerciceId, state) {
@@ -93,7 +83,6 @@ export async function getClousedMonthManager(token) {
       Authorization: `Bearer ${token}`,
     },
   });
-
   if (!response.ok) {
     const message = await parseErrorMessage(
       response,
@@ -117,7 +106,7 @@ async function updateMonthStatusManager(token, exerciceId, state) {
   if (!response.ok) {
     const message = await parseErrorMessage(
       response,
-      `Erro ao atualizar competência ${exerciceId} para o status "${state}"`
+      `Erro ao atualizar competência"`
     );
     throw new Error(`${message} (status ${response.status})`);
   }

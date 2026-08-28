@@ -12,7 +12,6 @@ const Teamleader = () => {
     loadData,
     formatted,
     idMonth,
-    message,
     colaboratorData,
     dataTime,
     user,
@@ -31,7 +30,6 @@ const Teamleader = () => {
           <TeamLeaderTable
             data={colaboratorData}
             handleCloseMonth={handleCloseMonth}
-            reloadData={loadData}
             idMonth={idMonth}
           />
         </div>

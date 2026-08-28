@@ -16,11 +16,11 @@ const OncallTable = ({ idMonth }) => {
   const [onCall, setOnCall] = useState([]);
 
   useEffect(() => {
-    if (!token || !idMonth?.id) return;
+    if (!token || !idMonth) return;
 
     const loadData = async () => {
       try {
-        const id = idMonth.id;
+        const id = idMonth;
 
         const response = await getMonthOncall(token, id);
 

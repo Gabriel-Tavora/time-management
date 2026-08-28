@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
 import DashboardHeader from "../../components/common/Dashboard/DashboardHeader.jsx";
-import CoordinatorTable from "../../components/Tables/CoordinatorTable.jsx";
+import TableMenagerAndCoordinator from "../../components/Tables/TableMenagerAndCoordinator.jsx";
 
 //hooks
 import { useCoordinator } from '../../hooks/useCoordinator/useCoordinatorInfo.js';
@@ -15,10 +15,10 @@ const Coordinator = () => {
     colaboratorData,
     formatted,
     idClosure,
-    idExercice,
     closedData,
     isSubmitting,
   } = useCoordinator();
+
   return (
     <div className="dashboard-screen">
       <Sidebar />
@@ -26,12 +26,11 @@ const Coordinator = () => {
         <DashboardHeader user={user} formatted={formatted} />
 
         <div className="Coordinator-tables">
-          <CoordinatorTable
+          <TableMenagerAndCoordinator
             data={colaboratorData}
             idMonth={idClosure}
             Approval={Approval}
             Rejected={Rejected}
-            idExercice={idExercice}
           />
         </div>
       </main>

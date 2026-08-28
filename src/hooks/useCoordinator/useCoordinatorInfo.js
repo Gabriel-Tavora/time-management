@@ -21,9 +21,6 @@ export function useCoordinator() {
   const [colaboratorData, setColaboratorData] = useState([]);
   // ID do fechamento
   const [idClosure, setIdClosure] = useState(null);
-  // ID da competência/exercício
-  const [idExercice, setIdExercice] = useState(null);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { formatted } = getCurrentDate();
   const { token } = useAuthValue();
@@ -54,7 +51,7 @@ export function useCoordinator() {
       }
 
       const userInformations = await getCurrentUser(token);
-
+      
       setUser(userInformations);
     } catch (error) {
       console.error("Erro ao carregar dados do Coordinator:", error);
@@ -80,8 +77,8 @@ export function useCoordinator() {
       );
 
       setColaboratorData([]);
-
       setIdClosure(null);
+
     } catch (error) {
       console.error("Erro ao aprovar fechamento:", error);
     } finally {
@@ -93,7 +90,7 @@ export function useCoordinator() {
     if (!idClosure || isSubmitting) return;
 
     setIsSubmitting(true);
-
+    
     try {
       await closeRejectedMonth(token, idClosure);
 
@@ -102,8 +99,8 @@ export function useCoordinator() {
       );
 
       setColaboratorData([]);
-
       setIdClosure(null);
+
     } catch (error) {
       console.error("Erro ao rejeitar fechamento:", error);
     } finally {
@@ -119,7 +116,6 @@ export function useCoordinator() {
     colaboratorData,
     formatted,
     idClosure,
-    idExercice,
     closedData,
     isSubmitting,
   };
