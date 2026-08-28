@@ -1,6 +1,6 @@
 import React from "react";
 //css
-import "../../../styles/registerInfo.css";
+import "../../../styles/RegisterInfo.css";
 import { FaPlus, FaSave } from "react-icons/fa";
 //components
 import Input from "../../common/Inputs/Inputs.jsx";
