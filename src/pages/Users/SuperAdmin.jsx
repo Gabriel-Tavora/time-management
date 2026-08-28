@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 // Components
 import Sidebar from "../../components/Layouts/SideBar/SideBar.jsx";
-import DashboardHeader from "../../components/Layouts/Dashboard/DashboardHeader.jsx";
-import OvertimeTable from "../../components/Tables/UserTable/UserTable.jsx";
-// CSS
-import "./SuperAdmin.css";
+import DashboardHeader from "../../components/common/Dashboard/DashboardHeader.jsx";
+import SuperAdminTable from "../../components/Tables/SuperAdminTable.jsx";
 
 // services
 import { getCurrentUser } from "../../services/userData.js";
@@ -47,7 +45,7 @@ const SuperAdmin = () => {
         <DashboardHeader user={user} formatted={formatted} />
 
         <div className="main-menu">
-          <UserTable data={dataTime} monthPerf={monthPerf} token={token} />
+          <SuperAdminTable />
         </div>
 
       </main>
