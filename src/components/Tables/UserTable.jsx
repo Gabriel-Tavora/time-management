@@ -11,7 +11,7 @@ import { useEditTimeout } from "../../hooks/useEditTimeout";
 //components
 import Input from "../common/Inputs/Inputs.jsx";
 import Button from '../common/Button/Button.jsx';
-import TableHeader from './Tableheader/Tableheader';
+import TableHeader from './TableHeader/TableHeader.jsx';
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const navigate = useNavigate();

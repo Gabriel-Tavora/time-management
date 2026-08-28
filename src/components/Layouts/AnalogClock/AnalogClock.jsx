@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./analogClock.css";
+import "./AnalogClock.css";
 
 const BASE_SIZE = 700;
 
