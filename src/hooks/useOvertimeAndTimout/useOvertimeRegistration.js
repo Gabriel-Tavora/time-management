@@ -1,57 +1,35 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
-//services
-import { getUserHours, editOvertime } from "../services/overtimeData.js";
+import { createOvertime, getUserHours } from "../../services/overtimeData.js";
+import { getCurrentDate } from "../../utils/formatHours.js";
 
-//validations
 import {
   validateOvertime,
   combineDateTime,
   buildIsoDateTime,
   isDuplicate,
   hasTimeConflict,
-} from "../validations/overtimeValidation.js";
+} from "../../validations/overtimeValidation.js";
 
-//utils
-import {
-  formatTimeForInput,
-  formatDateForInput,
-} from "../utils/editFormatTime.js";
-import { getCurrentDate } from "../utils/formatHours.js";
-import { Messages } from "../utils/message.js";
+import { Messages } from "../../utils/message.js";
 
-const MESSAGE_DURATION_MS = 4000;
-
-export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
-  const {
-    overtimeId,
-    endTime,
-    endDate,
-    startTime,
-    startDate,
-    jiraTask,
-    observation,
-  } = form;
+export function useOvertimeRegistration({ token, form, clearForm }) {
+  const { endTime, endDate, startTime, startDate, jiraTask, observation } =
+    form;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isRedirecting, setIsRedirecting] = useState(false);
   const [message, setMessage] = useState(null);
 
   const submittingRef = useRef(false);
   const messageTimeoutRef = useRef(null);
-  const successTimeoutRef = useRef(null);
   const abortControllerRef = useRef(null);
   const isMountedRef = useRef(true);
 
   useEffect(() => {
     return () => {
       isMountedRef.current = false;
-
       if (messageTimeoutRef.current) {
         clearTimeout(messageTimeoutRef.current);
-      }
-      if (successTimeoutRef.current) {
-        clearTimeout(successTimeoutRef.current);
       }
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -72,7 +50,7 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
       if (isMountedRef.current) {
         setMessage(null);
       }
-    }, MESSAGE_DURATION_MS);
+    }, 4000);
   }, []);
 
   const resetSubmitting = useCallback(() => {
@@ -86,8 +64,7 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
     async (e) => {
       e.preventDefault();
 
-      if (submittingRef.current || isRedirecting) return;
-
+      if (submittingRef.current) return;
       submittingRef.current = true;
       setIsSubmitting(true);
       setMessage(null);
@@ -96,14 +73,10 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
       const { signal } = abortControllerRef.current;
 
       try {
-        if (!overtimeId) {
-          showMessage("error", Messages.MISSING_OVERTIME_ID);
-          return;
-        }
-
         const { monthStart, monthEnd } = getCurrentDate();
 
         const validationError = validateOvertime({
+          requireJira: true,
           endTime,
           endDate,
           startTime,
@@ -111,7 +84,6 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
           jiraTask,
           monthStart,
           monthEnd,
-          requireJira: true,
         });
 
         if (validationError) {
@@ -125,82 +97,43 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
         const records = await getUserHours(token, { signal });
 
         if (records && records.length > 0) {
-          const otherRecords = records
+          const allRecords = records
             .map((record) => record.overtime_records)
-            .filter(Boolean)
-            .filter((record) => String(record.id) !== String(overtimeId));
+            .filter(Boolean);
 
-          if (isDuplicate(otherRecords, startDateTime, endDateTime)) {
+          if (isDuplicate(allRecords, startDateTime, endDateTime)) {
             showMessage("error", Messages.DUPLICATED);
             return;
           }
 
-          if (hasTimeConflict(otherRecords, startDateTime, endDateTime)) {
+          if (hasTimeConflict(allRecords, startDateTime, endDateTime)) {
             showMessage("error", Messages.OVERLAP);
             return;
           }
         }
 
-        const originalStartTime = formatTimeForInput(overtime.start_time);
-        const originalEndTime = formatTimeForInput(overtime.end_time);
-        const originalStartDate = formatDateForInput(overtime.start_time);
-        const originalEndDate = formatDateForInput(overtime.end_time);
-        const originalJira = overtime.jira_task_identifier || "";
-        const originalObservation = overtime.observation || "";
+        const overtimeData = {
+          work_date: startDate,
+          start_time: buildIsoDateTime(startDate, startTime),
+          end_time: buildIsoDateTime(endDate, endTime),
+          jira_task_identifier: jiraTask.trim().toUpperCase(),
+        };
 
-        const overtimeData = {};
-
-        if (startDate !== originalStartDate) {
-          overtimeData.work_date = startDate;
+        if (observation && String(observation).trim() !== "") {
+          overtimeData.observation = String(observation).trim();
         }
 
-        if (
-          startDate !== originalStartDate ||
-          startTime !== originalStartTime
-        ) {
-          overtimeData.start_time = buildIsoDateTime(startDate, startTime);
-        }
+        await createOvertime(token, overtimeData, { signal });
 
-        if (endDate !== originalEndDate || endTime !== originalEndTime) {
-          overtimeData.end_time = buildIsoDateTime(endDate, endTime);
-        }
-
-        const currentJira = jiraTask?.trim() || "";
-        if (currentJira !== originalJira) {
-          overtimeData.jira_task_identifier = currentJira
-            ? currentJira.toUpperCase()
-            : "";
-        }
-
-        const currentObservation = observation?.trim() || "";
-        if (currentObservation !== originalObservation) {
-          overtimeData.observation = currentObservation;
-        }
-
-        if (Object.keys(overtimeData).length === 0) {
-          showMessage("error", Messages.NO_CHANGES);
-          return;
-        }
-
-        await editOvertime(token, overtimeId, overtimeData, { signal });
-        showMessage("success", Messages.EDIT_SUCCESS);
-
-        if (isMountedRef.current) {
-          setIsRedirecting(true);
-        }
-
-        successTimeoutRef.current = setTimeout(() => {
-          if (isMountedRef.current && onSuccess) {
-            onSuccess();
-          }
-        }, MESSAGE_DURATION_MS);
+        showMessage("success", Messages.SUCCESS);
+        clearForm();
       } catch (err) {
         if (err.name === "AbortError") return;
 
         console.error(err);
 
         const status =
-          err?.status ??
+          err.status ??
           err.response?.status ??
           (err.message?.includes("401") ? 401 : undefined) ??
           (err.message?.includes("403") ? 403 : undefined) ??
@@ -251,11 +184,8 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
       startDate,
       jiraTask,
       observation,
-      overtimeId,
-      overtime,
       token,
-      onSuccess,
-      isRedirecting,
+      clearForm,
       showMessage,
       resetSubmitting,
     ],
@@ -265,6 +195,5 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
     handleSubmit,
     message,
     isSubmitting,
-    isRedirecting,
   };
 }

@@ -19,7 +19,7 @@ export const Messages = {
   INVALID_DATE_RANGE: (maxDays) =>
     `O intervalo entre a data inicial e a final não pode ultrapassar ${maxDays} ${
       maxDays === 1 ? "dia" : "dias"
-    }.`,
+    }.`,  
 
   OUTSIDE_PERIOD:
     "A data informada está fora do período permitido. Verifique se selecionou o mês correto.",
@@ -74,4 +74,41 @@ export const Messages = {
 
   EDIT_SUCCESS:
     "Hora extra editada com sucesso.",
+
+  // =========================
+  // CREATE USER
+  // =========================
+
+  NAME_SHORT:
+    "O nome deve possuir pelo menos 3 caracteres.",
+
+  NAME_LETTER:
+    "O nome deve conter apenas letras.",
+
+  DISPLAY_NAME_SHORT:
+    "O nome de usuário deve possuir pelo menos 3 caracteres.",
+
+  DISPLAY_NAME_SPACE:
+    "O nome de usuário não pode conter espaços.",
+
+  PHONE_INVALID:
+    "O telefone deve possuir 10 ou 11 números.",
+
+  PASSWORD_SHORT:
+    "A senha deve possuir pelo menos 8 caracteres.",
+
+  PASSWORD_LETTER:
+    "A senha deve possuir pelo menos uma letra.",
+
+  PASSWORD_NUMBER:
+    "A senha deve possuir pelo menos um número.",
+
+  EMAIL_INVALID:
+    "Informe um endereço de email válido.",
+
+  CPF_INVALID_LENGTH:
+    "O CPF deve possuir 11 números.",
+
+  CPF_INVALID:
+    "Informe um CPF válido.",
 };

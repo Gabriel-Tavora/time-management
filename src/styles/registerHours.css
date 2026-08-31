@@ -25,10 +25,8 @@
 
 .add-time-menu {
   flex: 1;
-
   justify-items: center;
   align-content: center;
-
   color: var(--text-primary);
 }
 
@@ -46,11 +44,8 @@
 
 .time-menu-container h1 {
   margin: 0;
-
   color: var(--accent-soft);
-
   font-size: 2rem;
-
   text-shadow: var(--text-glow);
 }
 

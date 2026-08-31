@@ -12,7 +12,7 @@ import "../../../styles/global.css";
 //utils
 import { validateField } from '../../../utils/validateField';
 //hooks 
-import { useEditUserData } from '../../../hooks/useEditUserData';
+import { useEditUserData } from '../../../hooks/useEditUserData.js';
 
 const FIELDS_CONFIG = [
   { key: "name", label: "Nome", type: "text", placeholder: "Seu nome completo", maxLength: 100 },

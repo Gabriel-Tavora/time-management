@@ -18,7 +18,6 @@ export const useEditTimeout = (autoCloseMs = DEFAULT_AUTO_CLOSE_MS) => {
   const handleEditTime = useCallback(
     (id) => {
       clearEditTimeout();
-
       setEditTime(id);
 
       timeoutRef.current = setTimeout(() => {

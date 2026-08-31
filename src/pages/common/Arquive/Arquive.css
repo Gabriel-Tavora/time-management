@@ -1,0 +1,39 @@
+.pdf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdf-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+
+  transition: 0.2s;
+}
+
+.pdf-item:hover {
+  background: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  transform: translateY(-2px);
+}
+
+.pdf-icon {
+  font-size: 24px;
+}
+
+.pdf-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pdf-info small {
+  opacity: 0.6;
+}

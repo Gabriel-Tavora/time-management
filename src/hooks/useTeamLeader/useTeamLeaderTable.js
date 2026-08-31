@@ -32,7 +32,7 @@ export const useTeamLeaderTable = ({ onApprove }) => {
           popup: "my-swal-popup",
           title: "my-swal-title",
           htmlContainer: "my-swal-text",
-          confirmButtonText: "my-swal-confirm",
+          confirmButton: "my-swal-confirm",
           icon: "my-swal-icon",
         },
       });
@@ -42,14 +42,15 @@ export const useTeamLeaderTable = ({ onApprove }) => {
       await Swal.fire({
         title: "Erro ao fechar o mês",
         text:
-          error?.message || "Não foi possível fechar o mês. Tente novamente.",
+          error?.message ||
+          "Não foi possível fechar o mês. Tente novamente.",
         icon: "error",
         confirmButtonText: "OK",
         customClass: {
           popup: "my-swal-popup",
           title: "my-swal-title",
           htmlContainer: "my-swal-text",
-          confirmButtonText: "my-swal-confirm",
+          confirmButton: "my-swal-confirm",
           icon: "my-swal-icon",
         },
       });
@@ -78,14 +79,7 @@ export const useTeamLeaderTable = ({ onApprove }) => {
     });
 
     if (result.isConfirmed) {
-      try {
-        await handleConfirmAction();
-        if (isMountedRef.current) {
-          setRefreshKey((k) => k + 1);
-        }
-      } catch (err) {
-        console.error("Erro ao aprovar mês:", err);
-      }
+      await handleConfirmAction();
     }
   }, [handleConfirmAction]);
 

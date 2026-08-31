@@ -27,12 +27,10 @@ const SuperAdmin = () => {
         setUser(userInformations);
         const dataUserTime = await getUserHours(token);
         setDataTime(dataUserTime);
-        console.log(dataUserTime);
       } catch (error) {
         console.error(error);
       }
     }
-
     if (token) {
       loadingData();
     }

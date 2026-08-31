@@ -22,8 +22,8 @@ import {
 } from "../../../utils/editFormatTime.js";
 
 // Hooks
-import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
-import { useOvertimeEdit } from "../../../hooks/useOvertimeEdit.js";
+import { useRegisterHours } from "../../../hooks/useOvertimeAndTimout/useRegisterHours.js";
+import { useOvertimeEdit } from "../../../hooks/useOvertimeAndTimout/useOvertimeEdit.js";
 
 const EditHours = () => {
   const location = useLocation();

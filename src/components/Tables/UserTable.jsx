@@ -7,7 +7,7 @@ import { formatHours, formatDate, formatTime } from "../../utils/formatHours.js"
 //router-dom
 import { useNavigate } from "react-router-dom";
 //hooks
-import { useEditTimeout } from "../../hooks/useEditTimeout";
+import { useEditTimeout } from "../../hooks/useOvertimeAndTimout/useEditTimeout";
 //components
 import Input from "../common/Inputs/Inputs.jsx";
 import Button from '../common/Button/Button.jsx';

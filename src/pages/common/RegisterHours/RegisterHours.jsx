@@ -17,8 +17,8 @@ import { getCurrentDate } from "../../../utils/formatHours.js";
 import { isNightTime } from "../../../utils/editFormatTime.js";
 
 // Hooks
-import { useRegisterHours } from "../../../hooks/useRegisterHours.js";
-import { useOvertimeRegistration } from "../../../hooks/useOvertimeRegistration";
+import { useRegisterHours } from "../../../hooks/useOvertimeAndTimout/useRegisterHours.js";
+import { useOvertimeRegistration } from "../../../hooks/useOvertimeAndTimout/useOvertimeRegistration.js";
 
 const RegisterHours = () => {
   const {

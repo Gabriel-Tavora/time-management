@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 // css
 import "../../styles/tables.css";
 // router-dom
@@ -8,7 +8,7 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 // hooks
 import { useTeamLeaderUsers } from "../../hooks/useTeamLeader/useTeamLeaderUsers.js";
 import { useTeamLeaderTable } from "../../hooks/useTeamLeader/useTeamLeaderTable.js";
-import { useEditTimeout } from "../../hooks/useEditTimeout";
+import { useEditTimeout } from "../../hooks/useOvertimeAndTimout/useEditTimeout";
 // context
 import { useAuthValue } from "../../context/TokenContext.jsx";
 
@@ -16,7 +16,7 @@ import { useAuthValue } from "../../context/TokenContext.jsx";
 import Input from "../common/Inputs/Inputs.jsx";
 import Button from "../common/Button/Button.jsx";
 import TableHeader from './TableHeader/TableHeader.jsx';
-import Tablebody from './Tablebody/Tablebody';
+import Tablebody from './Tablebody/Tablebody.jsx';
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   const navigate = useNavigate();
@@ -33,17 +33,13 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
   }, []);
 
   const { id: currentUserId } = useAuthValue();
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const isMountedRef = useRef(true);
-
   const {
     editTime,
     containerRef,
     handleEditTime,
   } = useEditTimeout();
 
-  const processedData = useMemo(() => { return data?.map((item) => ({ ...item })) || []; }, [data, refreshKey]);
+  const processedData = useMemo(() => { return data?.map((item) => ({ ...item })) || []; }, [data]);
 
   const {
     currentItem,
@@ -125,7 +121,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
       <div className="table-page">
         <div className="table-header">
           <div className="date-filter">
-            {data && (
+            {data?.length > 0 && (
               <div className="table-header">
                 <Input
                   className="btn"

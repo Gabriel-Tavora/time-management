@@ -15,8 +15,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
   color: var(--input-text);
 }
 
@@ -147,4 +147,57 @@
   border-radius: 20px;
   background: transparent;
   font-size: 16px;
+}
+
+/* =========================
+   SUPER ADMIN - CREATE USER
+========================= */
+
+.super-admin-page {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 80px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border-card-soft);
+  box-shadow: var(--shadow-card);
+}
+
+.super-admin-title {
+  margin: 0 0 30px 0;
+  color: var(--text-primary);
+}
+
+.super-admin-form {
+  width: 100%;
+}
+
+.create-user-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.create-user-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* Segunda linha */
+
+.create-user-row:nth-child(2) {
+  grid-template-columns: repeat(3, minmax(1, 1fr));
+}
+
+/* Botão */
+
+.create-user-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
 }

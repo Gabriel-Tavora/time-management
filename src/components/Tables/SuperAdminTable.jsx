@@ -1,38 +1,38 @@
-import React from 'react'
+import React from "react";
+
 // Components
-import CreateUser from '../Layouts/CreateUser/CreateUser'
+import CreateUser from "../Layouts/CreateUser/CreateUser";
+
 // CSS
-import "../../styles/registerHours.css";
+import "../../styles/registerInfo.css";
+
+// Hooks
+import { usecreateUser } from "../../hooks/useSuperAdmin";
+
 const SuperAdminTable = () => {
+  const {
+    handleSubmit,
+    isSubmitting,
+    errorMessage,
+  } = usecreateUser();
+
   return (
-    <div>
-      <aside className="add-time-menu">
-        <div className="time-menu-container">
-          <h1>Criar Usuário</h1>
-          <form className="time-menu-form" >
-            <CreateUser
-            />
+    <div className="super-admin-page">
+      <h1 className="super-admin-title">
+        Criar Usuário
+      </h1>
 
-            {/* {nightTime && (
-              <div className="time-menu-night-alert">
-                🌙 Horário noturno detectado
-              </div>
-            )}
-
-            <RegisterInfo
-              mode={"register"}
-              jiraTask={jiraTask}
-              observation={observation}
-              onJiraTaskChange={(e) => setJiraTask(e.target.value)}
-              onObservationChange={(e) => setObservation(e.target.value)}
-              message={message}
-              isSubmitting={isSubmitting}
-            /> */}
-          </form>
-        </div>
-      </aside>
+      <form
+        className="super-admin-form"
+        onSubmit={handleSubmit}
+      >
+        <CreateUser
+          isSubmitting={isSubmitting}
+          errorMessage={errorMessage}
+        />
+      </form>
     </div>
-  )
-}
+  );
+};
 
 export default SuperAdminTable;

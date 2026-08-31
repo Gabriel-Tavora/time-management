@@ -1,4 +1,5 @@
 import { API_URL } from "./api";
+// /users
 
 export async function getCurrentUser(token) {
   const response = await fetch(`${API_URL}/users/me`, {
@@ -14,30 +15,6 @@ export async function getCurrentUser(token) {
   return await response.json();
 }
 
-export async function createUser(userData, token) {
-  const response = await fetch(`${API_URL}/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      name: userData?.name,
-      display_name: userData?.display_name,
-      email: userData?.email,
-      password: userData?.password,
-      cpf: userData?.cpf,
-      phone: userData?.phone,
-      role_id: userData?.role_id,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Erro ao criar usuário ${userData?.name}`);
-  }
-
-  return response.json();
-}
 
 export async function editUserData(userData, token) {
   const data = Object.fromEntries(
@@ -75,4 +52,36 @@ export async function editUserData(userData, token) {
   }
 
   return JSON.parse(text);
+}
+
+//super adimin
+
+export async function CreateNewUser(userData, token) {
+  
+  const response = await fetch(`${API_URL}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name: userData?.name,
+      display_name: userData?.display_name,
+      email: userData?.email,
+      password: userData?.password,
+      cpf: userData?.cpf,
+      phone: userData?.phone,
+      role_id: userData?.role_id,
+    }),
+  });
+
+   if (!response.ok) {
+    throw new Error(`Erro ao criar usuário`);
+  }
+
+  if (!response) {
+    return null;
+  }
+
+  return JSON.parse(response);
 }
