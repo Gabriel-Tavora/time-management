@@ -13,6 +13,7 @@ import {
   FaCalendarAlt,
   FaCog,
   FaUserCircle,
+  FaFilePdf,
 } from "react-icons/fa";
 //context
 import { useAuthValue } from "../../../context/TokenContext.jsx";
@@ -80,6 +81,16 @@ function Sidebar() {
                 <NavLink to="/calendary" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
                   <FaCalendarAlt />
                   {expanded && <span>Calendário</span>}
+                </NavLink>
+              </li>
+            </>
+          )}
+          {(roleId !== 6 && roleId !== 5) && (
+            <>
+              <li>
+                <NavLink to="/PdfsMonth" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
+                  <FaFilePdf />
+                  {expanded && <span>Arquivos PDF</span>}
                 </NavLink>
               </li>
             </>

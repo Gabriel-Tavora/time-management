@@ -50,10 +50,12 @@ const Menager = lazy(() =>
 const SuperAdmin = lazy(() =>
   import("./pages/Users/SuperAdmin.jsx")
 );
+const PdfsMonth = lazy(() =>
+  import("./pages/common/PdfsMonth/PdfsMonth.jsx")
+);
 const NotFound = lazy(() =>
   import("./pages/common/NotFound/NotFound.jsx")
 );
-
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
   { path: "/ForgotPassword", element: <ForgotPassword /> },
@@ -61,7 +63,7 @@ const router = createBrowserRouter([
   {
     path: "/userscreen",
     element: (
-       <PrivateRoute>
+      <PrivateRoute>
         <UserScreen />
       </PrivateRoute>
     ),
@@ -135,6 +137,14 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <SuperAdmin />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/PdfsMonth",
+    element: (
+      <PrivateRoute>
+        <PdfsMonth />
       </PrivateRoute>
     ),
   },

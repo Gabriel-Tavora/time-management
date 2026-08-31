@@ -1,10 +1,18 @@
 import React from 'react'
 //css
-import "./Arquive.css"
-const Arquive = () => {
+import "./PdfsMonth.css"
+//components
+import Sidebar from "../../../components/Layouts/SideBar/SideBar.jsx";
+
+const PdfsMonth = () => {
+
+
   return (
-    <div className="pdf-arquive">
-      <div className="pdf-list">
+    <div className="dashboard-screen">
+
+      <Sidebar />
+     <main className="main-informations">
+       <div className="pdf-list">
         <a className="pdf-item">
           <span className="pdf-icon">📄</span>
           <span className="pdf-info">
@@ -21,8 +29,9 @@ const Arquive = () => {
           </span>
         </a>
       </div>
+     </main>
     </div>
   )
 }
 
-export default Arquive;
+export default PdfsMonth;

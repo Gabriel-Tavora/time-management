@@ -1,7 +1,18 @@
 .pdf-list {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  padding: 30px;
   gap: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card-soft);
+  box-shadow: var(--shadow-table);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+  min-height: 100vh;
 }
 
 .pdf-item {
@@ -14,7 +25,6 @@
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: 12px;
-
   transition: 0.2s;
 }
 
