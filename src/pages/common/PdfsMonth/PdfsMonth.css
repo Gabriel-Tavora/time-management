@@ -10,6 +10,7 @@
   justify-content: center;
   align-items: center;
   padding: 40px;
+  background: var(--bg-tertiary);
 }
 
 .pdf-container {
@@ -32,10 +33,11 @@
   color: var(--text-primary);
 }
 
-.pdf-header p {
+p {
   margin: 0;
   color: var(--text-primary);
   opacity: 0.7;
+  text-align: center;
 }
 
 .pdf-list {
