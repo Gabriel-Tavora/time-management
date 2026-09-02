@@ -1,49 +1,86 @@
+.pdf-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.pdf-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.pdf-container {
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card-soft);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-table);
+}
+
+.pdf-header {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.pdf-header h1 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+}
+
+.pdf-header p {
+  margin: 0;
+  color: var(--text-primary);
+  opacity: 0.7;
+}
+
 .pdf-list {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  justify-self: center;
-  align-items: center;
-  padding: 30px;
-  gap: 10px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-card);
-  border: 1px solid var(--border-card-soft);
-  box-shadow: var(--shadow-table);
-  font-size: var(--input-font-size);
-  font-weight: var(--input-font-weight);
-  min-height: 100vh;
+  gap: 12px;
 }
 
 .pdf-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
+  gap: 15px;
+  padding: 16px 18px;
   text-decoration: none;
   color: var(--text-primary);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
-  border-radius: 12px;
-  transition: 0.2s;
+  border-radius: 14px;
+  transition: 0.25s;
 }
 
 .pdf-item:hover {
   background: var(--input-bg-focus);
   border-color: var(--input-border-focus);
   transform: translateY(-2px);
+  box-shadow: var(--input-focus-shadow);
 }
 
 .pdf-icon {
-  font-size: 24px;
+  color: var(--text-link);
+  flex-shrink: 0;
+  font-size: 28px;
 }
 
 .pdf-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
+}
+
+.pdf-info strong {
+  font-size: 1rem;
 }
 
 .pdf-info small {
+  font-size: 0.8rem;
   opacity: 0.6;
 }

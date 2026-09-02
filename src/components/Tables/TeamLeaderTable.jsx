@@ -115,7 +115,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     <div className="table-page table" ref={containerRef}>
       <TableHeader
         data={currentEmployeePerformace}
-        idExercice={idMonth}
       />
 
       <div className="table-page">

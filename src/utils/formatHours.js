@@ -64,10 +64,8 @@ export function getCurrentDate() {
     day,
     month,
     year,
-
     firstDay,
     daysInMonth,
-
     formatted: `${day}/${month}/${year}`,
     formattedPost: `${year}-${month}-${day}`,
 
