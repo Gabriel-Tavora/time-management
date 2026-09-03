@@ -26,7 +26,8 @@
   width: calc(100% - 90px);
   height: 100vh;
   padding: 35px 70px;
-  overflow-y: auto; /* rede de segurança: se ainda não couber, rola só aqui dentro, não a página inteira */
+  overflow-y: auto;
+  /* rede de segurança: se ainda não couber, rola só aqui dentro, não a página inteira */
 }
 
 /* ===========================
@@ -84,7 +85,8 @@
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(6, minmax(0, 1fr));
   flex: 1;
-  min-height: 0; /* essencial: sem isso, um filho de flex/grid não encolhe abaixo do conteúdo */
+  min-height: 0;
+  /* essencial: sem isso, um filho de flex/grid não encolhe abaixo do conteúdo */
   gap: 15px;
 }
 
@@ -158,6 +160,50 @@
 
 .overtime-day:hover {
   box-shadow: var(--shadow-success);
+}
+
+/* ===========================
+   DAY DATA
+=========================== */
+
+.dialog-calendary {
+  max-width: 500px;
+  box-sizing: border-box;
+  align-self: center;
+  justify-self: center;
+  justify-items: center;
+  padding: 25px;
+  border: 1px solid var(--border-card-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-strong);
+  backdrop-filter: blur(25px);
+  color: var(--text-primary);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(124, 92, 255, 0.2);
+}
+
+.data-extra {
+  width: 100%;
+  max-width: 100%;
+  min-width: 270px;
+  box-sizing: border-box;
+}
+.data-extra h3{
+  text-align: center;
+}
+.data-extra p {
+  text-align: start;
+  max-width: 100%;
+  color: black;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.data-extra hr {
+  width: 100%;
+  margin: 6px 0;
 }
 
 /* ===========================

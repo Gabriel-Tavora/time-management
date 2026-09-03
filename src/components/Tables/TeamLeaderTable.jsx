@@ -58,7 +58,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
 
   const colSpan = isViewingOwnRecords ? 10 : 9;
 
-  //filtro 
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -110,7 +109,6 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
     hours_by_type: register.hours_by_type,
     employee_name: currentItem?.name ?? "",
   }));
-
   return (
     <div className="table-page table" ref={containerRef}>
       <TableHeader
@@ -161,7 +159,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 onClick={() => handleNavigate("/RegisterHours")}
                 icon={FaPlus}
               />
-              {data && (
+              {(data || data?.length >= 2) && (
                 <>
                   <Button
                     className="btn-medium btn"

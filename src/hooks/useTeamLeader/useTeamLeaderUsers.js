@@ -8,7 +8,7 @@ import { getMonthOncall } from '../../services/contractData'
 export function useTeamLeaderUsers(records, idMonth) {
 
   const { token } = useAuthValue();
-
+  
   const items = useMemo(() => {
     const filterUserById = records.reduce((acc, data) => {
       const userId = data.users.id;

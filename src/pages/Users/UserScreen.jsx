@@ -24,7 +24,6 @@ const UserScreen = () => {
     try {
       const userInformations = await getCurrentUser(token);
       setUser(userInformations);
-
       const dataUserTime = await getUserHours(token);
       setDataTime(dataUserTime);
 

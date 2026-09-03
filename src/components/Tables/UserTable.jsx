@@ -49,9 +49,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
   const isFilterActive = Boolean(startDate || endDate);
-
   const filteredData = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
 

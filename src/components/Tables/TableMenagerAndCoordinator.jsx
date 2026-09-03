@@ -30,7 +30,6 @@ const TableMenagerAndCoordinator = ({ data, idMonth, Approval, Rejected }) => {
 
   return (
     <div className="table-page table">
-
       <TableHeader
         data={currentEmployeePerformace}
         idExercice={idMonth}
@@ -38,7 +37,7 @@ const TableMenagerAndCoordinator = ({ data, idMonth, Approval, Rejected }) => {
 
       <div className="table-page">
         <div className="table-header ">
-          {data && (
+          {(data || data?.length >= 2) && (
             <div className="date-filter">
               <div className="table-header">
                 <Button
