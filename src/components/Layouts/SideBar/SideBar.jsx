@@ -68,7 +68,7 @@ function Sidebar() {
               {expanded && <span>Meu Painel</span>}
             </NavLink>
           </li>
-          {(roleId === 6 || roleId === 7) && (
+          {(roleId === 4 || roleId === 5) && (
             <>
               <li>
                 <NavLink to="/registerhours" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
@@ -85,7 +85,7 @@ function Sidebar() {
               </li>
             </>
           )}
-          {(roleId !== 6 && roleId !== 5) && (
+          {(roleId !== 1 && roleId !== 5) && (
             <>
               <li>
                 <NavLink to="/PdfsMonth" className={({ isActive }) => (isActive ? "menu-link-list-on" : "menu-link-list-off")}>
