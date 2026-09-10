@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 const TokenContext = createContext();
 
 const ROLE_TO_EMPLOYEE = {
-  5: "SuperAdmin",
-  6: "userscreen",
-  7: "Teamleader",
-  8: "Coordinator",
-  9: "Menager",
+  5: "userscreen",
+  4: "Teamleader",
+  3: "Coordinator",
+  2: "Menager",
+  1: "SuperAdmin",
 };
 
 export function AuthProvider({ children }) {
