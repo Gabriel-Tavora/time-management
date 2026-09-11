@@ -82,7 +82,7 @@ const PdfsMonth = () => {
             </p>
             <div className="date-filter">
               <Input
-                className="teste"
+                classNameIn="commun-input smaller"
                 labelText="Período"
                 id="filter"
                 type="month"

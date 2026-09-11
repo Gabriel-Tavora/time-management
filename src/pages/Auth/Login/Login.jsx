@@ -85,7 +85,6 @@ const Login = () => {
           <h1>
             <span>Login</span>
           </h1>
-
           <p>Insira seus Dados</p>
         </div>
 
@@ -108,7 +107,7 @@ const Login = () => {
 
             <Input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={submitting}

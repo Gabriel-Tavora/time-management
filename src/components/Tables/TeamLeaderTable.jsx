@@ -19,6 +19,7 @@ import TableHeader from './TableHeader/TableHeader.jsx';
 import Tablebody from './Tablebody/Tablebody.jsx';
 
 const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
+  const countUsers = Object.keys(data).length;
   const navigate = useNavigate();
   const handleNavigate = useCallback(
     (path) => {
@@ -66,15 +67,22 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
 
   const filteredRecords = useMemo(() => {
     const records = currentItem?.records ?? [];
-
     if (!isFilterActive) return records;
-
     return records.filter((record) => {
-      const dateOnly = record?.work_date?.slice(0, 10);
+      if (!record?.start_time || !record?.end_time) {
+        return false;
+      }
 
-      if (!dateOnly) return false;
-      if (startDate && dateOnly < startDate) return false;
-      if (endDate && dateOnly > endDate) return false;
+      const recordStartDate = record.start_time.slice(0, 10);
+      const recordEndDate = record.end_time.slice(0, 10);
+
+      if (startDate && recordEndDate < startDate) {
+        return false;
+      }
+
+      if (endDate && recordStartDate > endDate) {
+        return false;
+      }
 
       return true;
     });
@@ -121,7 +129,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
             {data?.length > 0 && (
               <div className="table-header">
                 <Input
-                  className="btn"
+                  classNameIn="commun-input smaller" 
                   labelText="Data Inicial"
                   id="filter-start-date"
                   type="date"
@@ -131,7 +139,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                   name="startDate"
                 />
                 <Input
-                  classNameIn="filter-start-date"
+                  classNameIn="commun-input smaller"
                   labelText="Data Final"
                   id="filter-end-date"
                   type="date"
@@ -159,7 +167,7 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                 onClick={() => handleNavigate("/RegisterHours")}
                 icon={FaPlus}
               />
-              {(data || data?.length >= 2) && (
+              {countUsers >= 1 && (
                 <>
                   <Button
                     className="btn-medium btn"
@@ -168,7 +176,8 @@ const TeamLeaderTable = ({ data, handleCloseMonth, idMonth }) => {
                     disabled={loading}
                   />
                   <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-                  <Button className="change-btn" onClick={goNext} buttonText="▶" /></>
+                  <Button className="change-btn" onClick={goNext} buttonText="▶" />
+                </>
               )}
             </div>
           </div>

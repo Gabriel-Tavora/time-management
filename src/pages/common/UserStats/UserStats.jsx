@@ -1,12 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
 //components
 import Sidebar from "../../../components/Layouts/SideBar/SideBar";
 import InfoCards from "../../../components/Layouts/UserStats/InfoCards.jsx";
 import Button from "../../../components/common/Button/Button";
+
 //hooks
 import { usePasswordReset } from "../../../hooks/usePasswordReset";
+import { useEditUserData } from "../../../hooks/useEditUserData.js";
 
 //context
 import { useTheme } from "../../../context/themeContext.jsx";
@@ -25,15 +28,13 @@ const UserStats = () => {
   const navigate = useNavigate();
   const formDialogRef = useRef(null);
   const { toggle, isDark } = useTheme();
+
   const [avatarUrl, setAvatarUrl] = useState(() =>
-    getAvatarUrl({ seed: "guest" }),
+    getAvatarUrl({ seed: "guest" })
   );
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const handleEditData = (path) => {
-    navigate(path);
-  };
 
   const {
     email,
@@ -44,8 +45,8 @@ const UserStats = () => {
     setPassword,
     confirmPassword,
     setConfirmPassword,
-    loading,
-    message,
+    loading: passwordLoading,
+    message: passwordMessage,
     resetForm,
     sendCode,
     submitPassword,
@@ -55,10 +56,26 @@ const UserStats = () => {
     onSuccess: () => navigate("/"),
   });
 
+  const {
+    loading: userLoading,
+    saving,
+    user,
+    message: editMessage,
+    editingField,
+    draftValues,
+    inputRefs,
+    startEditing,
+    cancelEditing,
+    handleDraftChange,
+    handleSaveField,
+    handleKeyDown,
+  } = useEditUserData();
+
   useEffect(() => cleanup, [cleanup]);
 
   const handleEmailLoaded = (loadedEmail) => {
     setEmail(loadedEmail);
+
     if (loadedEmail) {
       setAvatarUrl(getAvatarByUser({ email: loadedEmail }));
     }
@@ -67,6 +84,8 @@ const UserStats = () => {
   const handleCancelForm = () => {
     formDialogRef.current?.close();
     resetForm();
+    setShowPassword(false);
+    setShowConfirmPassword(false);
   };
 
   const handleSubmit = async (e) => {
@@ -91,15 +110,15 @@ const UserStats = () => {
 
           if (!response?.success) {
             Swal.showValidationMessage(
-              response?.message || "Não foi possível enviar o código.",
+              response?.message || "Não foi possível enviar o código."
             );
-
             return false;
           }
+
           return response;
         } catch (error) {
           Swal.showValidationMessage(
-            error?.message || "Erro ao enviar código.",
+            error?.message || "Erro ao enviar código."
           );
           return false;
         }
@@ -119,9 +138,21 @@ const UserStats = () => {
     }
   };
 
+  const skeletonCards = () => (
+    <>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={`sk-${i}`} className="info-card info-card--skeleton">
+          <span className="skeleton-line skeleton-line--short" />
+          <h2 className="skeleton-line skeleton-line--long" />
+        </div>
+      ))}
+    </>
+  );
+
   return (
     <div className="stats">
       <Sidebar />
+
       <main className="menu-stats">
         <div className="menu-stats-cont">
           <header className="profile-header">
@@ -137,7 +168,7 @@ const UserStats = () => {
             </div>
             <div className="profile-info">
               <h1>Minha Conta</h1>
-              <p>Visualize suas informações pessoais.</p>
+              <p>Visualize e altere suas informações pessoais.</p>
             </div>
             <div className="Change-theme">
               <Button
@@ -156,15 +187,30 @@ const UserStats = () => {
             </div>
           </header>
 
-          <InfoCards onEmailLoaded={handleEmailLoaded} />
+          {(editMessage?.text && saving) && (
+            <div
+              className={`edit-toast edit-toast--${editMessage.type}`}
+              role="alert"
+              aria-live="polite"
+            >
+              {editMessage.text}
+            </div>
+          )}
 
+          <InfoCards
+            userLoading={userLoading}
+            user={user}
+            editingField={editingField}
+            saving={saving}
+            inputRefs={inputRefs}
+            draftValues={draftValues}
+            startEditing={startEditing}
+            cancelEditing={cancelEditing}
+            handleDraftChange={handleDraftChange}
+            handleSaveField={handleSaveField}
+            handleKeyDown={handleKeyDown}
+          />
           <div className="profile-buttons">
-            <Button
-              className="btn btn-medium"
-              onClick={() => handleEditData("/EditUserData")}
-              disabled={!email}
-              buttonText="Alterar Dados"
-            />
             <Button
               className="btn btn-medium"
               onClick={handleOpenConfirm}
@@ -173,42 +219,53 @@ const UserStats = () => {
             />
           </div>
 
-          {/* Dialog 2: código + nova senha */}
-          <dialog ref={formDialogRef} className="login-card close-dialog">
+          <dialog
+            ref={formDialogRef}
+            className="login-card close-dialog"
+          >
             <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <h2>Defina a nova senha</h2>
-                </div>
+              </div>
+
               <div className="input-group">
                 <FaKey className="input-icon" />
+
                 <input
                   type="text"
                   placeholder="Insira o código"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  disabled={loading}
+                  disabled={passwordLoading}
                   required
                 />
               </div>
 
               <div className="input-group">
                 <FaLock className="input-icon" />
+
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Nova senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  disabled={loading}
+                  disabled={passwordLoading}
                   required
                   minLength={8}
                 />
 
                 <span
                   className="password-toggle"
-                  onClick={() => setShowPassword((prev) => !prev)}
+                  onClick={() =>
+                    setShowPassword((prev) => !prev)
+                  }
                   role="button"
                   tabIndex={0}
-                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={
+                    showPassword
+                      ? "Ocultar senha"
+                      : "Mostrar senha"
+                  }
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
@@ -216,19 +273,29 @@ const UserStats = () => {
 
               <div className="input-group">
                 <FaLock className="input-icon" />
+
                 <input
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
                   placeholder="Confirme a senha"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  disabled={loading}
+                  onChange={(e) =>
+                    setConfirmPassword(e.target.value)
+                  }
+                  disabled={passwordLoading}
                   required
                   minLength={8}
                 />
+
                 <span
                   className="password-toggle"
                   onClick={() =>
-                    setShowConfirmPassword((prev) => !prev)
+                    setShowConfirmPassword(
+                      (prev) => !prev
+                    )
                   }
                   role="button"
                   tabIndex={0}
@@ -238,13 +305,19 @@ const UserStats = () => {
                       : "Mostrar confirmação da senha"
                   }
                 >
-                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showConfirmPassword ? (
+                    <FaEyeSlash />
+                  ) : (
+                    <FaEye />
+                  )}
                 </span>
               </div>
 
-              {message && (
-                <p className={`form-message ${message.type}`}>
-                  {message.text}
+              {passwordMessage && (
+                <p
+                  className={`form-message ${passwordMessage.type}`}
+                >
+                  {passwordMessage.text}
                 </p>
               )}
 
@@ -253,15 +326,19 @@ const UserStats = () => {
                   type="button"
                   className="rejected-btn"
                   onClick={handleCancelForm}
-                  disabled={loading}
+                  disabled={passwordLoading}
                   buttonText="Cancelar"
                 />
 
                 <Button
                   type="submit"
                   className="approved-btn"
-                  disabled={loading}
-                  buttonText={loading ? "Enviando..." : "Confirmar"}
+                  disabled={passwordLoading}
+                  buttonText={
+                    passwordLoading
+                      ? "Enviando..."
+                      : "Confirmar"
+                  }
                 />
               </div>
             </form>

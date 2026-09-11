@@ -13,7 +13,7 @@ import Input from "../common/Inputs/Inputs.jsx";
 import Button from '../common/Button/Button.jsx';
 import TableHeader from './TableHeader/TableHeader.jsx';
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
-
+  console.log(data)
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
@@ -50,24 +50,33 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const isFilterActive = Boolean(startDate || endDate);
+
   const filteredData = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
-
     if (!isFilterActive) return data;
 
     return data.filter((register) => {
-      const workDate = register.overtime_records?.work_date;
+      const overtime = register.overtime_records;
 
-      if (!workDate) return false;
+      if (!overtime?.start_time || !overtime?.end_time) {
+        return false;
+      }
 
-      const dateOnly = workDate.slice(0, 10);
+      const recordStartDate = overtime.start_time.slice(0, 10);
+      const recordEndDate = overtime.end_time.slice(0, 10);
 
-      if (startDate && dateOnly < startDate) return false;
-      if (endDate && dateOnly > endDate) return false;
+      if (startDate && recordEndDate < startDate) {
+        return false;
+      }
+
+      if (endDate && recordStartDate > endDate) {
+        return false;
+      }
 
       return true;
     });
   }, [data, startDate, endDate, isFilterActive]);
+
 
   return (
     <div className="table-page table" ref={containerRef}>
@@ -80,7 +89,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
           <div className="date-filter">
             <div className="table-header">
               <Input
-                classNameIn="filter-start-date"
+                classNameIn="commun-input smaller"
                 labelText="Data Inicial"
                 id="filter-start-date"
                 type="date"
@@ -90,7 +99,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                 name="startDate"
               />
               <Input
-                classNameIn="filter-start-date"
+                classNameIn="commun-input smaller"
                 labelText="Data Final"
                 id="filter-end-date"
                 type="date"

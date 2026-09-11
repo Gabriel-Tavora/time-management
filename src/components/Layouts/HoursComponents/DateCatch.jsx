@@ -5,9 +5,9 @@ import "../../../styles/DateCatch.css";
 import Input from "../../common/Inputs/Inputs.jsx";
 const DateCatch = ({
   endDate,
-  setEndDate,
+  handleEndDateChange,
   startDate,
-  setStartDate,
+  handleStartDateChange,
   startTime,
   handleStartTimeChange,
   endTime,
@@ -22,7 +22,7 @@ const DateCatch = ({
           id="startDate"
           type="date"
           value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
+          onChange={(e) => handleStartDateChange(e.target.value)}
           name="startDate"
         />
         <Input
@@ -43,7 +43,7 @@ const DateCatch = ({
           id="endDate"
           type="date"
           value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
+          onChange={(e) => handleEndDateChange(e.target.value)}
           name="endDate"
         />
         <Input

@@ -138,7 +138,7 @@ const Calendary = () => {
               today.getFullYear() === year;
             const date = new Date(year, month, day);
             const buttonDate = formatDate(date);
-            const overtimeOfDay = overtimeRecords.filter((item) => {
+            const overtimeOfDay = (overtimeRecords ?? []).filter((item) => {
               const startTime = item.overtime_records?.start_time;
               return startTime && formatDate(startTime) === buttonDate;
             });

@@ -25,10 +25,8 @@ export function formatDateForInput(value) {
   ].join("-");
 }
 
-export const isNightTime = (startTime, endTime) => {
-  if (!startTime || !endTime) {
-    return false;
-  }
+export const isNightTime = (startTime, endTime, startDate, endDate) => {
+  if (!startTime || !endTime) return false;
 
   const toMinutes = (time) => {
     const hhmm = time.includes("T") ? time.slice(11, 16) : time;
@@ -39,13 +37,14 @@ export const isNightTime = (startTime, endTime) => {
   const start = toMinutes(startTime);
   const end = toMinutes(endTime);
 
-  const NIGHT_START = 22 * 60; // 22:00
-  const NIGHT_END = 5 * 60;    // 05:00
-
+  const NIGHT_START = 22 * 60;
+  const NIGHT_END = 5 * 60;
 
   const crossesMidnight = end <= start;
+  console.log(startDate)
+  console.log(endDate)
   if (crossesMidnight) {
-    return true;
+    return startDate !== endDate;
   }
 
   return end > NIGHT_START || start < NIGHT_END;

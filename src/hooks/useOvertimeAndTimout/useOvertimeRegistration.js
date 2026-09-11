@@ -13,7 +13,7 @@ import {
 
 import { Messages } from "../../utils/message.js";
 
-export function useOvertimeRegistration({ token, form, clearForm }) {
+export function useOvertimeRegistration({ token, form, clearForm, onSuccess }) {
   const { endTime, endDate, startTime, startDate, jiraTask, observation } =
     form;
 
@@ -126,6 +126,7 @@ export function useOvertimeRegistration({ token, form, clearForm }) {
         await createOvertime(token, overtimeData, { signal });
 
         showMessage("success", Messages.SUCCESS);
+        onSuccess?.();
         clearForm();
       } catch (err) {
         if (err.name === "AbortError") return;

@@ -105,11 +105,11 @@ export function useEditUserData() {
   }, []);
 
 
-  const handleSaveField = useCallback(async (field) => {
+  const handleSaveField = useCallback(async (field, value) => {
     if (!user || !token) return;
 
     const originalValue = (user[field] || "").trim();
-    const newValue = (draftValues[field] || "").trim();
+    const newValue = (value ?? draftValues[field] ?? "").trim();
 
     if (newValue === originalValue) {
       setEditingField(null);
@@ -148,13 +148,12 @@ export function useEditUserData() {
   const handleKeyDown = useCallback((e, field) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleSaveField(field);
+      handleSaveField(field, e.currentTarget.value);
     } else if (e.key === "Escape") {
       cancelEditing();
     }
   }, [handleSaveField, cancelEditing]);
-
-
+  
   return {
     loading,
     saving,

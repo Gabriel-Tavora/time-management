@@ -2,6 +2,11 @@
    GLOBAL INPUT SYSTEM
    Unifica: Login | Forgot Password | Register
    ============================================ */
+* {
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+}
 
 .input-group {
   position: relative;
@@ -59,16 +64,11 @@
   top: 50%;
   left: 20px;
   z-index: 2;
-
   width: 20px;
   height: 20px;
-
   transform: translateY(-50%);
-
   color: #2563eb;
-
   pointer-events: none;
-
   transition: color 0.3s ease;
 }
 
@@ -169,6 +169,12 @@
   outline: none;
   transition: 0.3s;
 }
+
+.commun-input.smaller input {
+  height: 2.7rem !important;
+  border-radius: 10px;
+}
+
 
 .commun-input input,
 .commun-input input::placeholder {
@@ -319,6 +325,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   }
 }
 
-.teste{
+.teste {
   color: purple;
 }

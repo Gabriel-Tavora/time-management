@@ -212,7 +212,11 @@
 
 @media (max-width: 900px) {
   .calendary-page {
+    margin-left: 90px;
+    width: calc(100% - 90px);
     padding: 20px;
+    gap: 15px;
+    overflow-y: auto;
   }
 
   .calendar-header h1 {
@@ -221,5 +225,88 @@
 
   .calendar-header h2 {
     font-size: 1rem;
+  }
+
+  .week-days,
+  .calendar-grid {
+    gap: 8px;
+  }
+
+  .week-days h3 {
+    padding: 10px 5px;
+    font-size: 0.85rem;
+  }
+
+  .day {
+    padding: 9px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+  }
+
+  .dialog-calendary {
+    max-width: calc(100vw - 40px);
+    padding: 20px;
+  }
+}
+
+/* ===========================
+   CELULAR
+=========================== */
+
+@media (max-width: 600px) {
+  .calendary-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+  }
+
+  .calendary-page {
+    margin-left: 0;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: visible;
+  }
+
+  .calendar-header {
+    gap: 10px;
+  }
+
+  .calendar-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .calendar-header h2 {
+    font-size: 0.9rem;
+  }
+
+  .week-days {
+    gap: 5px;
+  }
+
+  .calendar-grid {
+    gap: 5px;
+    grid-template-rows: repeat(9, minmax(65px, 1fr));
+  }
+
+  .day {
+    min-width: 0;
+    max-height: 55px;
+    padding: 7px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+  }
+
+  .dialog-calendary {
+    width: calc(100vw - 24px);
+    max-width: none;
+    padding: 18px;
+  }
+
+  .data-extra {
+    min-width: 0;
   }
 }

@@ -309,3 +309,157 @@
     transform: translateX(0);
   }
 }
+/* ===========================
+   CELULAR
+=========================== */
+
+@media (max-width: 600px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: 70px;
+    flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border-card-soft);
+    overflow: hidden;
+  }
+
+  .sidebar.open {
+    width: 100%;
+    height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  /* BARRA SUPERIOR */
+  .sidebar nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+  }
+
+  .sidebar.open nav {
+    flex-direction: column;
+    height: auto;
+    align-items: stretch;
+  }
+
+  /* HEADER */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+  }
+
+  .sidebar.open .sidebar-header {
+    width: 100%;
+    padding: 15px;
+    justify-content: space-between;
+  }
+
+  .logo-icon {
+    display: none;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .sidebar.open .logo {
+    display: block;
+  }
+
+  .toggle-btn {
+    width: 50px;
+    height: 42px;
+    margin: 0;
+  }
+
+  /* ÍCONES DAS PÁGINAS */
+  .menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+    width: auto;
+    height: 70px;
+    margin: 0;
+    list-style: none;
+  }
+
+  .menu li {
+    margin: 0;
+    flex: 1;
+  }
+
+  .menu-link-list-on,
+  .menu-link-list-off {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 55px;
+    padding: 10px 5px;
+    border-radius: 12px;
+  }
+
+  .menu-link-list-on span,
+  .menu-link-list-off span {
+    display: none;
+  }
+
+  .menu svg {
+    display: block;
+    min-width: 22px;
+    font-size: 24px;
+  }
+
+  .sidebar.open .menu {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 10px 12px;
+  }
+
+  .sidebar.open .menu li {
+    margin-bottom: 6px;
+  }
+
+  .sidebar.open .menu-link-list-on,
+  .sidebar.open .menu-link-list-off {
+    justify-content: flex-start;
+    height: auto;
+    padding: 12px 15px;
+  }
+
+  .sidebar.open .menu-link-list-on span,
+  .sidebar.open .menu-link-list-off span {
+    display: inline;
+  }
+
+  /* PERFIL */
+  .profile,
+  .profile-on {
+    display: none;
+  }
+
+  .sidebar.open .profile,
+  .sidebar.open .profile-on {
+    display: flex;
+    margin: 8px 12px;
+  }
+
+  .leave {
+    display: none;
+  }
+
+  .sidebar.open .leave {
+    display: block;
+    margin: 10px 12px;
+  }
+}

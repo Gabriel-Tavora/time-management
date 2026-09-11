@@ -9,6 +9,7 @@ import Tablebody from './Tablebody/Tablebody';
 import { useTableMenagerACoordinator } from "../../hooks/useMenagerAndCoordinator/useTableMenagerACoordinator";
 import { useUsersMenagerACoordinator } from '../../hooks/useMenagerAndCoordinator/useUsersMenagerACoordinator';
 const TableMenagerAndCoordinator = ({ data, idMonth, Approval, Rejected }) => {
+  const countUsers = Object.keys(data).length;
   const {
     loading,
     handleOpenConfirm,
@@ -53,10 +54,10 @@ const TableMenagerAndCoordinator = ({ data, idMonth, Approval, Rejected }) => {
                   buttonText={loading ? "Processando..." : "Rejeitar"}
                 />
               </div>
-              <div className="table-header">
-                <Button className="change-btn" onClick={goPrev} buttonText="◀" />
-                <Button className="change-btn" onClick={goNext} buttonText="▶" />
-              </div>
+              {countUsers >= 1 && (
+                  <Button className="change-btn" onClick={goPrev} buttonText="◀" />
+                  <Button className="change-btn" onClick={goNext} buttonText="▶" />
+              )}
             </div>
           )}
         </div>

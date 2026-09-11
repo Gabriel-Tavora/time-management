@@ -108,41 +108,42 @@ const EditHours = () => {
   return (
     <div className="time-menu">
       <Sidebar />
+      <div className="panel-menu">
+        <aside className="add-time-menu">
+          <div className="time-menu-container">
+            <h1>Editar Hora Extra</h1>
+            <form className="time-menu-form" onSubmit={handleSubmit}>
+              <DateCatch
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                startTime={startTime}
+                handleStartTimeChange={handleStartTimeChange}
+                endTime={endTime}
+                handleEndTimeChange={handleEndTimeChange}
+              />
 
-      <aside className="add-time-menu">
-        <div className="time-menu-container">
-          <h1>Editar Hora Extra</h1>
-          <form className="time-menu-form" onSubmit={handleSubmit}>
-            <DateCatch
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              startTime={startTime}
-              handleStartTimeChange={handleStartTimeChange}
-              endTime={endTime}
-              handleEndTimeChange={handleEndTimeChange}
-            />
+              {nightTime && (
+                <div className="time-menu-night-alert">
+                  🌙 Horário noturno detectado
+                </div>
+              )}
 
-            {nightTime && (
-              <div className="time-menu-night-alert">
-                🌙 Horário noturno detectado
-              </div>
-            )}
-
-            <RegisterInfo
-              mode={"edit"}
-              jiraTask={jiraTask}
-              observation={observation}
-              onJiraTaskChange={(e) => setJiraTask(e.target.value)}
-              onObservationChange={(e) => setObservation(e.target.value)}
-              message={message}
-              isSubmitting={isSubmitting}
-              isRedirecting={isRedirecting}
-            />
-          </form>
-        </div>
-      </aside>
+              <RegisterInfo
+                mode={"edit"}
+                jiraTask={jiraTask}
+                observation={observation}
+                onJiraTaskChange={(e) => setJiraTask(e.target.value)}
+                onObservationChange={(e) => setObservation(e.target.value)}
+                message={message}
+                isSubmitting={isSubmitting}
+                isRedirecting={isRedirecting}
+              />
+            </form>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };
