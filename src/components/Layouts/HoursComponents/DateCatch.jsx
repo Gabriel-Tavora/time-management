@@ -1,6 +1,6 @@
 import React from "react";
 //css
-import "../../../styles/DateCatch.css";
+import "../../../styles/dateCatch.css";
 //components
 import Input from "../../common/Inputs/Inputs.jsx";
 const DateCatch = ({
@@ -14,7 +14,7 @@ const DateCatch = ({
   handleEndTimeChange,
 }) => {
   return (
-    <div className="input-time">
+    <div className="date-catch">
       <div className="date-time">
         <Input
           classNameIn="commun-input"
@@ -25,6 +25,7 @@ const DateCatch = ({
           onChange={(e) => handleStartDateChange(e.target.value)}
           name="startDate"
         />
+
         <Input
           classNameIn="commun-input"
           labelText="Horário Inicial"
@@ -46,6 +47,7 @@ const DateCatch = ({
           onChange={(e) => handleEndDateChange(e.target.value)}
           name="endDate"
         />
+
         <Input
           classNameIn="commun-input"
           labelText="Horário de Saída"

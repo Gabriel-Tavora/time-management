@@ -1,0 +1,53 @@
+.date-catch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 30px;
+}
+
+.date-time {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.date-time>* {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (width > 1440px) {
+  .date-catch {
+    min-width: 530px;
+  }
+}
+
+@media (width < 901px) {
+  .date-catch {
+    min-width: 430px;
+  }
+}
+
+@media (max-width: 900px) {
+  .date-catch {
+    gap: 20px;
+  }
+
+  .date-time {
+    gap: 16px;
+  }
+}
+
+/* Celular */
+@media (max-width: 600px) {
+  .date-catch {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .date-time {
+    gap: 16px;
+    max-width: 307px !important;
+  }
+}

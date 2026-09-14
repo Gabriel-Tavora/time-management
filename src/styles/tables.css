@@ -1,10 +1,9 @@
 .table-page.table {
-  position: fixed;
-  top: 100px;
-  left: 51%;
-  transform: translateX(-50%);
-  width: calc(100% - 60px);
+  position: relative;
+  box-sizing: border-box;
+  width: calc(100% - 80px);
   max-width: 80rem;
+  margin: 20px 0 0 80px;
 }
 
 .table-page {
@@ -299,10 +298,10 @@ Filter
   transform: translateX(0);
   pointer-events: auto;
 }
-
 @media (max-width: 1200px) {
   .table-page.table {
-    width: calc(100% - 40px);
+    width: calc(100% - 100px);
+    margin-left: 90px;
   }
 
   .table-page {
@@ -321,12 +320,8 @@ Filter
 
 @media (max-width: 900px) {
   .table-page.table {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    width: calc(100% - 30px);
-    margin: 20px auto;
+    width: calc(100% - 100px);
+    margin: 20px 10px 20px 90px;
   }
 
   .table-page {
@@ -351,8 +346,8 @@ Filter
 
 @media (max-width: 700px) {
   .table-page.table {
-    width: calc(100% - 20px);
-    margin: 15px auto 20px;
+    width: calc(100% - 100px);
+    margin: 15px 10px 20px 90px;
   }
 
   .table-page {
@@ -417,7 +412,7 @@ Filter
 @media (max-width: 600px) {
   .table-page.table {
     width: calc(100% - 24px);
-    margin: 20px auto 30px;
+    margin: 20px 12px 30px;
   }
 
   .table-page {
@@ -440,7 +435,6 @@ Filter
   .title-h2 {
     font-size: 1.2rem;
     text-align: center;
-    margin-bottom: 10px;
   }
 
   /* CARDS DE INFORMAÇÃO */
@@ -497,14 +491,16 @@ Filter
     overflow-x: auto;
     overflow-y: auto;
     border-radius: 10px;
+    box-sizing: border-box;
   }
 
-  .app-table {
-    min-width: 800px;
+  .table-container .app-table {
+    min-width: 500px;
+    margin: 0;
   }
 
   .app-table td {
-    padding: 10px 12px;
+    padding: 9px 12px;
     font-size: .82rem;
   }
 
@@ -519,6 +515,8 @@ Filter
     font-size: .75rem;
   }
 
+  /* BARRA DE EDIÇÃO */
+
   .table-edit {
     min-width: 100%;
   }
@@ -529,7 +527,7 @@ Filter
 @media (max-width: 480px) {
   .table-page.table {
     width: calc(100% - 16px);
-    margin: 15px auto 25px;
+    margin: 15px 8px 25px;
   }
 
   .table-page {
@@ -560,7 +558,16 @@ Filter
   }
 
   .table-container {
+    width: 100%;
+    max-width: 100%;
     max-height: 350px;
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+  .table-container .app-table {
+    min-width: 760px;
+    margin: 0;
   }
 
   .app-table {

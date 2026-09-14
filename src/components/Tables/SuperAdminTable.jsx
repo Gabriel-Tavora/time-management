@@ -4,7 +4,7 @@ import React from "react";
 import CreateUser from "../Layouts/CreateUser/CreateUser";
 
 // CSS
-import "../../styles/RegisterInfo.css";
+import "../../styles/superadmin.css";
 
 // Hooks
 import { usecreateUser } from "../../hooks/useSuperAdmin";

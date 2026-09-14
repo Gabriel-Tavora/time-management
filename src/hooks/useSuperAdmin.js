@@ -38,26 +38,11 @@ export function usecreateUser() {
       };
 
       // =========================
-      // NOME
+      // USUÁRIO
       // =========================
-
-      if (data.name.length < 3) {
-        setErrorMessage(Messages.NAME_SHORT);
-        return;
-      }
-
-      if (!/^[A-Za-zÀ-ÿ\s]+$/.test(data.name)) {
-        setErrorMessage(Messages.NAME_LETTER);
-        return;
-      }
 
       if (data.displayName.length < 3) {
         setErrorMessage(Messages.DISPLAY_NAME_SHORT);
-        return;
-      }
-
-      if (/\s/.test(data.displayName)) {
-        setErrorMessage(Messages.DISPLAY_NAME_SPACE);
         return;
       }
 
@@ -68,20 +53,6 @@ export function usecreateUser() {
         return;
       }
 
-      if (data.password.length < 8) {
-        setErrorMessage(Messages.PASSWORD_SHORT);
-        return;
-      }
-
-      if (!/[A-Za-z]/.test(data.password)) {
-        setErrorMessage(Messages.PASSWORD_LETTER);
-        return;
-      }
-
-      if (!/[0-9]/.test(data.password)) {
-        setErrorMessage(Messages.PASSWORD_NUMBER);
-        return;
-      }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -146,8 +117,6 @@ export function usecreateUser() {
 
       const res = await CreateNewUser(userData, token);
       setResponse(res);
-      console.log(userData);
-      console.log(res)
 
     } catch (err) {
       console.error(err);

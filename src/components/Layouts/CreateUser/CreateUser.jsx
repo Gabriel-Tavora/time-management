@@ -84,19 +84,23 @@ const CreateUser = ({ isSubmitting, errorMessage }) => {
           required
           disabled={isSubmitting}
         />
-
-        <Input
-          placeholder="0"
-          classNameIn="commun-input"
-          labelText="Função"
-          id="role_id"
-          type="text"
-          name="role_id"
-          inputMode="numeric"
-          maxLength={1}
-          required
-          disabled={isSubmitting}
-        />
+        <div className="select">
+          <span>Cargo</span>
+          <select
+            className="commun-select"
+            id="role_id"
+            name="role_id"
+            disabled={isSubmitting}
+            required
+          >
+            <option value="">Selecione uma opção</option>
+            <option value="1">SuperAdmin</option>
+            <option value="2">Gestor</option>
+            <option value="3">Coordenador</option>
+            <option value="4">Teamleader</option>
+            <option value="5">Usuário</option>
+          </select>
+        </div>
 
       </div>
 
@@ -110,7 +114,7 @@ const CreateUser = ({ isSubmitting, errorMessage }) => {
           </p>
         )}
       </div>
-      
+
       <div className="create-user-button">
         <Button
           type="submit"

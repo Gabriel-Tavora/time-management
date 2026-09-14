@@ -1,16 +1,12 @@
-// TableHour.jsx
 import React from "react";
-
-import {
-  formatDate,
-} from "../../../utils/formatHours.js";
+import { formatDate } from "../../../utils/formatHours.js";
 
 const TableHour = ({ data }) => {
   if (!data || data.length === 0) return null;
 
   return (
-    <div className="table-container">
-      <table className="app-table">
+    <div className="table-hour-container">
+      <table className="table-hour">
         <thead>
           <tr>
             <th>Data Inicial</th>

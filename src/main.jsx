@@ -29,9 +29,6 @@ const RegisterHours = lazy(() => import("./pages/common/RegisterHours/RegisterHo
 const EditHours = lazy(() =>
   import("./pages/common/EditHours/EditHours.jsx")
 );
-const EditUserData = lazy(() =>
-  import("./pages/common/EditUserData/EditUserData.jsx")
-);
 const UserStats = lazy(() =>
   import("./pages/common/UserStats/UserStats.jsx")
 );
@@ -89,14 +86,6 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <UserStats />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/EditUserData",
-    element: (
-      <PrivateRoute>
-        <EditUserData />
       </PrivateRoute>
     ),
   },

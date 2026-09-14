@@ -1,0 +1,264 @@
+/* =========================
+   SUPER ADMIN - CREATE USER
+========================= */
+
+.super-admin-page {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 50px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border-card-soft);
+  box-shadow: var(--shadow-card);
+}
+
+.super-admin-title {
+  margin: 0 0 35px;
+  color: var(--text-primary);
+}
+
+.super-admin-form {
+  width: 100%;
+}
+
+.create-user-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* =========================
+   LINHAS DO FORMULÁRIO
+========================= */
+
+.create-user-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.create-user-row:nth-child(2) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* =========================
+   CAMPOS
+========================= */
+
+.create-user-row .commun-input,
+.create-user-row .commun-select {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.create-user-row .commun-input input,
+.create-user-row .commun-input select,
+.create-user-row .commun-select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   SELECT
+========================= */
+.select {
+  display: flex;
+  flex-direction: column;
+  gap: 7.5px;
+}
+
+.select span {
+  color: var(--text-primary);
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+}
+
+.commun-select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 45px 0 18px;
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 18px;
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    background-color .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease,
+    transform .2s ease;
+
+  appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
+    linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
+
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 14px) 50%;
+
+  background-size:
+    6px 6px,
+    6px 6px;
+
+  background-repeat: no-repeat;
+}
+
+.commun-select:hover:not(:disabled) {
+  border-color: var(--input-border-focus);
+  background-color: var(--input-bg-focus);
+}
+
+.commun-select:focus {
+  background-color: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-focus-shadow);
+}
+
+.commun-select option {
+  padding: 12px;
+  font-family: var(--input-font-family);
+  font-size: var(--input-font-size);
+  font-weight: var(--input-font-weight);
+  color: var(--text-primary);
+  background: var(--input-bg);
+}
+
+
+.commun-select option[value=""] {
+  color: var(--text-primary);
+}
+
+
+.commun-select:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* =========================
+   BOTÃO
+========================= */
+
+.create-user-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1100px) {
+
+  .super-admin-page {
+    padding: 40px;
+  }
+
+  .create-user-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .create-user-row:nth-child(2) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+/* =========================
+   TABLET PEQUENO
+========================= */
+
+@media (max-width: 768px) {
+
+  .super-admin-page {
+    padding: 30px;
+  }
+
+  .super-admin-title {
+    margin-bottom: 25px;
+  }
+
+  .create-user-content {
+    gap: 20px;
+  }
+
+  .create-user-row,
+  .create-user-row:nth-child(2) {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .super-admin-page {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  .super-admin-title {
+    margin-bottom: 22px;
+    font-size: 1.4rem;
+  }
+
+  .create-user-content {
+    gap: 16px;
+  }
+
+  .create-user-row,
+  .create-user-row:nth-child(2) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .create-user-button {
+    margin-top: 5px;
+  }
+
+  .commun-select {
+    height: 3.2rem;
+    padding-left: 16px;
+    padding-right: 40px;
+    border-radius: 16px;
+    font-size: .95rem;
+  }
+
+}
+
+/* =========================
+   MOBILE PEQUENO
+========================= */
+
+@media (max-width: 400px) {
+
+  .super-admin-page {
+    padding: 20px 14px;
+  }
+
+  .super-admin-title {
+    font-size: 1.25rem;
+  }
+
+}

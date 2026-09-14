@@ -290,7 +290,6 @@
   display: flex;
   min-height: 100vh;
   overflow-x: hidden;
-  /* rede de segurança: evita scroll horizontal em telas estreitas */
   background:
     radial-gradient(circle at 15% 15%,
       var(--bg-radial-purple),
@@ -328,7 +327,7 @@
   display: grid;
   justify-content: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto clamp(24px, 6vw, 60px);
   padding: 0 clamp(12px, 4vw, 20px);
   list-style: none;
