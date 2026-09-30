@@ -1,6 +1,6 @@
 import React from "react";
 //css
-import "../../../styles/dateCatch.css";
+import "../../../styles/DateCatch.css";
 //components
 import Input from "../../common/Inputs/Inputs.jsx";
 const DateCatch = ({
