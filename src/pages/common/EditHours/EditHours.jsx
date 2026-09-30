@@ -1,4 +1,4 @@
-// React
+// EditHours.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -14,7 +14,6 @@ import "../../../styles/registerHours.css";
 import { useAuthValue } from "../../../context/TokenContext.jsx";
 
 // Utils
-import { getCurrentDate } from "../../../utils/formatHours.js";
 import {
   formatTimeForInput,
   formatDateForInput,
@@ -66,7 +65,7 @@ const EditHours = () => {
     setEndDate(endDateValue);
     setJiraTask(overtime.jira_task_identifier || "");
     setObservation(overtime.observation || "");
-    setNightTime(isNightTime(start, end));
+    setNightTime(isNightTime(start, end, startDateValue, endDateValue));
   }, [
     overtime,
     navigate,
@@ -97,12 +96,22 @@ const EditHours = () => {
 
   const handleStartTimeChange = (value) => {
     setStartTime(value);
-    setNightTime(isNightTime(value, endTime));
+    setNightTime(isNightTime(value, endTime, startDate, endDate));
   };
 
   const handleEndTimeChange = (value) => {
     setEndTime(value);
-    setNightTime(isNightTime(startTime, value));
+    setNightTime(isNightTime(startTime, value, startDate, endDate));
+  };
+
+  const handleStartDateChange = (value) => {
+    setStartDate(value);
+    setNightTime(isNightTime(startTime, endTime, value, endDate));
+  };
+
+  const handleEndDateChange = (value) => {
+    setEndDate(value);
+    setNightTime(isNightTime(startTime, endTime, startDate, value));
   };
 
   return (
@@ -115,9 +124,9 @@ const EditHours = () => {
             <form className="time-menu-form" onSubmit={handleSubmit}>
               <DateCatch
                 startDate={startDate}
-                setStartDate={setStartDate}
+                handleStartDateChange={handleStartDateChange}
                 endDate={endDate}
-                setEndDate={setEndDate}
+                handleEndDateChange={handleEndDateChange}
                 startTime={startTime}
                 handleStartTimeChange={handleStartTimeChange}
                 endTime={endTime}
@@ -126,7 +135,7 @@ const EditHours = () => {
 
               {nightTime && (
                 <div className="time-menu-night-alert">
-                  🌙 Horário noturno detectado
+                  🌙 Adicional noturno detectado
                 </div>
               )}
 
