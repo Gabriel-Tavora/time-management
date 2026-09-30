@@ -150,10 +150,6 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
 
         const overtimeData = {};
 
-        if (startDate !== originalStartDate) {
-          overtimeData.work_date = startDate;
-        }
-
         if (
           startDate !== originalStartDate ||
           startTime !== originalStartTime
@@ -181,7 +177,7 @@ export function useOvertimeEdit({ token, form, overtime, onSuccess }) {
           showMessage("error", Messages.NO_CHANGES);
           return;
         }
-
+        console.log(overtimeData)
         await editOvertime(token, overtimeId, overtimeData, { signal });
         showMessage("success", Messages.EDIT_SUCCESS);
 

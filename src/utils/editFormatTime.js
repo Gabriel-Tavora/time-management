@@ -41,8 +41,6 @@ export const isNightTime = (startTime, endTime, startDate, endDate) => {
   const NIGHT_END = 5 * 60;
 
   const crossesMidnight = end <= start;
-  console.log(startDate)
-  console.log(endDate)
   if (crossesMidnight) {
     return startDate !== endDate;
   }
