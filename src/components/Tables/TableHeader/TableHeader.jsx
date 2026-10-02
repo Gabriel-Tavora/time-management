@@ -4,7 +4,7 @@ import OncallTable from "../Oncall/OncallTable.jsx"
 //utils
 import { formatHours } from "../../../utils/formatHours.js"
 
-const TableHeader = ({ data, idExercice }) => {
+const TableHeader = ({ data }) => {
 
   return (
     <div>
@@ -30,11 +30,6 @@ const TableHeader = ({ data, idExercice }) => {
               : "0"}
           </h3>
         </li>
-        {idExercice && (
-          <OncallTable
-            idMonth={idExercice}
-          />
-        )}
       </ul>
     </div>
   )

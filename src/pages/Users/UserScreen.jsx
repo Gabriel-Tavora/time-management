@@ -27,7 +27,8 @@ const UserScreen = () => {
       const dataUserTime = await getUserHours(token);
       setDataTime(dataUserTime);
 
-      const monthPerformace = await getUserPerformance(token, monthStart, monthEnd)
+      const monthPerformace = await getUserPerformance(token, monthStart, monthEnd);
+      console.log(monthPerformace)
       setMonthPerf(monthPerformace);
     } catch (error) {
       console.error(error);
@@ -44,9 +45,8 @@ const UserScreen = () => {
     <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
-        <DashboardHeader user={user} formatted={formatted} />
-
         <div className="main-menu">
+          <DashboardHeader user={user} formatted={formatted} />
           <UserTable data={dataTime} monthPerf={monthPerf} token={token} />
         </div>
         

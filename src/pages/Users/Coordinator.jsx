@@ -23,9 +23,8 @@ const Coordinator = () => {
     <div className="dashboard-screen">
       <Sidebar />
       <main className="main-informations">
-        <DashboardHeader user={user} formatted={formatted} />
-
-        <div className="Coordinator-tables">
+        <div className="main-menu">
+          <DashboardHeader user={user} formatted={formatted} />
           <TableMenagerAndCoordinator
             data={colaboratorData}
             idMonth={idClosure}

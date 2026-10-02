@@ -331,7 +331,7 @@
   padding: 0 clamp(12px, 4vw, 20px);
   list-style: none;
   box-sizing: border-box;
-  transform: translateY(-70px);
+
 }
 
 .main-menu li {
@@ -454,10 +454,6 @@ dialog::backdrop {
   backdrop-filter: blur(4px);
 }
 
-
-/* ===========================
-   TABLET (≤ 1024px)
-=========================== */
 @media (max-width: 1024px) {
   .main-menu {
     max-width: 90%;
@@ -469,7 +465,6 @@ dialog::backdrop {
   .dashboard-screen {
     flex-direction: column;
     min-height: auto;
-    /* evita somar 100vh do wrapper + 100vh do conteúdo empilhado */
   }
 
   .main-informations {
@@ -478,9 +473,6 @@ dialog::backdrop {
   }
 }
 
-/* ===========================
-   CELULARES PEQUENOS (≤ 480px)
-=========================== */
 @media (max-width: 480px) {
   .main-menu {
     padding: 0 12px;

@@ -32,7 +32,6 @@ export function useTeamLeaderUsers(records, idMonth) {
     return Object.values(filterUserById);
   }, [records]);
 
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentEmployeePerformace, setCurrentEmployeePerformace] =
     useState(null);

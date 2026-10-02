@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
+import Swal from "sweetalert2";
 //css
 import "../../styles/tables.css";
-import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
+import { FaPlus, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 //Utils
 import { formatHours, formatDate, formatTime } from "../../utils/formatHours.js";
 //router-dom
@@ -13,7 +14,6 @@ import Input from "../common/Inputs/Inputs.jsx";
 import Button from '../common/Button/Button.jsx';
 import TableHeader from './TableHeader/TableHeader.jsx';
 const UserTable = ({ data, closureStatus, monthPerf, token }) => {
-  console.log(data)
   const navigate = useNavigate();
   const handleNavigate = (path) => {
     navigate(path);
@@ -29,6 +29,32 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
     containerRef,
     handleEditTime,
   } = useEditTimeout();
+
+  const handleDeleteHours = () => {
+    const record = filteredData?.find(
+      (item) => item.overtime_records.id === editTimeId
+    );
+
+    if (!record) {
+      console.log("Hora extra não encontrada");
+      return;
+    }
+
+    Swal.fire({
+      title: "Tem certeza que deseja deletar a hora extra?",
+      text: "Aguarde enquanto a operação é processada.",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      customClass: {
+        popup: "my-swal-popup",
+        title: "my-swal-title",
+        htmlContainer: "my-swal-text",
+        confirmButtonText: "my-swal-confirm",
+        icon: "my-swal-icon",
+      },
+    });
+  }
 
   const handleEditHours = (editTimeId, path) => {
     const record = filteredData?.find(
@@ -53,30 +79,37 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
 
   const filteredData = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
-    if (!isFilterActive) return data;
 
-    return data.filter((register) => {
-      const overtime = register.overtime_records;
+    const filtered = !isFilterActive
+      ? [...data]
+      : data.filter((register) => {
+        const overtime = register.overtime_records;
 
-      if (!overtime?.start_time || !overtime?.end_time) {
-        return false;
-      }
+        if (!overtime?.start_time || !overtime?.end_time) {
+          return false;
+        }
 
-      const recordStartDate = overtime.start_time.slice(0, 10);
-      const recordEndDate = overtime.end_time.slice(0, 10);
+        const recordStartDate = overtime.start_time.slice(0, 10);
+        const recordEndDate = overtime.end_time.slice(0, 10);
 
-      if (startDate && recordEndDate < startDate) {
-        return false;
-      }
+        if (startDate && recordEndDate < startDate) {
+          return false;
+        }
 
-      if (endDate && recordStartDate > endDate) {
-        return false;
-      }
+        if (endDate && recordStartDate > endDate) {
+          return false;
+        }
 
-      return true;
+        return true;
+      });
+
+    return filtered.sort((a, b) => {
+      return (
+        new Date(a.overtime_records.start_time) -
+        new Date(b.overtime_records.start_time)
+      );
     });
   }, [data, startDate, endDate, isFilterActive]);
-
 
   return (
     <div className="table-page table" ref={containerRef}>
@@ -183,7 +216,7 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                         </span>
                         <div className={`table-edit ${editTime === overtime.id ? "active" : ""}`}>
                           <Button
-                            className="btn-table"
+                            className="btn-table edit"
                             type="button"
                             icon={FaEdit}
                             aria-label="Editar hora extra"
@@ -193,6 +226,16 @@ const UserTable = ({ data, closureStatus, monthPerf, token }) => {
                                 overtime.id,
                                 "/EditHours"
                               );
+                            }}
+                          />
+                          <Button
+                            className="btn-table delete"
+                            type="button"
+                            icon={FaTrash}
+                            aria-label="Deletar hora extra"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteHours();
                             }}
                           />
                         </div>

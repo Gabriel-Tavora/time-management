@@ -9,7 +9,6 @@ const DashboardHeader = ({user,formatted}) => {
       <div className="main-header-title">
         {user && <h1>Olá, {user?.display_name}</h1>}
       </div>
-
       <div className="main-header-time">
         <h2>
           {formatted}

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const DEFAULT_AUTO_CLOSE_MS = 5000;
+const DEFAULT_AUTO_CLOSE_MS = 3000;
 
 export const useEditTimeout = (autoCloseMs = DEFAULT_AUTO_CLOSE_MS) => {
   const [editTime, setEditTime] = useState(null);

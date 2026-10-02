@@ -21,12 +21,8 @@ const Teamleader = () => {
       <Sidebar />
 
       <main className="main-informations">
-        <DashboardHeader
-          user={user}
-          formatted={formatted}
-        />
-
         <div className="main-menu">
+          <DashboardHeader user={user} formatted={formatted}/>
           <TeamLeaderTable
             data={colaboratorData}
             handleCloseMonth={handleCloseMonth}

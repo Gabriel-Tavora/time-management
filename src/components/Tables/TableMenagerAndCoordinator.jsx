@@ -55,10 +55,10 @@ const TableMenagerAndCoordinator = ({ data, idMonth, Approval, Rejected }) => {
                 />
               </div>
               {countUsers >= 1 && (
-                <>
+                <div className="table-header">
                   <Button className="change-btn" onClick={goPrev} buttonText="◀" />
                   <Button className="change-btn" onClick={goNext} buttonText="▶" />
-                </>
+                </div>
               )}
             </div>
           )}
